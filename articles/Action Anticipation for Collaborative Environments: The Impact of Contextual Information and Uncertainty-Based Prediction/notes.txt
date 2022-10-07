@@ -1,0 +1,21 @@
+limb movements are not enough
+
+tried to consider gaze and object information over time
+
+action anticipation as a classification task
+
+action anticipation consists of classifying a task before it occurs.
+
+objects’ position, the relation between hands and object/person and the type of object manipulated, can offer as much or even more information than only movement. 
+
+need CNN to classify using the difference between 2 images
+
+only use information from rgb sensors
+
+it suggests some metrics to evaluate the model
+
+Bayesian neural network to have a certain uncertainty
+
+proposed architecture divided into three main steps: feature extraction and selection, feature embedding, and classification model.
+
+-------------page 1-11 read-----

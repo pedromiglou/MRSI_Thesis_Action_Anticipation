@@ -1,0 +1,12 @@
+semi-autonomous robots
+
+Hidden markov models are widely usen
+
+propose adding a mechanism that pretriggers the initial parts of the robot’s movement primitive, based on training data that reveal the most likely sequence of future actions
+
+i think the system has various possible sequences and makes predictions considering them
+
+In the case the recognized human action differs from the
+pre-triggered action, the robot must give priority to the hu-
+man decision. This means that the robot must then back
+off and switch to the recognized human action. 
