@@ -1,0 +1,11 @@
+robot must predict human actions and intent, and understand human non-verbal cues.
+
+use of gaze and body pose
+
+it is not enough to recognize the current action, we should predict the intent of the user
+
+recorrent neural networks have worked better than more classic methods
+
+contains details about recurrent neural network building
+
+the behaviour of the human is non-deterministic from the perspective of the robot
