@@ -21,6 +21,8 @@ use CNN to classify current posture and RNN works with the sequence of postures
 use openpose
 https://github.com/CMU-Perceptual-Computing-Lab/openpose
 
+having a lookup table of possible sequences so that considering the current state we have a set of possible next states
+
 ## Doubts
 
 Even if there are different sequences of assembly actions can i assume that the person can adapt to the action of the robot if it makes sense
