@@ -8,7 +8,7 @@ MRSI Thesis latex files and notes
 
 2. [Action anticipation for collaborative environments: The impact of contextual information and uncertainty-based prediction]() | [notes](./articles/2.md)
 
-[Anticipation in Human-Robot Cooperation: A Recurrent Neural Network Approach for Multiple Action Sequences Prediction](https://deepai.org/publication/anticipation-in-human-robot-cooperation-a-recurrent-neural-network-approach-for-multiple-action-sequences-prediction)
+3. [Anticipation in Human-Robot Cooperation: A recurrent neural network approach for multiple action sequences prediction](https://deepai.org/publication/anticipation-in-human-robot-cooperation-a-recurrent-neural-network-approach-for-multiple-action-sequences-prediction) | [notes](./articles/3.md)
 
 ## Videoconferences
 
