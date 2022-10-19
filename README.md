@@ -10,6 +10,10 @@ MRSI Thesis latex files and notes
 
 3. [Anticipation in Human-Robot Cooperation: A recurrent neural network approach for multiple action sequences prediction](https://deepai.org/publication/anticipation-in-human-robot-cooperation-a-recurrent-neural-network-approach-for-multiple-action-sequences-prediction) | [notes](./articles/3.md)
 
+## Review Articles
+
+1. [A Survey of Robot Learning Strategies for Human-Robot Collaboration in Industrial Settings]() | [notes](./articles/R1.md)
+
 ## Videoconferences
 
 [ICARSC2021 Conference Day 1 Morning](https://www.youtube.com/watch?v=cvsTZbZak-M) - minute 34:30
