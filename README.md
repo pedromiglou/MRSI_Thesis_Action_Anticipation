@@ -43,6 +43,7 @@ MRSI Thesis latex files and notes
 | [Rolling-Unrolling LSTMs for Action Anticipation from First-Person Video](https://ieeexplore.ieee.org/document/9088213) | IEEE Transactions on Pattern Analysis and Machine Intelligence | 2021 | [6](./articles/6.md)
 | [Predicting the Future: A Jointly Learnt Model for Action Anticipation](https://ieeexplore.ieee.org/document/9009844) | Proceedings of the IEEE International Conference on Computer Vision | 2019 | [7](./articles/7.md)
 | [Learning to Anticipate Egocentric Actions by Imagination](https://ieeexplore.ieee.org/document/9280353) | IEEE Transactions on Image Processing | 2021 | [8](./articles/8.md)
+| [Social Cobots: Anticipatory Decision-Making for Collaborative Robots Incorporating Unexpected Human Behaviors](https://ieeexplore.ieee.org/document/9473814) | ACM/IEEE International Conference on Human-Robot Interaction | 2018 | [9](./articles/9.md)
 
 ## Review Articles
 
