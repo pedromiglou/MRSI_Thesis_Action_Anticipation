@@ -41,6 +41,8 @@ MRSI Thesis latex files and notes
 | [Prediction‐Based Human‐Robot Collaboration in Assembly Tasks Using a Learning from Demonstration Model]() | Sensors | 2022 | [4](./articles/4.md)
 | [Fostering short-term human anticipatory behavior in human-robot collaboration](https://www.sciencedirect.com/science/article/pii/S0169814121001591) | International Journal of Industrial Ergonomics | 2022 | [5](./articles/5.md)
 | [Rolling-Unrolling LSTMs for Action Anticipation from First-Person Video](https://ieeexplore.ieee.org/document/9088213) | IEEE Transactions on Pattern Analysis and Machine Intelligence | 2021 | [6](./articles/6.md)
+| [Predicting the Future: A Jointly Learnt Model for Action Anticipation](https://ieeexplore.ieee.org/document/9009844) | Proceedings of the IEEE International Conference on Computer Vision | 2019 | [7](./articles/7.md)
+| [Learning to Anticipate Egocentric Actions by Imagination](https://ieeexplore.ieee.org/document/9280353) | IEEE Transactions on Image Processing | 2021 | [8](./articles/8.md)
 
 ## Review Articles
 
