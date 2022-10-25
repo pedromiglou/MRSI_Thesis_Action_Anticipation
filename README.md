@@ -39,6 +39,8 @@ MRSI Thesis latex files and notes
 | [Action anticipation for collaborative environments: The impact of contextual information and uncertainty-based prediction]() | Neurocomputing | 2021 | [2](./articles/2.md)
 | [Anticipation in Human-Robot Cooperation: A recurrent neural network approach for multiple action sequences prediction](https://deepai.org/publication/anticipation-in-human-robot-cooperation-a-recurrent-neural-network-approach-for-multiple-action-sequences-prediction) | Proceedings - IEEE International Conference on Robotics and Automation | 2018 | [3](./articles/3.md)
 | [Prediction‐Based Human‐Robot Collaboration in Assembly Tasks Using a Learning from Demonstration Model]() | Sensors | 2022 | [4](./articles/4.md)
+| [Fostering short-term human anticipatory behavior in human-robot collaboration](https://www.sciencedirect.com/science/article/pii/S0169814121001591) | International Journal of Industrial Ergonomics | 2022 | [5](./articles/5.md)
+| [Rolling-Unrolling LSTMs for Action Anticipation from First-Person Video](https://ieeexplore.ieee.org/document/9088213) | IEEE Transactions on Pattern Analysis and Machine Intelligence | 2021 | [6](./articles/6.md)
 
 ## Review Articles
 
