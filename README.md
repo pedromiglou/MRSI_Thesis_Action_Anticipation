@@ -74,6 +74,7 @@ resumo em slides:
 - metodo, desafio
 - ano, fonte, autor
 - ferramentas
+- article 1, 9, 5, 4, 3, Reviews
 
 
 ## Search Keywords
