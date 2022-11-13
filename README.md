@@ -44,6 +44,9 @@ MRSI Thesis latex files and notes
 | [Predicting the Future: A Jointly Learnt Model for Action Anticipation](https://ieeexplore.ieee.org/document/9009844) | Proceedings of the IEEE International Conference on Computer Vision | 2019 | [7](./articles/7.md)
 | [Learning to Anticipate Egocentric Actions by Imagination](https://ieeexplore.ieee.org/document/9280353) | IEEE Transactions on Image Processing | 2021 | [8](./articles/8.md)
 | [Social Cobots: Anticipatory Decision-Making for Collaborative Robots Incorporating Unexpected Human Behaviors](https://ieeexplore.ieee.org/document/9473814) | ACM/IEEE International Conference on Human-Robot Interaction | 2018 | [9](./articles/9.md)
+| [TTPP: Temporal Transformer with Progressive Prediction for Efficient Action Anticipation](https://arxiv.org/abs/2003.03530) | Neurocomputing | 2021 | [10](./articles/10.md)
+| [Action Anticipation By Predicting Future Dynamic Images](https://arxiv.org/abs/1808.00141) | Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics) | 2019 | [11](./articles/11.md)
+| [Anticipation in Robotics]() | Springer (Handbook of Anticipation) | 2018 | [12](./articles/12.md)
 
 ## Review Articles
 
@@ -76,6 +79,13 @@ resumo em slides:
 - ferramentas
 - article 1, 9, 5, 4, 3, Reviews
 
+In this chapter, we follow Robert Rosen’s definition of an anticipatory system as
+“[...] a system containing a predictive model of itself and/or of its environment,
+which allows it to change state at an instant in accord with the model’s
+predictions pertaining to a later instant.” (Rosen 1985, p.339). Such a system
+could be a human, other animal or a robot as long as it is able to anticipate future
+states or events. Rosen developed a rigorous theoretical foundation for living
+organisms as “anticipatory systems”. -- page 3
 
 ## Search Keywords
 
@@ -91,3 +101,8 @@ Inputting this set of search parameters returned a total of 389 results
 from ISI Web of Knowledge (191 articles, 198 proceedings), 178 from
 IEEE Xplore (48 articles, 130 proceedings) and 486 from Scopus (206
 articles and 280 proceedings).
+
+
+## Sensor links
+
+https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_desktop_software/usermanuals/dd2-0_bhyxxx.pdf
