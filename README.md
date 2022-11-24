@@ -106,3 +106,13 @@ articles and 280 proceedings).
 ## Sensor links
 
 https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_desktop_software/usermanuals/dd2-0_bhyxxx.pdf
+
+
+## Teacher Structure
+
+-introdução
+-definição do problema (possivelmente num capitulo a parte)
+-estado da arte - ferramentas importantes, background material(conhecimento relevante para o problema assumido adquirido), revisão de artigos
+-planeamento - divisão das tarefas e calendarização (maybe diagrama de Grant)
+-conclusão
+-15/30 páginas
