@@ -1,6 +1,58 @@
-\chapter{Problem Definition}
-\label{chapter:problem_definition}
+\chapter{State of the Art}
+\label{chapter:state_of_the_art}
+
+\section{Tools Review}
+
+\section{Background Material}
 
 {\color{gray}
-(ideas) Details about the problem at hand
+(ideas) relevant and established knowledge assumed as known
 }
+
+\section{Previous Work}
+
+\subsection{Data Sources and Sensors}
+
+In \cite{Schydlo2018} part of the data contained information about the gaze of the user from wearable sensors.
+
+In \cite{Furnari2021} the authors detected the motion using the optical flow obtained from the RGB images and from the object related features using a object detector.
+
+In \cite{Gammulle2019} and \cite{Wu2021} the authors used both the images and the optical flow obtained from them.
+
+\subsection{Algorithms}
+
+Machine Learning algorithms have been increasingly more common in the context of action anticipation in collaborative environments. These are divided in 3 groups: Supervised Learning, Unsupervised Learning and Reinforcement Learning.
+
+\subsubsection{Supervised Learning}
+
+In \cite{Maeda2016} the authors predicted the next human action using a look-up table containing different orders for assembly actions and with the nearest neighbor algorithm the actions of the human would be matched with a certain order.
+
+In \cite{Canuto2021} the authors used a Long Short-Term Memory (LSTM) Neural Network to handle classifying the next action using the human skeleton joints of several frames over time. These joints were obtained using OpenPose on the captured images.
+
+In \cite{Schydlo2018} the authors used a encoder-decoder recurrent neural network topology to predict human actions and intent.
+
+In \cite{Zhang2022} the authors use ConvLSTM to predict the intention of the user.
+
+In \cite{Furnari2021} the authors use a Rolling-Unrolling LSTM. {\color{red} (transcribed) "A Rolling” LSTM (RLSTM) continuously encodes streaming observations and keeps an updated summary of what has been observed so far. When an anticipation is required, the “Unrolling” LSTM (U-LSTM) is initialized with the current hidden and cell states of the R-LSTM (which encode the summary of the past) and makes predictions about the future".}
+
+In \cite{Gammulle2019} the authors used 2 ResNet50's {\color{red} (put reference here)} to obtain the input features and 2 LSTM's to take into account the sequence of inputs. Then the 2 results are merged into a final classification.
+
+In \cite{Wu2021} the authors used Temporal Segment Networks (TSN) to predict the future action.
+
+\subsubsection{Unsupervised Learning}
+
+\subsubsection{Reinforcement Learning}
+
+\subsection{Order of Actions Problem}
+
+In \cite{Maeda2016} the authors used a look-up table containing different orders for assembly actions and with the nearest neighbor algorithm the actions of the human would be matched with a certain order. The limitation of this method is that all of the possible sequences need to be on the table because if they are not there then the robot will match with a different order which may be undesirable.
+
+In \cite{Canuto2021} the authors use an adaptive threshold on the uncertainty of the recurrent neural network which makes it so the model needs to a certain level of certainty in order to classify the action as a certain class.
+
+In \cite{Schydlo2018} the authors predicted multiple possible actions while the model was unsure of what would be the next action.
+
+In \cite{Zhang2022} the authors made it so there would be a phase when the robot learned from demonstration which were the assembly actions and its order.
+
+\subsection{Human-Robot Collaboration Safety}
+
+In \cite{Zhang2022} the authors defined speed limits on the robot and made it so the robot avoids the workspace of the human. Then when it needs to move closer to the user, its speed is reduced in order to guarantee the safety of the user.
