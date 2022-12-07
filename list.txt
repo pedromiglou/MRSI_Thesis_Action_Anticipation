@@ -1,0 +1,29 @@
+Data Sources/Sensors:
+Learning to Anticipate Egocentric Actions by Imagination, 2021
+Predicting the Future: A Jointly Learnt Model for Action Anticipation, 2019
+Action Anticipation by Predicting Future Dynamic Images, 2019
+Rolling-Unrolling LSTMs for Action Anticipation from First-Person Video, 2021
+Anticipation in Human-Robot Cooperation: A Recurrent Neural Network Approach for Multiple Action Sequences Prediction, 2018
+
+Algorithms:
+Learning to Anticipate Egocentric Actions by Imagination, 2021
+Predicting the Future: A Jointly Learnt Model for Action Anticipation, 2019
+Action Anticipation by Predicting Future Dynamic Images, 2019
+TTPP: Temporal Transformer with Progressive Prediction for efficient action anticipation, 2021
+Action anticipation for collaborative environments: The impact of contextual information and uncertainty-based prediction, 2021
+Rolling-Unrolling LSTMs for Action Anticipation from First-Person Video, 2021
+Anticipative interaction primitives for human-robot collaboration, 2016
+Anticipation in Human-Robot Cooperation: A Recurrent Neural Network Approach for Multiple Action Sequences Prediction, 2018
+Prediction-Based Human-Robot Collaboration in Assembly Tasks Using a Learning from Demonstration Model, 2022
+
+Definition of Action:
+TTPP: Temporal Transformer with Progressive Prediction for efficient action anticipation, 2021
+
+Order of Actions:
+Action anticipation for collaborative environments: The impact of contextual information and uncertainty-based prediction, 2021
+Anticipative interaction primitives for human-robot collaboration, 2016
+Anticipation in Human-Robot Cooperation: A Recurrent Neural Network Approach for Multiple Action Sequences Prediction, 2018
+Prediction-Based Human-Robot Collaboration in Assembly Tasks Using a Learning from Demonstration Model, 2022
+
+Safety:
+Prediction-Based Human-Robot Collaboration in Assembly Tasks Using a Learning from Demonstration Model, 2022

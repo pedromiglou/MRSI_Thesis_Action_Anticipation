@@ -23,7 +23,7 @@ MRSI Thesis latex files and notes
 - nearest neighbor
 - hand-coded contingency trajectory
 - recurrent neural network
-- openpose
+- openpose/openpifpaf
 - stochastic (Bayesian) LSTM model
 - Convolution neural network
 - unsupervised learning
@@ -92,6 +92,8 @@ organisms as “anticipatory systems”. -- page 3
 combination of keywords was used: (‘‘human–robot
 collaborat*’’ OR ‘‘human–robot cooperat*’’ OR ‘‘collaborative robot*’’
 OR ‘‘cobot*’’ OR ‘‘hrc’’) AND ‘‘learning’’
+
+( TITLE-ABS-KEY ( "human–robot collaborat*" )  OR  TITLE-ABS-KEY ( human–robot  AND cooperat* )  OR  TITLE-ABS-KEY ( collaborative  AND robot* )  OR  TITLE-ABS-KEY ( ‘‘cobot*’’ )  OR  TITLE-ABS-KEY ( ‘‘hrc’’ )  AND  TITLE-ABS-KEY ( "learning" ) )  AND  ( LIMIT-TO ( PUBYEAR ,  2023 )  OR  LIMIT-TO ( PUBYEAR ,  2022 )  OR  LIMIT-TO ( PUBYEAR ,  2021 )  OR  LIMIT-TO ( PUBYEAR ,  2020 )  OR  LIMIT-TO ( PUBYEAR ,  2019 )  OR  LIMIT-TO ( PUBYEAR ,  2018 ) )  AND  ( LIMIT-TO ( LANGUAGE ,  "English" ) ) 
 
 This set of keywords
 was searched in the title, abstract and keywords records of the journal
