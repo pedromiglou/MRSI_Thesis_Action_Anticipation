@@ -1,0 +1,14 @@
+A primeira é se está mais correto colocar as secções a seguir a background material em secções diferentes (como está atualmente) ou se seria melhor serem subsecções de uma secção maior chamada, por exemplo, "Previous work".
+
+A segunda é onde seria mais correto falar sobre "OpenPose" e "OpenPifPaf" que são ambas ferramentas para deteção de articulações humanas. Eu penso que seja mais correto falar nelas no capítulo de Tools Review mas, por outro lado, há artigos no estado da arte que usam estas ferramentas. Poderia apenas referenciar ao falar dos artigos que as ferramentos estão descritas melhor no capítulo seguinte?
+
+problem definition num capitulo aparte? é melhor não
+
+onde colocar a definição de antecipação, porque a este ponto temos introdução, problem definition e estado da arte onde acho que talvez encaixasse em todos
+definição geral na introdução, talvez ter outras definições mais tarde
+
+notes:
+- nos algoritmos não falar apenas dos algoritmos, detalhar mais
+- order of actions dentro de algoritmos
+- data sourcess no background material
+- possivelmente falar de sensores biometricos
