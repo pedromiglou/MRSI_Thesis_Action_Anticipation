@@ -1,80 +1,14 @@
-\chapter{State of the Art}
-\label{chapter:state_of_the_art}
+\chapter{Tools Review}
+\label{chapter:tools_review}
 
-\section{Tools Review}
+\section{ROS}
 
-\subsubsection{ROS}
+\section{Tensorflow}
 
-\subsubsection{Tensorflow}
+\section{Pytorch}
 
-\subsubsection{The Robot}
+\section{Experimental Setup}
 
-\section{Background Material}
+\section{OpenPose}
 
-{\color{gray}
-(ideas) relevant and established knowledge assumed as known
-}
-
-\section{Previous Work}
-
-\subsection{Data Sources and Sensors}
-
-In \cite{Schydlo2018} part of the data contained information about the gaze of the user from wearable sensors.
-
-In \cite{Furnari2021} the authors detected the motion using the optical flow obtained from the RGB images and from the object related features using a object detector.
-
-In \cite{Gammulle2019}, \cite{Wu2021} and \cite{Rodriguez2019} the authors used both the images and the optical flow obtained from them.
-
-In \cite{Moutinho2023} the authors used a RGB-D camera so as to capture depth.
-
-\subsection{Algorithms}
-
-Machine Learning algorithms have been increasingly more common in the context of action anticipation in collaborative environments. These are divided in 3 groups: Supervised Learning, Unsupervised Learning and Reinforcement Learning.
-
-\subsubsection{Supervised Learning}
-
-In \cite{Maeda2016} the authors predicted the next human action using a look-up table containing different orders for assembly actions and with the nearest neighbor algorithm the actions of the human would be matched with a certain order.
-
-In \cite{Canuto2021} the authors used a Long Short-Term Memory (LSTM) Neural Network to handle classifying the next action using the human skeleton joints of several frames over time. These joints were obtained using OpenPose on the captured images.
-
-In \cite{Schydlo2018} the authors used a encoder-decoder recurrent neural network topology to predict human actions and intent.
-
-In \cite{Zhang2022} the authors use ConvLSTM to predict the intention of the user.
-
-In \cite{Furnari2021} the authors use a Rolling-Unrolling LSTM. {\color{red} (transcribed) "A Rolling” LSTM (RLSTM) continuously encodes streaming observations and keeps an updated summary of what has been observed so far. When an anticipation is required, the “Unrolling” LSTM (U-LSTM) is initialized with the current hidden and cell states of the R-LSTM (which encode the summary of the past) and makes predictions about the future".}
-
-In \cite{Gammulle2019} the authors used 2 ResNet50's {\color{red} (put reference here)} to obtain the input features and 2 LSTM's to take into account the sequence of inputs. Then the 2 results are merged into a final classification.
-
-In \cite{Wu2021} the authors used Temporal Segment Networks (TSN) to predict the future action.
-
-In \cite{Wang2021} the authors used VGG-16, TS, ConvNet to extract features from the images, then these features are aggregated using a Temporal Transformer module (TTM) and finally, a progressive prediction module (PPM) will anticipate the future action.
-
-In \cite{Rodriguez2019} the authors processed the images to obtain motion images and then used a convolutional autoencoder network to generate the next motion images. These images are then passed to a Convolutional Neural Network (CNN) that processes them and makes action predictions for the future. The result of this network and another CNN which analyzes the static images results in the final action prediction.
-
-In \cite{Gorur2018} the authors partially observable Markov decision process (POMDP) to handle unexpected conditions such as when the human’s current intention is unknown or irrelevant to the robot or when even though the human’s intention is relevant, the human does not need the robot’s assistance.
-
-In \cite{Moutinho2023} the authors used convolutional neural network with 34 layers and a long-short term memory recurrent neural network (ResNet-34 + LSTM) obtaining assembly context through action recognition of the tasks performed by the operator.
-
-\subsubsection{Unsupervised Learning}
-
-\subsubsection{Reinforcement Learning}
-
-\subsection{Definition and Order of Actions}
-
-In general, the last frames captured by the camera are considered an action in the literature of this theme.
-
-In \cite{Wang2021} the authors tested how much frames should be considered as the last action in order to obtain the best results. These tests are evaluated using a metric from {\color{red} (put reference here)} named per-frame calibrated average precision (cAP).
-
-In \cite{Maeda2016} the authors used a look-up table containing different orders for assembly actions and with the nearest neighbor algorithm the actions of the human would be matched with a certain order. The limitation of this method is that all of the possible sequences need to be on the table because if they are not there then the robot will match with a different order which may be undesirable.
-
-In \cite{Canuto2021} the authors use an adaptive threshold on the uncertainty of the recurrent neural network which makes it so the model needs to a certain level of certainty in order to classify the action as a certain class.
-
-In \cite{Schydlo2018} the authors predicted multiple possible actions while the model was unsure of what would be the next action.
-
-In \cite{Zhang2022} the authors made it so there would be a phase when the robot learned from demonstration which were the assembly actions and its order.
-
-\subsection{Human-Robot Collaboration Safety}
-
-In \cite{Zhang2022} the authors defined speed limits on the robot and made it so the robot avoids the workspace of the human. Then when it needs to move closer to the user, its speed is reduced in order to guarantee the safety of the user.
-
-In \cite{Psarakis2022} the authors attempted to create a sense of anticipation in humans towards the robot's movements through visual cues of the robot's upcoming action. As with the previous article, they also make it so the robot reduces its motion speed when close to the robot. Although it was only tested in VR where the users feels safer, they concluded that the efficiency of the collaboration was increased and knowing what the robot will do next also increases safety.
+\section{OpenPifPaf}

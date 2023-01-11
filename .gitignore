@@ -1,2 +1,2 @@
-articles/**/*.pdf
-guides/**/*.pdf
+articles/*
+guides/*
