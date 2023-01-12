@@ -12,3 +12,12 @@ notes:
 - order of actions dentro de algoritmos
 - data sourcess no background material
 - possivelmente falar de sensores biometricos
+
+------new one-------
+no artigo do Afonso vi que tinha uma tabela com as definições conceitos de interação e colaboração humano-robot. Poderia fazer algo desse género para as definições de antecipation e recognition que tenho?
+
+quanta liberdade eu tenho para alterar o styling da tese?
+
+devia evitar transcrições?
+
+que imagens é que os professores sugerem?

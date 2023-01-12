@@ -34,3 +34,7 @@ articles and 280 proceedings).
 ## Sensor links
 
 https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_desktop_software/usermanuals/dd2-0_bhyxxx.pdf
+
+## Other thesis in action anticipation
+
+- https://repository.kaust.edu.sa/handle/10754/673882
