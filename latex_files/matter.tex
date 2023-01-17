@@ -67,7 +67,9 @@
 % Configure Hyperlink color
 %\usepackage[breaklinks=true,colorlinks=false,linkcolor=blue]{hyperref}
 % Or use the default
-\usepackage{hyperref}
+\usepackage[
+hidelinks % added by vsantos
+]{hyperref}
 
 %Optional: Redefine section names
 %\def\sectionautorefname{Section}
@@ -111,10 +113,6 @@
 % altered from: \usepackage[backend=biber,style=ieee, sorting=none]{biblatex}
 \usepackage[backend=biber,style=numeric, sorting=none, maxnames=1,minnames=1]{biblatex}
 \bibliography{bib/myrefs}
-
-% separate references by commas
-%\usepackage{cite}
-
 
 %Use acronyms
 \usepackage[printonlyused]{acronym} % For acronyms
