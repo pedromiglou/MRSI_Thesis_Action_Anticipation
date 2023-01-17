@@ -1,6 +1,18 @@
 \chapter{Work Progress}
 \label{chapter:work_progress}
 
-{\color{red}
-(ideas) Progress done until the end of the semester including the sensor
-}
+%\section{Sensor BHI260AP Overview}
+
+BHI260AP\footnote{Product Page: \url{https://www.bosch-sensortec.com/products/smart-sensors/bhi260ap}} is a smart sensor with integrated \acf{imu} from Bosch Sensortec. According to \cite{BoschSensor}, it includes several software functionalities, a 32-bit customer programmable microcontroller, and a 6-axis \acs{imu}. It is designed for always-on sensor applications such as fitness tracking, navigation, machine learning analytics and orientation estimation.
+
+In this project, the idea was to use this sensor as another source of data when collecting data to train a machine learning model which would be used to help data labeling.
+
+At the moment of this overview, three approaches were attempted:
+
+\begin{itemize}
+    \item Python \acs{api} - there was an attempt to use the Python library to communicate with the sensor but although communication was established there was a lack of documentation and examples that allowed to create code that collected data;
+    \item C++ \acs{api} - there was also an attempt to use the C++ library to communicate with the sensor but the instructions available resulted in a compilation error;
+    \item Development Desktop 2.0 - this is a desktop application for Windows that allows communication with all Bosch Sensortec sensors and using it it was possible to collect data.
+\end{itemize}
+
+Therefore, collecting data was only possible with the Development Desktop 2.0. However, using the Python or the C++ \acp{api} would be ideal since as they work in Linux it would be possible to use integrate their usage with \acs{ros}.

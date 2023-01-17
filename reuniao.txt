@@ -1,23 +1,39 @@
-A primeira é se está mais correto colocar as secções a seguir a background material em secções diferentes (como está atualmente) ou se seria melhor serem subsecções de uma secção maior chamada, por exemplo, "Previous work".
+estrutura introdução
 
-A segunda é onde seria mais correto falar sobre "OpenPose" e "OpenPifPaf" que são ambas ferramentas para deteção de articulações humanas. Eu penso que seja mais correto falar nelas no capítulo de Tools Review mas, por outro lado, há artigos no estado da arte que usam estas ferramentas. Poderia apenas referenciar ao falar dos artigos que as ferramentos estão descritas melhor no capítulo seguinte?
-
-problem definition num capitulo aparte? é melhor não
-
-onde colocar a definição de antecipação, porque a este ponto temos introdução, problem definition e estado da arte onde acho que talvez encaixasse em todos
-definição geral na introdução, talvez ter outras definições mais tarde
-
-notes:
-- nos algoritmos não falar apenas dos algoritmos, detalhar mais
-- order of actions dentro de algoritmos
-- data sourcess no background material
-- possivelmente falar de sensores biometricos
-
-------new one-------
-no artigo do Afonso vi que tinha uma tabela com as definições conceitos de interação e colaboração humano-robot. Poderia fazer algo desse género para as definições de antecipation e recognition que tenho?
-
-quanta liberdade eu tenho para alterar o styling da tese?
+no artigo do Afonso vi que tinha uma tabela com as definições conceitos de interação e colaboração humano-robot. Poderia fazer algo desse género para as definições de antecipation e recognition que tenho? e incluindo ou não as de biologia? e onde a colocaria?
 
 devia evitar transcrições?
 
+no caso de reinforcement learning o que me parece é que os artigos são todos para controlar o robo em si e não exatamente processar qual é a próxima ação, o que devo fazer? a antecipação nisso é um pouco reduzida a collision avoidance
+
 que imagens é que os professores sugerem?
+
+Para a parte do experimental setup os professores têm alguma coisa por onde eu me possa guiar? ou devia remover?
+
+no planning é preferível que eu agora faça uma versão inicial e depois os professores ajudam-me a complementar?
+
+sobre os acronimos devo apenas colocar aqueles que uso pelo menos 2 vezes no documento? e posso ter acronimos que uso apenas a versão acronimo e não a extendida?
+
+das partes de cima se é correto manter as que tenho? devia retirar alguma coisa?
+
+quanta liberdade eu tenho para alterar o styling da tese? essencialmente fiz 2 alterações: uma é quando cito vários artigos de uma vez para mostrar com os numeros entre virgulas e outro foi para colocar et al logo depois do primeiro autor
+
+adicionalmente ao citar devia usar o textcite que mete o nome ou só cite que mete o numero?
+
+no work progress devia colocar uma secção ou como seria apenas uma fica melhor como está?
+
+os professores falaram já por algumas vezes em uma tabela para os artigos, devo fazê-la? quais é que seriam exatamente as colunas? e onde a colocaria?
+
+se há alguma secção que devia aprofundar mais relativamente ao que tenho agora?
+
+
+- melhorar o capitulo 1
+- complementar reinforcement learning e deep reinforcement learning, figura base dos componentes basicos do reinforcement learning
+- complementar unsupervised learning com redução de dimensionalidade por exemplo
+- complementar com referencias machine learning no background material
+- transfer learning não devia ser uma secção
+- tirar collaborative robots passando a parte de safety pra frente e juntando o resto ao de cima
+- organize data sources and sensors
+- colocar reinforcement learning como métodos de decision making apos a previsão
+- concretizar um exemplo no capitulo 1 (o stor trata disso )
+- 
