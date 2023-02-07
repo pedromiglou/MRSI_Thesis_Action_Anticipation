@@ -1,0 +1,80 @@
+% Block of tikz code to draw the image of the Anticipatory System.
+% Adapt at will.
+% vsantos, 2023
+
+\definecolor{colA}{HTML}{2a6099}
+\definecolor{colB}{HTML}{729fcf}
+\tikzset{
+	myB/.style= %main block style
+	{
+		fill=colA,text=white, %comment this...
+        %draw,  %...and uncomment this for a simpler diagram
+		font=\sffamily,
+		align=center,
+		minimum height=1.5cm,
+		text width=1.75cm,
+		inner sep=2pt,
+	},
+	myT/.style= %the black triangle
+	{
+		isosceles triangle,
+		fill=black,
+		minimum height=8pt,
+		isosceles triangle apex angle=140,
+		anchor=apex,
+        inner sep=1pt,
+	},	
+}
+
+\def\nyDist{2.25cm}  %block separation
+\pgfdeclarelayer{background layer}
+\pgfsetlayers{background layer,main}
+%Now the actual drawing
+\begin{tikzpicture}[node distance=\nyDist]
+\node [myB]              (per){Perception};
+\node [myB,right of=per] (PM) {Prediction model};
+\node [myB,right of=PM]  (DM) {Decision making};
+\node [myB,right of=DM]  (MP) {Motion Planning};
+\node [myB,right of=MP]  (FC) {Feedback Control};
+
+\node [myB,below of=per] (per2) {Perception};
+\node [myB, inner sep=0,
+	fit={(PM) (MP)},
+	yshift=-\nyDist,
+	text depth=1.5em, %forced adjustment :-(
+] (EEL) {End-to-end learning};
+\node [myB,below of=FC] (FC2) {Feedback Control};
+
+%Place all triangles with a loop ;-)
+%Each triangle has a node name T1, T2, etc...
+\foreach \NN [count=\i] in {PM,DM,MP,FC,EEL,FC2}
+	\node [myT,at=(\NN.west)] (T\i) {};
+
+%some tweaks to have the anticipatory layer well placed
+\begin{pgfonlayer}{background layer}
+\node [
+	draw=colA,
+	dotted,
+	thick,
+	fill=colB,
+	fit=(PM.north west) (DM.south east),
+	inner ysep=1em,
+    yshift=0.5em,
+	label={[anchor=north,font=\sffamily]north:Anticipatory layer}
+	] (AL) {};
+\end{pgfonlayer}
+
+%Two auxiliary points to aid further
+\coordinate (midL) at ($(per.west)!0.5!(per2.west)$);
+\coordinate (midR) at ($(FC.east)!0.5!(FC2.east)$);
+
+% The nodes at the extremes and the lines connecting them to the main blocks
+\node [left of=midL,xshift=1cm,text width=1cm,font=\sffamily] (SI) {Sensor input};
+\draw (SI) -- ([xshift=-10pt]midL) |- (per.west);
+\draw (SI) -- ([xshift=-10pt]midL) |- (per2.west);
+
+\node [right of=midR,xshift=-1cm,text width=1.25cm,font=\sffamily] (CO) {Control output};
+\draw (CO) -- ([xshift=10pt]midR) |- (FC.east);
+\draw (CO) -- ([xshift=10pt]midR) |- (FC2.east);
+
+\end{tikzpicture}

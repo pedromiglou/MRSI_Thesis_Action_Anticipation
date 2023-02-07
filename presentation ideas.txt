@@ -1,0 +1,9 @@
+-pensar em antecipação como um problema de regressão
+-melhorar o diagrama para mostrar que são métodos alternativos
+-colocar tabelas de sintese na tese
+--------------------------------------------
+-criar uma linguagem que permita auxiliar a generalizar
+-detalhar mais o labeling
+-detalhar a posição das peças
+-averiguar LSTM sequence-to-sequence
+-colocar que reinforcement learning não precisa de simulador
