@@ -30,8 +30,9 @@ class Node:
                 image = self.cv_image
 
                 if len(predictions)>0:
-                    for predict in predictions[0].data:
-                        image = cv2.circle(image, (int(predict[0]),int(predict[1])), 10, (255, 0, 0), 2)
+                    for predict in predictions:
+                        for point in predict.data:
+                            image = cv2.circle(image, (int(point[0]),int(point[1])), 10, (255, 0, 0), 2)
 
                 cv2.imshow(self.window_name, image)
                 
