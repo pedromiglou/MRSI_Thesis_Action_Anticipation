@@ -5,25 +5,35 @@ import numpy as np
 import cv2
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+import openpifpaf
 
 
 class Node:
     def __init__(self) -> 'Node':
-        self.subscriber = rospy.Subscriber('/cimages', Image, self.callbackImageReceived)
         self.window_name = 'Output'
         cv2.namedWindow(self.window_name, cv2.WINDOW_AUTOSIZE)
         self.bridge = CvBridge()
         self.cv_image = None
+        self.predictor = openpifpaf.Predictor(checkpoint='shufflenetv2k16')
+        self.subscriber = rospy.Subscriber('/cimages', Image, self.callbackImageReceived)
 
 
     def callbackImageReceived(self, msg):
         self.cv_image = self.bridge.imgmsg_to_cv2(msg, 'rgb8')
-    
+
 
     def showImage(self):
         while True: 
             if self.cv_image is not None:
-                cv2.imshow(self.window_name, self.cv_image)
+                predictions, gt_anns, image_meta = self.predictor.numpy_image(self.cv_image)
+
+                image = self.cv_image
+
+                if len(predictions)>0:
+                    for predict in predictions[0].data:
+                        image = cv2.circle(image, (int(predict[0]),int(predict[1])), 10, (255, 0, 0), 2)
+
+                cv2.imshow(self.window_name, image)
                 
                 key = cv2.waitKey(100)
 

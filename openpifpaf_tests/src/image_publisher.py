@@ -9,7 +9,7 @@ from cv_bridge import CvBridge
 
 class Node:
     def __init__(self) -> 'Node':
-        self.publisher = rospy.Publisher('/cimages', Image)
+        self.publisher = rospy.Publisher('/cimages', Image, queue_size=0)
         self.capture = cv2.VideoCapture(0)
         bridge = CvBridge()
         window_name = 'camera'
@@ -21,6 +21,8 @@ class Node:
             if image is None:
                 print('Video is over, terminating.')
                 break  # video is over
+                
+            image = cv2.resize(image, (int(image.shape[1]/2),int(image.shape[0]/2)))
 
             image_message = bridge.cv2_to_imgmsg(image, "rgb8")
 
