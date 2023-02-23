@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="thesis_tests" type="main.py" name="openpifpaf"  output="screen"/>
+    <node pkg="thesis_tests" type="image_publisher.py" name="camera"  output="screen"/>
+</launch>
