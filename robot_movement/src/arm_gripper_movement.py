@@ -3,7 +3,7 @@ import argparse
 import json
 import os
 
-from config.definitions import ROOT_DIR
+#from config.definitions import ROOT_DIR
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 import rospy
 import time
@@ -14,8 +14,8 @@ parser.add_argument("-m", "--movement", type=str, default="",
 
 args = vars(parser.parse_args())
 
-path = ROOT_DIR + "/use_cases/config/"
-# path = ROOT_DIR + "/robot_movement/config/"
+# path = ROOT_DIR + "/use_cases/config/"
+path = "/home/miglou/catkin_ws/src/MRSI_Thesis/robot_movement/config/"
 
 if args['movement'] == "":
     res = os.listdir(path)
