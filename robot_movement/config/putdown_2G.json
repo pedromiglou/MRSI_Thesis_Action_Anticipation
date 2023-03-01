@@ -1,8 +1,8 @@
 {
   "label": [["position_name", "gripper_open"]],
   "positions": [
-    ["above_8R", 0],
-    ["8R", 1],
-    ["above_8R", 0]
+    ["above_2G", 0],
+    ["2G", 1],
+    ["above_2G", 0]
   ]
 }
