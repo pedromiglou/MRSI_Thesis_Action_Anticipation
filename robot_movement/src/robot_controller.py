@@ -35,6 +35,7 @@ class Robot_Controller:
 
         if args['movement'] == "":
             res = os.listdir(self.path)
+            res.remove(args['position_list'] + ".json")
 
             while True:
                 i = 0
