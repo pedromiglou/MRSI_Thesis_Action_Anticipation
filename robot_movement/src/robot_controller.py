@@ -14,6 +14,16 @@ class Robot_Controller:
     def __init__(self, args) -> None:
         self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/robot_movement/config/"
 
+        try:
+            f = open(self.path + args['position_list'] + ".json")
+            self.positions = json.load(f)
+            self.positions = self.positions["positions"]
+            f.close()
+
+        except:
+            rospy.logerr("Invalid positions file! Closing...")
+            sys.exit(0)
+
         self.arm_gripper_comm = ArmGripperComm()
 
         time.sleep(0.2)
@@ -23,29 +33,25 @@ class Robot_Controller:
         if not self.arm_gripper_comm.state_dic["activation_completed"]: 
             self.arm_gripper_comm.gripper_init()
 
-        f = open(self.path + "positions.json")
-        self.positions = json.load(f)
-        self.positions = self.positions["positions"]
-        f.close()
+        if args['movement'] == "":
+            res = os.listdir(self.path)
 
-        # if args['movement'] == "":
-        #     res = os.listdir(self.path)
+            while True:
+                i = 0
 
-        #     while True:
-        #         i = 0
+                for file in res:
+                    print(f'[{i}]:' + file)
+                    i += 1
 
-        #         for file in res:
-        #             print(f'[{i}]:' + file)
-        #             i += 1
+                idx = input("Select idx from test json: ")
 
-        #         idx = input("Select idx from test json: ")
+                self.do_json(res[int(idx)])
 
-        #         self.do_json(res[int(idx)])
-
-        # else:
-        #     self.do_json(args["movement"] + '.json')
-
-        self.give_green_pieces()
+        elif args['movement'] == 'G':
+            self.give_green_pieces()
+        
+        elif args['movement'] == 'R':
+            self.give_red_pieces()
     
 
     def do_json(self, filename) -> None:
@@ -70,8 +76,8 @@ class Robot_Controller:
     
 
     def give_green_pieces(self):
-        time.sleep(10)
-        
+        time.sleep(6)
+
         self.do_json("pickup_8G.json")
 
         self.do_json("putclose.json")
@@ -87,6 +93,20 @@ class Robot_Controller:
         self.do_json("pickup_2G.json")
 
         self.do_json("putclose.json")
+    
+
+    def give_red_pieces(self):
+        time.sleep(6)
+
+        self.do_json("pickup_8R.json")
+
+        self.do_json("putclose.json")
+
+        time.sleep(3)
+
+        self.do_json("pickup_4R.json")
+
+        self.do_json("putclose.json")
 
 
 def main():
@@ -97,8 +117,10 @@ def main():
     rospy.init_node(default_node_name, anonymous=False)
 
     parser = argparse.ArgumentParser(description="Arguments for trainning script")
+    parser.add_argument("-pl", "--position_list", type=str, default="positions",
+                    help="It is the name of the configuration JSON containing the list of positions in the config directory of this package")
     parser.add_argument("-m", "--movement", type=str, default="",
-                        help="It is the name of the movement configuration JSON in the config directory of this package")
+                        help="'R', 'G' or ''")
 
     args = vars(parser.parse_args())
 
