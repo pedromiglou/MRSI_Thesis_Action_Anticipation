@@ -8,10 +8,20 @@ from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 import rospy
 import time
 
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+import cv2
+
 
 class Robot_Controller:
 
     def __init__(self, args) -> None:
+        self.bridge = CvBridge()
+        self.cimage = None
+        self.cimage_subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.cimage_callback)
+
+        self.showImage()
+
         self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/robot_movement/config/"
 
         try:
@@ -54,6 +64,26 @@ class Robot_Controller:
         elif args['movement'] == 'R':
             self.give_red_pieces()
     
+
+    def cimage_callback(self, msg):
+        try:
+            self.cimage = self.bridge.imgmsg_to_cv2(msg, "rgb8")
+        except:
+            print("Error reading image")
+            return
+    
+
+    def showImage(self):
+        while True:
+            if self.cimage is not None:
+                cv2.imshow("Image", self.cimage)
+                
+                key = cv2.waitKey(100)
+
+                if key == ord('q'):  # q for quit
+                    print('You pressed q ... aborting')
+                    break
+
 
     def do_json(self, filename) -> None:
         try:
