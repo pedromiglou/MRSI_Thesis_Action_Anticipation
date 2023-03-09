@@ -22,6 +22,7 @@ class Robot_Controller:
         self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/robot_movement/config/"
 
         self.pickedup_green = 0
+        self.pickedup_red = 0
         self.green_visible = None
         self.red_visible = None
 
@@ -100,12 +101,13 @@ class Robot_Controller:
             if self.cimage is not None:
                 img = self.cimage.copy()
                 self.analyzeImage(img)
+                img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
 
                 green_pieces = np.array([p for pl in self.green_pieces[-10:] for p in pl])
 
                 clustering = DBSCAN(eps=15, min_samples=5).fit(green_pieces)
 
-                centroids = []
+                green_centroids = []
 
                 num_centroids = len(set(clustering.labels_))
 
@@ -120,16 +122,35 @@ class Robot_Controller:
                         if clustering.labels_[j] == i:
                             l.append(green_pieces[j])
                     
-                    centroids.append(l[0])
+                    green_centroids.append(l[0])
                 
-                img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
-
-                #for c in self.red_pieces:
-                #    cv2.putText(self.cimage, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
-                
-                for c in centroids:
+                for c in green_centroids:
                     cv2.putText(img, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,255,0), 2, cv2.LINE_8)
+                
+                red_pieces = np.array([p for pl in self.red_pieces[-10:] for p in pl])
 
+                clustering = DBSCAN(eps=15, min_samples=5).fit(red_pieces)
+
+                red_centroids = []
+
+                num_centroids = len(set(clustering.labels_))
+
+                if any([l == -1 for l in clustering.labels_]):
+                    num_centroids -= 1
+
+                # iterate different labels
+                for i in range(num_centroids):
+                    l = []
+                    # iterate all labels
+                    for j in range(len(clustering.labels_)):
+                        if clustering.labels_[j] == i:
+                            l.append(red_pieces[j])
+                    
+                    red_centroids.append(l[0])
+                
+                for c in red_centroids:
+                    cv2.putText(img, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
+                
                 cv2.imshow("Image", img)
                 
                 key = cv2.waitKey(100)
@@ -138,8 +159,8 @@ class Robot_Controller:
                     print('You pressed q ... aborting')
                     break
 
-                if len(self.green_pieces) > 20 and self.green_visible < len(centroids):
-                    self.green_visible = len(centroids)
+                if len(self.green_pieces) > 20 and self.green_visible < len(green_centroids):
+                    self.green_visible = len(green_centroids)
 
                     if self.pickedup_green==0:
                         self.do_json("pickup_4G.json")
@@ -153,36 +174,48 @@ class Robot_Controller:
                     
                     self.pickedup_green += 1
                 
-                self.green_visible = len(centroids)
+                self.green_visible = len(green_centroids)
+
+                if len(self.red_pieces) > 20 and self.red_visible < len(red_centroids):
+                    self.red_visible = len(red_centroids)
+
+                    if self.pickedup_red==0:
+                        self.do_json("pickup_4R.json")
+
+                        self.do_json("putclose.json")
+                    
+                    self.pickedup_red += 1
+                
+                self.red_visible = len(red_centroids)
 
 
     def analyzeImage(self, img):
-        #red_mins = np.array([self.red['limits']['h']['min'], self.red['limits']['g']['min'], self.red['limits']['r']['min']])
-        #red_maxs = np.array([self.red['limits']['h']['max'], self.red['limits']['g']['max'], self.red['limits']['r']['max']])
+        red_mins = np.array([self.red['limits']['h']['min'], self.red['limits']['s']['min'], self.red['limits']['v']['min']])
+        red_maxs = np.array([self.red['limits']['h']['max'], self.red['limits']['s']['max'], self.red['limits']['v']['max']])
         green_mins = np.array([self.green['limits']['h']['min'], self.green['limits']['s']['min'], self.green['limits']['v']['min']])
         green_maxs = np.array([self.green['limits']['h']['max'], self.green['limits']['s']['max'], self.green['limits']['v']['max']])
 
-        #red_mask = cv2.inRange(img, red_mins, red_maxs)
+        red_mask = cv2.inRange(img, red_mins, red_maxs)
         green_mask = cv2.inRange(img, green_mins, green_maxs)
 
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(10,10))
 
-        #red_mask = cv2.morphologyEx(red_mask,cv2.MORPH_CLOSE,kernel)
+        red_mask = cv2.morphologyEx(red_mask,cv2.MORPH_CLOSE,kernel)
         green_mask = cv2.morphologyEx(green_mask,cv2.MORPH_CLOSE,kernel)
 
-        #red_pieces = cv2.connectedComponentsWithStats(red_mask)
-        #(numLabels, labels, stats, centroids) = red_pieces
+        red_pieces = cv2.connectedComponentsWithStats(red_mask)
+        (numLabels, labels, stats, centroids) = red_pieces
 
-        # red_pieces = []
-        # for i in range(len(centroids)):
-        #     area = stats[i, cv2.CC_STAT_AREA]
-        #     (cX, cY) = centroids[i]
-        #     cX, cY = int(cX), int(cY)
+        red_pieces = []
+        for i in range(len(centroids)):
+            area = stats[i, cv2.CC_STAT_AREA]
+            (cX, cY) = centroids[i]
+            cX, cY = int(cX), int(cY)
 
-        #     if area > 250 and cX > 100 and cY<415:
-        #         red_pieces.append((cX, cY))
+            if area > 250 and cX > 100 and cY<415:
+                red_pieces.append((cX, cY))
         
-        # self.red_pieces.append(red_pieces[1:])
+        self.red_pieces.append(red_pieces[1:])
         
         green_pieces = cv2.connectedComponentsWithStats(green_mask)
         (numLabels, labels, stats, centroids) = green_pieces
