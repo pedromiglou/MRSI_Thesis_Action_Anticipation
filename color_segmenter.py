@@ -19,24 +19,25 @@ def main():
     # Variables
     wname = "Original"
     wname_segmenter = 'Color Segmenter'
-    ranges = {'b': {'min': 0, 'max': 256},
-              'g': {'min': 0, 'max': 256},
-              'r': {'min': 0, 'max': 256}}
+    ranges = {'h': {'min': 0, 'max': 256},
+              's': {'min': 0, 'max': 256},
+              'v': {'min': 0, 'max': 256}}
     limits = {}
 
     # configure opencv window
     cv2.namedWindow(wname, cv2.WINDOW_AUTOSIZE)
     cv2.namedWindow(wname_segmenter, cv2.WINDOW_AUTOSIZE)
 
-    cv2.createTrackbar('MinB', wname_segmenter, 0,   256, onTrackbar)
-    cv2.createTrackbar('MaxB', wname_segmenter, 256, 256, onTrackbar)
-    cv2.createTrackbar('MinG', wname_segmenter, 0,   256, onTrackbar)
-    cv2.createTrackbar('MaxG', wname_segmenter, 256, 256, onTrackbar)
-    cv2.createTrackbar('MinR', wname_segmenter, 0,   256, onTrackbar)
-    cv2.createTrackbar('MaxR', wname_segmenter, 256, 256, onTrackbar)
+    cv2.createTrackbar('MinH', wname_segmenter, 0,   256, onTrackbar)
+    cv2.createTrackbar('MaxH', wname_segmenter, 256, 256, onTrackbar)
+    cv2.createTrackbar('MinS', wname_segmenter, 0,   256, onTrackbar)
+    cv2.createTrackbar('MaxS', wname_segmenter, 256, 256, onTrackbar)
+    cv2.createTrackbar('MinV', wname_segmenter, 0,   256, onTrackbar)
+    cv2.createTrackbar('MaxV', wname_segmenter, 256, 256, onTrackbar)
 
     folder = './'
-    image = cv2.imread(folder + 'frame0002.jpg')
+    image_bgr = cv2.imread(folder + 'frame0002.jpg')
+    image = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2HSV)
     
     while True:
 
@@ -46,30 +47,30 @@ def main():
             print(Fore.WHITE + Style.BRIGHT + "-----------------------------" + Style.RESET_ALL)
             break  # video is over
 
-        image_b, image_g, image_r = cv2.split(image)
+        #image_b, image_g, image_r = cv2.split(image)
 
-        min_b = cv2.getTrackbarPos('MinB', wname_segmenter)
-        max_b = cv2.getTrackbarPos("MaxB", wname_segmenter)
-        min_g = cv2.getTrackbarPos("MinG", wname_segmenter)
-        max_g = cv2.getTrackbarPos("MaxG", wname_segmenter)
-        min_r = cv2.getTrackbarPos("MinR", wname_segmenter)
-        max_r = cv2.getTrackbarPos("MaxR", wname_segmenter)
+        min_b = cv2.getTrackbarPos('MinH', wname_segmenter)
+        max_b = cv2.getTrackbarPos("MaxH", wname_segmenter)
+        min_g = cv2.getTrackbarPos("MinS", wname_segmenter)
+        max_g = cv2.getTrackbarPos("MaxS", wname_segmenter)
+        min_r = cv2.getTrackbarPos("MinV", wname_segmenter)
+        max_r = cv2.getTrackbarPos("MaxV", wname_segmenter)
 
-        ranges["b"]["min"] = min_b
-        ranges["b"]["max"] = max_b
-        ranges["g"]["min"] = min_g
-        ranges["g"]["max"] = max_g
-        ranges["r"]["min"] = min_r
-        ranges["r"]["max"] = max_r
+        ranges["h"]["min"] = min_b
+        ranges["h"]["max"] = max_b
+        ranges["s"]["min"] = min_g
+        ranges["s"]["max"] = max_g
+        ranges["v"]["min"] = min_r
+        ranges["v"]["max"] = max_r
 
-        mins = np.array([ranges['b']['min'], ranges["g"]["min"], ranges["r"]["min"]])
-        maxs = np.array([ranges["b"]["max"], ranges["g"]["max"], ranges["r"]["max"]])
+        mins = np.array([ranges["h"]["min"], ranges["s"]["min"], ranges["v"]["min"]])
+        maxs = np.array([ranges["h"]["max"], ranges["s"]["max"], ranges["v"]["max"]])
 
         mask = cv2.inRange(image, mins, maxs)
         #mask = mask.astype(np.bool)
         #mask = mask.astype(np.uint8)*255
 
-        cv2.imshow(wname, image)
+        cv2.imshow(wname, image_bgr)
         cv2.imshow(wname_segmenter, mask)
 
         key = cv2.waitKey(20)
