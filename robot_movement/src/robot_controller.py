@@ -14,6 +14,7 @@ import cv2
 
 import numpy as np
 from sklearn.cluster import DBSCAN
+from copy import deepcopy
 
 
 class Robot_Controller:
@@ -103,53 +104,57 @@ class Robot_Controller:
                 self.analyzeImage(img)
                 img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
 
-                green_pieces = np.array([p for pl in self.green_pieces[-3:] for p in pl])
-
-                clustering = DBSCAN(eps=15, min_samples=2).fit(green_pieces)
-
                 green_centroids = []
-
-                num_centroids = len(set(clustering.labels_))
-
-                if any([l == -1 for l in clustering.labels_]):
-                    num_centroids -= 1
-
-                # iterate different labels
-                for i in range(num_centroids):
-                    l = []
-                    # iterate all labels
-                    for j in range(len(clustering.labels_)):
-                        if clustering.labels_[j] == i:
-                            l.append(green_pieces[j])
-                    
-                    green_centroids.append(l[0])
-                
-                for c in green_centroids:
-                    cv2.putText(img, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,255,0), 2, cv2.LINE_8)
-                
-                red_pieces = np.array([p for pl in self.red_pieces[-10:] for p in pl])
-
-                clustering = DBSCAN(eps=15, min_samples=5).fit(red_pieces)
-
                 red_centroids = []
 
-                num_centroids = len(set(clustering.labels_))
+                green_pieces = np.array([p for pl in self.green_pieces[-3:] for p in pl])
+                red_pieces = np.array([p for pl in self.red_pieces[-3:] for p in pl])
 
-                if any([l == -1 for l in clustering.labels_]):
-                    num_centroids -= 1
+                if len(green_pieces) > 0:
+                    clustering = DBSCAN(eps=15, min_samples=2).fit(green_pieces)
 
-                # iterate different labels
-                for i in range(num_centroids):
-                    l = []
-                    # iterate all labels
-                    for j in range(len(clustering.labels_)):
-                        if clustering.labels_[j] == i:
-                            l.append(red_pieces[j])
+                    green_centroids = []
+
+                    num_centroids = len(set(clustering.labels_))
+
+                    if any([l == -1 for l in clustering.labels_]):
+                        num_centroids -= 1
+
+                    # iterate different labels
+                    for i in range(num_centroids):
+                        l = []
+                        # iterate all labels
+                        for j in range(len(clustering.labels_)):
+                            if clustering.labels_[j] == i:
+                                l.append(green_pieces[j])
+                        
+                        green_centroids.append(l[0])
                     
-                    red_centroids.append(l[0])
+                    for c in green_centroids:
+                        cv2.putText(img, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,255,0), 2, cv2.LINE_8)
                 
-                for c in red_centroids:
-                    cv2.putText(img, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
+                if len(red_pieces) > 0:
+                    clustering = DBSCAN(eps=15, min_samples=2).fit(red_pieces)
+
+                    red_centroids = []
+
+                    num_centroids = len(set(clustering.labels_))
+
+                    if any([l == -1 for l in clustering.labels_]):
+                        num_centroids -= 1
+
+                    # iterate different labels
+                    for i in range(num_centroids):
+                        l = []
+                        # iterate all labels
+                        for j in range(len(clustering.labels_)):
+                            if clustering.labels_[j] == i:
+                                l.append(red_pieces[j])
+                        
+                        red_centroids.append(l[0])
+                    
+                    for c in red_centroids:
+                        cv2.putText(img, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
                 
                 cv2.imshow("Image", img)
                 cv2.imshow("Red Mask", self.red_mask)
@@ -160,45 +165,47 @@ class Robot_Controller:
                 if key == ord('q'):  # q for quit
                     print('You pressed q ... aborting')
                     break
+                
+                if len(green_centroids) > 0:
+                    if len(self.green_pieces) > 20 and self.green_visible < len(green_centroids):
+                        self.green_visible = len(green_centroids)
 
-                if len(self.green_pieces) > 20 and self.green_visible < len(green_centroids):
+                        if self.pickedup_green==0:
+                            self.do_json("pickup_8G.json")
+
+                            self.do_json("putclose.json")
+
+                        if self.pickedup_green==1:
+                            self.do_json("pickup_4G.json")
+
+                            self.do_json("putclose.json")
+                        
+                        elif self.pickedup_green==2:
+                            self.do_json("pickup_2G.json")
+
+                            self.do_json("putclose.json")
+                        
+                        self.pickedup_green += 1
+                    
                     self.green_visible = len(green_centroids)
 
-                    if self.pickedup_green==0:
-                        self.do_json("pickup_8G.json")
+                if len(red_centroids) > 0:
+                    if len(self.red_pieces) > 20 and self.red_visible < len(red_centroids):
+                        self.red_visible = len(red_centroids)
 
-                        self.do_json("putclose.json")
+                        if self.pickedup_red==0:
+                            self.do_json("pickup_8R.json")
 
-                    if self.pickedup_green==1:
-                        self.do_json("pickup_4G.json")
+                            self.do_json("putclose.json")
 
-                        self.do_json("putclose.json")
+                        elif self.pickedup_red==1:
+                            self.do_json("pickup_4R.json")
+
+                            self.do_json("putclose.json")
+                        
+                        self.pickedup_red += 1
                     
-                    elif self.pickedup_green==2:
-                        self.do_json("pickup_2G.json")
-
-                        self.do_json("putclose.json")
-                    
-                    self.pickedup_green += 1
-                
-                self.green_visible = len(green_centroids)
-
-                if len(self.red_pieces) > 20 and self.red_visible < len(red_centroids):
                     self.red_visible = len(red_centroids)
-
-                    if self.pickedup_red==0:
-                        self.do_json("pickup_8R.json")
-
-                        self.do_json("putclose.json")
-
-                    elif self.pickedup_red==1:
-                        self.do_json("pickup_4R.json")
-
-                        self.do_json("putclose.json")
-                    
-                    self.pickedup_red += 1
-                
-                self.red_visible = len(red_centroids)
 
 
     def analyzeImage(self, img):
