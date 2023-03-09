@@ -36,7 +36,7 @@ def main():
     cv2.createTrackbar('MaxV', wname_segmenter, 256, 256, onTrackbar)
 
     folder = './'
-    image_bgr = cv2.imread(folder + 'frame0002.jpg')
+    image_bgr = cv2.imread(folder + 'frame0000.jpg')
     image = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2HSV)
     
     while True:

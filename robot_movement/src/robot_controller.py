@@ -103,9 +103,9 @@ class Robot_Controller:
                 self.analyzeImage(img)
                 img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
 
-                green_pieces = np.array([p for pl in self.green_pieces[-10:] for p in pl])
+                green_pieces = np.array([p for pl in self.green_pieces[-3:] for p in pl])
 
-                clustering = DBSCAN(eps=15, min_samples=5).fit(green_pieces)
+                clustering = DBSCAN(eps=15, min_samples=2).fit(green_pieces)
 
                 green_centroids = []
 
@@ -152,6 +152,8 @@ class Robot_Controller:
                     cv2.putText(img, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
                 
                 cv2.imshow("Image", img)
+                cv2.imshow("Red Mask", self.red_mask)
+                cv2.imshow("Green Mask", self.green_mask)
                 
                 key = cv2.waitKey(100)
 
@@ -163,11 +165,16 @@ class Robot_Controller:
                     self.green_visible = len(green_centroids)
 
                     if self.pickedup_green==0:
+                        self.do_json("pickup_8G.json")
+
+                        self.do_json("putclose.json")
+
+                    if self.pickedup_green==1:
                         self.do_json("pickup_4G.json")
 
                         self.do_json("putclose.json")
                     
-                    elif self.pickedup_green==1:
+                    elif self.pickedup_green==2:
                         self.do_json("pickup_2G.json")
 
                         self.do_json("putclose.json")
@@ -180,6 +187,11 @@ class Robot_Controller:
                     self.red_visible = len(red_centroids)
 
                     if self.pickedup_red==0:
+                        self.do_json("pickup_8R.json")
+
+                        self.do_json("putclose.json")
+
+                    elif self.pickedup_red==1:
                         self.do_json("pickup_4R.json")
 
                         self.do_json("putclose.json")
@@ -200,10 +212,10 @@ class Robot_Controller:
 
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(10,10))
 
-        red_mask = cv2.morphologyEx(red_mask,cv2.MORPH_CLOSE,kernel)
-        green_mask = cv2.morphologyEx(green_mask,cv2.MORPH_CLOSE,kernel)
+        self.red_mask = cv2.morphologyEx(red_mask,cv2.MORPH_CLOSE,kernel)
+        self.green_mask = cv2.morphologyEx(green_mask,cv2.MORPH_CLOSE,kernel)
 
-        red_pieces = cv2.connectedComponentsWithStats(red_mask)
+        red_pieces = cv2.connectedComponentsWithStats(self.red_mask)
         (numLabels, labels, stats, centroids) = red_pieces
 
         red_pieces = []
@@ -217,7 +229,7 @@ class Robot_Controller:
         
         self.red_pieces.append(red_pieces[1:])
         
-        green_pieces = cv2.connectedComponentsWithStats(green_mask)
+        green_pieces = cv2.connectedComponentsWithStats(self.green_mask)
         (numLabels, labels, stats, centroids) = green_pieces
 
         green_pieces = []
