@@ -87,7 +87,9 @@ class Robot_Controller:
 
     def cimage_callback(self, msg):
         try:
-            self.cimage = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+            img_bgr = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+            img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
+            self.cimage = img
         except:
             print("Error reading image")
             return
@@ -119,14 +121,16 @@ class Robot_Controller:
                             l.append(green_pieces[j])
                     
                     centroids.append(l[0])
+                
+                img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
 
                 #for c in self.red_pieces:
                 #    cv2.putText(self.cimage, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
                 
                 for c in centroids:
-                    cv2.putText(self.cimage, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,255,0), 2, cv2.LINE_8)
+                    cv2.putText(img, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,255,0), 2, cv2.LINE_8)
 
-                cv2.imshow("Image", self.cimage)
+                cv2.imshow("Image", img)
                 
                 key = cv2.waitKey(100)
 
@@ -141,44 +145,44 @@ class Robot_Controller:
                         self.do_json("pickup_4G.json")
 
                         self.do_json("putclose.json")
-
-                        self.pickedup_green += 1
                     
-                    else:
+                    elif self.pickedup_green==1:
                         self.do_json("pickup_2G.json")
 
                         self.do_json("putclose.json")
+                    
+                    self.pickedup_green += 1
                 
                 self.green_visible = len(centroids)
 
 
     def analyzeImage(self, img):
-        red_mins = np.array([self.red['limits']['b']['min'], self.red['limits']['g']['min'], self.red['limits']['r']['min']])
-        red_maxs = np.array([self.red['limits']['b']['max'], self.red['limits']['g']['max'], self.red['limits']['r']['max']])
-        green_mins = np.array([self.green['limits']['b']['min'], self.green['limits']['g']['min'], self.green['limits']['r']['min']])
-        green_maxs = np.array([self.green['limits']['b']['max'], self.green['limits']['g']['max'], self.green['limits']['r']['max']])
+        #red_mins = np.array([self.red['limits']['h']['min'], self.red['limits']['g']['min'], self.red['limits']['r']['min']])
+        #red_maxs = np.array([self.red['limits']['h']['max'], self.red['limits']['g']['max'], self.red['limits']['r']['max']])
+        green_mins = np.array([self.green['limits']['h']['min'], self.green['limits']['s']['min'], self.green['limits']['v']['min']])
+        green_maxs = np.array([self.green['limits']['h']['max'], self.green['limits']['s']['max'], self.green['limits']['v']['max']])
 
-        red_mask = cv2.inRange(img, red_mins, red_maxs)
+        #red_mask = cv2.inRange(img, red_mins, red_maxs)
         green_mask = cv2.inRange(img, green_mins, green_maxs)
 
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(10,10))
 
-        red_mask = cv2.morphologyEx(red_mask,cv2.MORPH_CLOSE,kernel)
+        #red_mask = cv2.morphologyEx(red_mask,cv2.MORPH_CLOSE,kernel)
         green_mask = cv2.morphologyEx(green_mask,cv2.MORPH_CLOSE,kernel)
 
-        red_pieces = cv2.connectedComponentsWithStats(red_mask)
-        (numLabels, labels, stats, centroids) = red_pieces
+        #red_pieces = cv2.connectedComponentsWithStats(red_mask)
+        #(numLabels, labels, stats, centroids) = red_pieces
 
-        red_pieces = []
-        for i in range(len(centroids)):
-            area = stats[i, cv2.CC_STAT_AREA]
-            (cX, cY) = centroids[i]
-            cX, cY = int(cX), int(cY)
+        # red_pieces = []
+        # for i in range(len(centroids)):
+        #     area = stats[i, cv2.CC_STAT_AREA]
+        #     (cX, cY) = centroids[i]
+        #     cX, cY = int(cX), int(cY)
 
-            if area > 250 and cX > 100 and cY<415:
-                red_pieces.append((cX, cY))
+        #     if area > 250 and cX > 100 and cY<415:
+        #         red_pieces.append((cX, cY))
         
-        self.red_pieces.append(red_pieces[1:])
+        # self.red_pieces.append(red_pieces[1:])
         
         green_pieces = cv2.connectedComponentsWithStats(green_mask)
         (numLabels, labels, stats, centroids) = green_pieces
