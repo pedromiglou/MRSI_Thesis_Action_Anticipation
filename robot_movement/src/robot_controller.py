@@ -14,7 +14,6 @@ import cv2
 
 import numpy as np
 from sklearn.cluster import DBSCAN
-from copy import deepcopy
 
 
 class Robot_Controller:
