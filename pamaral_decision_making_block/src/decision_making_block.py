@@ -72,15 +72,21 @@ class Decision_Making_Block:
 
                         self.do_json("putclose.json")
 
+                        self.do_json("retreat.json")
+
                     if self.pickedup_green==1:
                         self.do_json("pickup_4G.json")
 
                         self.do_json("putclose.json")
+
+                        self.do_json("retreat.json")
                     
                     elif self.pickedup_green==2:
                         self.do_json("pickup_2G.json")
 
                         self.do_json("putclose.json")
+
+                        self.do_json("retreat.json")
                     
                     self.pickedup_green += 1
                 
@@ -95,10 +101,14 @@ class Decision_Making_Block:
 
                         self.do_json("putclose.json")
 
+                        self.do_json("retreat.json")
+
                     elif self.pickedup_red==1:
                         self.do_json("pickup_4R.json")
 
                         self.do_json("putclose.json")
+
+                        self.do_json("retreat.json")
                     
                     self.pickedup_red += 1
                 

@@ -19,7 +19,7 @@ parser.add_argument("-pl", "--position_list", type=str, default="positions",
 args = vars(parser.parse_args())
 
 # path = ROOT_DIR + "/use_cases/config/"
-path = "/home/miglou/catkin_ws/src/MRSI_Thesis/robot_movement/config/"
+path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/"
 
 try:
     f = open(path + args['position_list'] + ".json")
