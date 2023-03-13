@@ -2,11 +2,13 @@
 
 from cv_bridge import CvBridge
 import cv2
+from geometry_msgs.msg import Point
 import json
 import numpy as np
 import rospy
 from sensor_msgs.msg import Image
 from sklearn.cluster import DBSCAN
+from pamaral_color_segmentation.msg import PointListStamped
 
 
 class Color_Segmenter:
@@ -30,6 +32,9 @@ class Color_Segmenter:
 
         self.green_pieces = []
         self.red_pieces = []
+
+        self.red_centroids_publisher = rospy.Publisher("/red_centroids", PointListStamped, queue_size=1)
+        self.green_centroids_publisher = rospy.Publisher("/green_centroids", PointListStamped, queue_size=1)
 
         self.bridge = CvBridge()
         self.cimage = None
@@ -141,12 +146,23 @@ class Color_Segmenter:
         self.cimage, self.red_mask, self.green_mask = cimage, red_mask, green_mask
 
         # publish centroids
+        msg = PointListStamped()
+        msg.header.stamp = rospy.Time.now()
+        msg.header.frame_id = "/camera/color/image_raw"
+        msg.points = [Point(c[0],c[1],0) for c in red_centroids]
+        self.red_centroids_publisher.publish(msg)
+
+        msg = PointListStamped()
+        msg.header.stamp = rospy.Time.now()
+        msg.header.frame_id = "/camera/color/image_raw"
+        msg.points = [Point(c[0],c[1],0) for c in green_centroids]
+        self.green_centroids_publisher.publish(PointListStamped(header=msg.header, points=green_centroids))
 
 
     def showImage(self):
         while True:
             if self.cimage is not None and self.red_mask is not None and self.green_mask is not None:
-                cv2.imshow("Color Image", cv2.cvtColor(self.cimage, cv2.COLOR_HSV2BGR))
+                cv2.imshow("Color Image", self.cimage)
                 cv2.imshow("Red Mask", self.red_mask)
                 cv2.imshow("Green Mask", self.green_mask)
 
@@ -164,7 +180,7 @@ def main():
     default_node_name = 'color_segmenter'
     rospy.init_node(default_node_name, anonymous=False)
 
-    perception_block = Color_Segmenter()
+    color_segmenter = Color_Segmenter()
 
     rospy.spin()
 
