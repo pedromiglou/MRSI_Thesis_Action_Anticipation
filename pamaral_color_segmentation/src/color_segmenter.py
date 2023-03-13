@@ -38,6 +38,8 @@ class Color_Segmenter:
 
         self.bridge = CvBridge()
         self.cimage = None
+        self.red_mask = None
+        self.green_mask = None
         self.cimage_subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.cimage_callback)
         
         self.showImage()
@@ -156,7 +158,7 @@ class Color_Segmenter:
         msg.header.stamp = rospy.Time.now()
         msg.header.frame_id = "/camera/color/image_raw"
         msg.points = [Point(c[0],c[1],0) for c in green_centroids]
-        self.green_centroids_publisher.publish(PointListStamped(header=msg.header, points=green_centroids))
+        self.green_centroids_publisher.publish(msg)
 
 
     def showImage(self):
