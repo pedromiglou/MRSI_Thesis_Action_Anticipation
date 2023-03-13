@@ -1,0 +1,8 @@
+{
+    "label": [["position_name", "gripper_open"]],
+    "positions": [
+      ["above_table2", 0],
+      ["table2", -1],
+      ["above_table2", 0]
+    ]
+  }

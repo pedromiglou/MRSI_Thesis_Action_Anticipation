@@ -70,21 +70,21 @@ class Decision_Making_Block:
                     if self.pickedup_green==0:
                         self.do_json("pickup_8G.json")
 
-                        self.do_json("putclose.json")
+                        self.do_json("putclose1.json")
 
                         self.do_json("retreat.json")
 
                     if self.pickedup_green==1:
                         self.do_json("pickup_4G.json")
 
-                        self.do_json("putclose.json")
+                        self.do_json("putclose1.json")
 
                         self.do_json("retreat.json")
                     
                     elif self.pickedup_green==2:
                         self.do_json("pickup_2G.json")
 
-                        self.do_json("putclose.json")
+                        self.do_json("putclose1.json")
 
                         self.do_json("retreat.json")
                     
@@ -99,19 +99,19 @@ class Decision_Making_Block:
                     if self.pickedup_red==0:
                         self.do_json("pickup_8R.json")
 
-                        self.do_json("putclose.json")
+                        self.do_json("putclose1.json")
 
                         self.do_json("retreat.json")
 
                     elif self.pickedup_red==1:
                         self.do_json("pickup_4R.json")
 
-                        self.do_json("putclose.json")
+                        self.do_json("putclose1.json")
 
                         self.do_json("retreat.json")
                     
                     self.pickedup_red += 1
-                
+
                 self.red_visible = len(self.red_centroids)
 
 
