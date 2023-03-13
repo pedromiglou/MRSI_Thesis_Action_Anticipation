@@ -1,0 +1,6 @@
+{
+    "label": [["position_name", "gripper_open"]],
+    "positions": [
+      ["retreat", 0]
+    ]
+  }

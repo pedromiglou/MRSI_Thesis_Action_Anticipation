@@ -38,11 +38,3 @@ https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_deskt
 ## Other thesis in action anticipation
 
 - https://repository.kaust.edu.sa/handle/10754/673882
-
-## Commands
-
-roslaunch larcc_launches script_control_ur10e.launch
-
-rosrun use_cases arm_gripper_movement.py
-
-rostopic echo \joint_states
