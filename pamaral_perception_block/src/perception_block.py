@@ -39,60 +39,29 @@ class Perception_Block:
             print("Error reading depth image")
             return
 
-        # invalid = np.max(self.dimage)
-        # print(invalid)
-
-        # highest_point = 0
-
-        # c = None
-
-        # for i in range(0, 480):
-        #     for j in range(180, 640):
-        #         if invalid > self.dimage[i, j] > highest_point:
-        #             c = (i,j)
-        #             highest_point = self.dimage[i, j]
-        
-        # if c is not None:
-        #     msg = PointStamped()
-        #     msg.header.stamp = rospy.Time.now()
-        #     msg.header.frame_id = "/camera/depth/image_raw"
-        #     msg.point = Point(c[1],c[0],0)
-        #     self.pose_publisher.publish(msg)
-            
-        #     #cv2.putText(self.cimage, '+', (c[1], c[0]), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
-
-
-        #     print(f'Coordinates:{c[1]},{c[0]}')
-
 
     def showImages(self):
         while True:
             if self.cimage is not None and self.dimage is not None:
-                highest_point = 10000000000
+                cimage, dimage = self.cimage.copy(), self.dimage.copy()
 
-                #invalid = np.argmin(self.dimage)
+                max_d = np.max(dimage)
 
-                c = None
+                dimage[dimage==0] = max_d
 
-                for i in range(0, 480):
-                    for j in range(360, 640):
-                        if self.dimage[i, j] != 0 and self.dimage[i, j] < highest_point:
-                            c = (i,j)
-                            highest_point = self.dimage[i, j]
+                c = np.argmin(dimage)
 
                 if c is not None:
                     msg = PointStamped()
                     msg.header.stamp = rospy.Time.now()
                     msg.header.frame_id = "/camera/depth/image_raw"
-                    msg.point = Point(c[1],c[0],0)
+                    msg.point = Point(c/640,c%640,0)
                     self.pose_publisher.publish(msg)
                     
-                    #cv2.putText(self.cimage, '+', (c[1], c[0]), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
+                    print(f'Coordinates:{c/640},{c%640}')
 
-                    print(f'Coordinates:{c[1]},{c[0]}')
-
-                cv2.imshow("Depth Image", self.dimage)
-                cv2.imshow("Color Image", cv2.cvtColor(self.cimage, cv2.COLOR_HSV2BGR))
+                cv2.imshow("Depth Image", dimage)
+                cv2.imshow("Color Image", cv2.cvtColor(cimage, cv2.COLOR_HSV2BGR))
 
                 key = cv2.waitKey(100)
                 if key == ord('q'):  # q for quit
