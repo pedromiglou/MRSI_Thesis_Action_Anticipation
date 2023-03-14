@@ -9,6 +9,7 @@ import rospy
 import time
 
 from pamaral_color_segmentation.msg import PointListStamped
+from geometry_msgs.msg import PointStamped
 
 
 class Decision_Making_Block:
@@ -26,6 +27,10 @@ class Decision_Making_Block:
 
         self.red_centroids_subscriber = rospy.Subscriber("/red_centroids", PointListStamped, self.red_centroids_callback)
         self.green_centroids_subscriber = rospy.Subscriber("/green_centroids", PointListStamped, self.green_centroids_callback)
+
+        self.user_pose = None
+        self.side = "left"
+        self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)
 
         try:
             f = open(self.path + args['position_list'] + ".json")
@@ -49,6 +54,15 @@ class Decision_Making_Block:
         self.loop()
     
 
+    def user_pose_callback(self, msg):
+        point = msg.point
+        if point.y > 240:
+            self.side = "left"
+        
+        elif point.y <= 240:
+            self.side = "right"
+    
+
     def red_centroids_callback(self, msg):
         self.red_centroids = msg.points
         self.red_centroids_seq = msg.header.seq
@@ -57,6 +71,18 @@ class Decision_Making_Block:
     def green_centroids_callback(self, msg):
         self.green_centroids = msg.points
         self.green_centroids_seq = msg.header.seq
+
+    
+    def test_loop(self):
+        while True:
+            if self.user_pose is not None:
+                if self.user_pose.y > 240 and self.side != "left":
+                    self.side = "left"
+                    self.do_json("putclose2.json")
+                
+                elif self.user_pose.y < 240 and self.side != "right":
+                    self.side = "right"
+                    self.do_json("putclose1.json")
     
 
     def loop(self):
@@ -70,21 +96,21 @@ class Decision_Making_Block:
                     if self.pickedup_green==0:
                         self.do_json("pickup_8G.json")
 
-                        self.do_json("putclose1.json")
-
-                        self.do_json("retreat.json")
-
                     if self.pickedup_green==1:
                         self.do_json("pickup_4G.json")
 
-                        self.do_json("putclose1.json")
-
-                        self.do_json("retreat.json")
                     
                     elif self.pickedup_green==2:
                         self.do_json("pickup_2G.json")
+                    
+                    if self.pickedup_green < 3:
+                        self.do_json("retreat.json")
 
-                        self.do_json("putclose1.json")
+                        if self.side == "left":
+                            self.do_json("putclose2.json")
+                        
+                        else:
+                            self.do_json("putclose1.json")
 
                         self.do_json("retreat.json")
                     
@@ -99,14 +125,17 @@ class Decision_Making_Block:
                     if self.pickedup_red==0:
                         self.do_json("pickup_8R.json")
 
-                        self.do_json("putclose1.json")
-
-                        self.do_json("retreat.json")
-
                     elif self.pickedup_red==1:
                         self.do_json("pickup_4R.json")
+                    
+                    if self.pickedup_red < 2:
+                        self.do_json("retreat.json")
 
-                        self.do_json("putclose1.json")
+                        if self.side == "left":
+                            self.do_json("putclose2.json")
+                        
+                        else:
+                            self.do_json("putclose1.json")
 
                         self.do_json("retreat.json")
                     

@@ -2,7 +2,7 @@
     "label": [["position_name", "gripper_open"]],
     "positions": [
       ["above_table1", 0],
-      ["table1", -1],
+      ["table1", 1],
       ["above_table1", 0]
     ]
   }
