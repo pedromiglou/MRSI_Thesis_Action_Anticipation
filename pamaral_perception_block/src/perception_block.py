@@ -55,7 +55,7 @@ class Perception_Block:
                     msg = PointStamped()
                     msg.header.stamp = rospy.Time.now()
                     msg.header.frame_id = "/camera/depth/image_raw"
-                    msg.point = Point(c/640,c%640,0)
+                    msg.point = Point(c%640,c/640,0)
                     self.pose_publisher.publish(msg)
                     
                     print(f'Coordinates:{c/640},{c%640}')
