@@ -17,6 +17,10 @@ class Decision_Making_Block:
     def __init__(self, args) -> None:
         self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/"
 
+        self.state = {"holdind": "", "position": ""}
+
+        self.moving = ""
+
         self.pickedup_green = 0
         self.pickedup_red = 0
         self.green_visible = 100
@@ -56,12 +60,18 @@ class Decision_Making_Block:
 
     def user_pose_callback(self, msg):
         point = msg.point
-        if point.y > 240:
+        if point.y > 200:
             self.side = "left"
         
-        elif point.y <= 240:
+        elif point.y <= 200:
             self.side = "right"
-    
+        
+        if len(self.moving)>0:
+            if self.moving != self.side:
+                self.arm_gripper_comm.stop_arm()
+                self.moving = ""
+                self.do_json("retreat.json")
+
 
     def red_centroids_callback(self, msg):
         self.red_centroids = msg.points
@@ -71,25 +81,31 @@ class Decision_Making_Block:
     def green_centroids_callback(self, msg):
         self.green_centroids = msg.points
         self.green_centroids_seq = msg.header.seq
-
-    
-    def test_loop(self):
-        while True:
-            if self.user_pose is not None:
-                if self.user_pose.y > 240 and self.side != "left":
-                    self.side = "left"
-                    self.do_json("putclose2.json")
-                
-                elif self.user_pose.y < 240 and self.side != "right":
-                    self.side = "right"
-                    self.do_json("putclose1.json")
     
 
     def loop(self):
         green_seq = -1
         red_seq = -1
         while True:
-            if len(self.green_centroids) > 0 and self.green_centroids_seq > green_seq:
+            if self.state["position"] == "retreat" and self.state["holding"]:
+                if self.side == "left":
+                    self.moving = "left"
+                    self.do_json("putclose2.json")
+                
+                else:
+                    self.moving = "right"
+                    self.do_json("putclose1.json")
+                
+                self.moving = ""
+                self.do_json("retreat.json")
+
+                if self.state["holding"] == "green":
+                    self.pickedup_green += 1
+                
+                elif self.state["holding"] == "red":
+                    self.pickedup_red += 1
+
+            elif len(self.green_centroids) > 0 and self.green_centroids_seq > green_seq:
                 green_seq = self.green_centroids_seq
 
                 if self.green_visible < len(self.green_centroids):
@@ -99,26 +115,17 @@ class Decision_Making_Block:
                     if self.pickedup_green==1:
                         self.do_json("pickup_4G.json")
 
-                    
                     elif self.pickedup_green==2:
                         self.do_json("pickup_2G.json")
                     
                     if self.pickedup_green < 3:
                         self.do_json("retreat.json")
-
-                        if self.side == "left":
-                            self.do_json("putclose2.json")
-                        
-                        else:
-                            self.do_json("putclose1.json")
-
-                        self.do_json("retreat.json")
+                        self.state["position"] = "retreat"
+                        self.state["holding"] = "green"
                     
-                    self.pickedup_green += 1
-                
                 self.green_visible = len(self.green_centroids)
 
-            if len(self.red_centroids) > 0 and self.red_centroids_seq > red_seq:
+            elif len(self.red_centroids) > 0 and self.red_centroids_seq > red_seq:
                 red_seq = self.red_centroids_seq
 
                 if self.red_visible < len(self.red_centroids):
@@ -130,16 +137,8 @@ class Decision_Making_Block:
                     
                     if self.pickedup_red < 2:
                         self.do_json("retreat.json")
-
-                        if self.side == "left":
-                            self.do_json("putclose2.json")
-                        
-                        else:
-                            self.do_json("putclose1.json")
-
-                        self.do_json("retreat.json")
-                    
-                    self.pickedup_red += 1
+                        self.state["position"] = "retreat"
+                        self.state["holding"] = "red"
 
                 self.red_visible = len(self.red_centroids)
 
@@ -163,40 +162,6 @@ class Decision_Making_Block:
                 self.arm_gripper_comm.gripper_open_fast()
             if gripper == -1:
                 self.arm_gripper_comm.gripper_close_fast()
-    
-
-    def give_green_pieces(self):
-        time.sleep(6)
-
-        self.do_json("pickup_8G.json")
-
-        self.do_json("putclose.json")
-
-        time.sleep(3)
-
-        self.do_json("pickup_4G.json")
-
-        self.do_json("putclose.json")
-
-        time.sleep(3)
-
-        self.do_json("pickup_2G.json")
-
-        self.do_json("putclose.json")
-    
-
-    def give_red_pieces(self):
-        time.sleep(6)
-
-        self.do_json("pickup_8R.json")
-
-        self.do_json("putclose.json")
-
-        time.sleep(3)
-
-        self.do_json("pickup_4R.json")
-
-        self.do_json("putclose.json")
 
 
 def main():
