@@ -1,40 +1,21 @@
 #!/usr/bin/env python3
 
-import argparse
-import json
-import sys
-
-from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 import rospy
-import time
-
 from pamaral_color_segmentation.msg import PointListStamped
 from geometry_msgs.msg import PointStamped
+import sys
+import argparse
+import json
+from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
+import time
 
 
-class Decision_Making_Block:
+class Decision_Making_Block(object):
+    # states = ['idle', 'picking_up', 'moving_closer', 'putting_down', 'retreating']
 
-    def __init__(self, args) -> None:
+    def __init__(self, args):
+        # read registed positions
         self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/"
-
-        self.state = {"holdind": "", "position": ""}
-
-        self.moving = ""
-
-        self.pickedup_green = 0
-        self.pickedup_red = 0
-        self.green_visible = 100
-        self.red_visible = 100
-
-        self.red_centroids = []
-        self.green_centroids = []
-
-        self.red_centroids_subscriber = rospy.Subscriber("/red_centroids", PointListStamped, self.red_centroids_callback)
-        self.green_centroids_subscriber = rospy.Subscriber("/green_centroids", PointListStamped, self.green_centroids_callback)
-
-        self.user_pose = None
-        self.side = "left"
-        self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)
 
         try:
             f = open(self.path + args['position_list'] + ".json")
@@ -46,6 +27,7 @@ class Decision_Making_Block:
             rospy.logerr("Invalid positions file! Closing...")
             sys.exit(0)
 
+        # start the robot
         self.arm_gripper_comm = ArmGripperComm()
 
         time.sleep(0.2)
@@ -54,114 +36,142 @@ class Decision_Making_Block:
 
         if not self.arm_gripper_comm.state_dic["activation_completed"]: 
             self.arm_gripper_comm.gripper_init()
-        
-        self.loop()
-    
 
-    def user_pose_callback(self, msg):
-        point = msg.point
-        if point.y > 200:
-            self.side = "left"
-        
-        elif point.y <= 200:
-            self.side = "right"
-        
-        if len(self.moving)>0:
-            if self.moving != self.side:
-                self.arm_gripper_comm.stop_arm()
-                self.moving = ""
-                self.do_json("retreat.json")
+        # subscribe data derived from sensors
+        self.red_centroids = []
+        self.green_centroids = []
+        self.red_centroids_subscriber = rospy.Subscriber("/red_centroids", PointListStamped, self.red_centroids_callback)
+        self.green_centroids_subscriber = rospy.Subscriber("/green_centroids", PointListStamped, self.green_centroids_callback)
+
+        self.user_pose = ""
+        self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)
+
+        # define pieces and states
+        self.pieces = []
+        self.state = 'idle'
+
+        self.loop()
 
 
     def red_centroids_callback(self, msg):
-        self.red_centroids = msg.points
-        self.red_centroids_seq = msg.header.seq
+        red_centroids = msg.points
+        if len(red_centroids) > len(self.red_centroids):
+            self.red_centroids = red_centroids
+            
+            if self.state == "idle":
+                if len(self.pieces) > 0 and self.pieces[0][1] == "R":
+                    self.state = "picking_up"
+                else:
+                    self.pieces = ["8R", "4R"]
+                    self.state = "picking_up"
+
+        else:
+            self.red_centroids = red_centroids
     
 
     def green_centroids_callback(self, msg):
-        self.green_centroids = msg.points
-        self.green_centroids_seq = msg.header.seq
+        green_centroids = msg.points
+        if len(green_centroids) > len(self.green_centroids):
+            self.green_centroids = green_centroids
+
+            if self.state == "idle":
+                if len(self.pieces) > 0 and self.pieces[0][1] == "G":
+                    self.state = "picking_up"
+                else:
+                    self.pieces = ["8G", "4G", "2G"]
+                    self.state = "picking_up"
+        else:
+            self.green_centroids = green_centroids
+    
+
+    def user_pose_callback(self, msg):
+        old_pose = self.user_pose
+
+        point = msg.point
+        if point.y > 200:
+            self.user_pose = "left"
+        
+        elif point.y <= 200:
+            self.user_pose = "right"
+        
+        if self.state == "moving_closer" and old_pose != self.user_pose:
+            self.state = "retreating"
+            self.arm_gripper_comm.stop_arm()
     
 
     def loop(self):
-        green_seq = -1
-        red_seq = -1
         while True:
-            if self.state["position"] == "retreat" and self.state["holding"]:
-                if self.side == "left":
-                    self.moving = "left"
-                    self.do_json("putclose2.json")
-                
-                else:
-                    self.moving = "right"
-                    self.do_json("putclose1.json")
-                
-                self.moving = ""
-                self.do_json("retreat.json")
-
-                if self.state["holding"] == "green":
-                    self.pickedup_green += 1
-                
-                elif self.state["holding"] == "red":
-                    self.pickedup_red += 1
-
-            elif len(self.green_centroids) > 0 and self.green_centroids_seq > green_seq:
-                green_seq = self.green_centroids_seq
-
-                if self.green_visible < len(self.green_centroids):
-                    if self.pickedup_green==0:
-                        self.do_json("pickup_8G.json")
-
-                    if self.pickedup_green==1:
-                        self.do_json("pickup_4G.json")
-
-                    elif self.pickedup_green==2:
-                        self.do_json("pickup_2G.json")
-                    
-                    if self.pickedup_green < 3:
-                        self.do_json("retreat.json")
-                        self.state["position"] = "retreat"
-                        self.state["holding"] = "green"
-                    
-                self.green_visible = len(self.green_centroids)
-
-            elif len(self.red_centroids) > 0 and self.red_centroids_seq > red_seq:
-                red_seq = self.red_centroids_seq
-
-                if self.red_visible < len(self.red_centroids):
-                    if self.pickedup_red==0:
-                        self.do_json("pickup_8R.json")
-
-                    elif self.pickedup_red==1:
-                        self.do_json("pickup_4R.json")
-                    
-                    if self.pickedup_red < 2:
-                        self.do_json("retreat.json")
-                        self.state["position"] = "retreat"
-                        self.state["holding"] = "red"
-
-                self.red_visible = len(self.red_centroids)
+            if self.state == "idle":
+                self.idle_state()
+            
+            elif self.state == "picking_up":
+                self.picking_up_state()
+            
+            elif self.state == "moving_closer":
+                self.moving_closer_state()
+            
+            elif self.state == "putting_down":
+                self.putting_down_state()
+            
+            elif self.state == "retreating":
+                self.retreating_state()
 
 
-    def do_json(self, filename) -> None:
-        try:
-            f = open(self.path + filename)
-            config = json.load(f)
-            f.close()
+    def idle_state(self):
+        pass
+
+
+    def picking_up_state(self):
+        self.go_to(f'above_{self.pieces[0]}')
+        self.arm_gripper_comm.gripper_open_fast()
+        self.go_to(f'{self.pieces[0]}')
+        self.arm_gripper_comm.gripper_close_fast()
+        self.go_to(f'above_{self.pieces[0]}')
+        self.go_to('retreat')
+
+        self.pieces = self.pieces[1:]
+
+        if self.state == "picking_up":
+            self.state = "moving_closer"
+    
+    
+    def moving_closer_state(self):
+        if self.user_pose == "left":
+            self.go_to("above_table2")
+        elif self.user_pose == "right":
+            self.go_to("above_table1")
         
-        except:
-            rospy.logerr("Invalid file! Closing...")
-            self.arm_gripper_comm.gripper_disconnect()
-            sys.exit(0)
+        if self.state == "moving_closer":
+            self.state = "putting_down"
 
-        for pos, gripper in config["positions"]:
-            pos = self.positions[pos]
-            self.arm_gripper_comm.move_arm_to_joints_state(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
 
-            if gripper == 1:
-                self.arm_gripper_comm.gripper_open_fast()
-            if gripper == -1:
-                self.arm_gripper_comm.gripper_close_fast()
+    def putting_down_state(self):
+        if self.user_pose == "left":
+            self.go_to("table2")
+            self.arm_gripper_comm.gripper_open_fast()
+            self.go_to("above_table2")
+        elif self.user_pose == "right":
+            self.go_to("table1")
+            self.arm_gripper_comm.gripper_open_fast()
+            self.go_to("above_table1")
+        
+        self.go_to('retreat')
+
+        if self.state == "putting_down":
+            self.state = 'idle'
+
+    
+    def retreating_state(self):
+        #self.go_to('retreat')
+        self.arm_gripper_comm.stop_arm()
+
+        if self.state == "retreating":
+            self.state = "moving_closer"
+
+
+    def go_to(self, pos):
+        pos = self.positions[pos]
+        self.arm_gripper_comm.move_arm_to_joints_state(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
 
 
 def main():
@@ -174,12 +184,11 @@ def main():
     parser = argparse.ArgumentParser(description="Arguments for trainning script")
     parser.add_argument("-pl", "--position_list", type=str, default="positions",
                     help="It is the name of the configuration JSON containing the list of positions in the config directory of this package")
-    parser.add_argument("-m", "--movement", type=str, default="",
-                        help="'R', 'G' or ''")
 
     args = vars(parser.parse_args())
 
     decision_making_block = Decision_Making_Block(args)
+
     rospy.spin()
 
     decision_making_block.arm_gripper_comm.gripper_disconnect()
