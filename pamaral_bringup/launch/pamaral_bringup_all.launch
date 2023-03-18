@@ -1,4 +1,6 @@
 <launch>
+    <arg name="depth_debug" default="true"/>
+
     <!--launch files for robot drivers, controllers and planner-->
     <include file="$(find larcc_launches)/launch/script_control_ur10e.launch"/>
 
@@ -9,5 +11,9 @@
 
     <node name="color_processing" pkg="pamaral_color_segmentation" type="color_segmenter.py" output="screen"/>
 
-    <node name="decision_making" pkg="pamaral_decision_making_block" type="decision_making_block" output="screen"/>
+    <node name="decision_making" pkg="pamaral_decision_making_block" type="decision_making_block.py" output="screen"/>
+
+    <include file="$(find pamaral_depth_image_processing)/launch/human_location.launch">
+        <arg name="debug" value="-d" if="$(arg depth_debug)"/>
+    </include>
 </launch>
