@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
-from pamaral_color_segmentation.msg import PointListStamped
+from pamaral_color_image_processing.msg import PointListStamped
 from geometry_msgs.msg import PointStamped
 import sys
 import argparse
@@ -10,7 +10,7 @@ from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 import time
 
 
-class Decision_Making_Block(object):
+class DecisionMakingBlock(object):
     # states = ['idle', 'picking_up', 'moving_closer', 'putting_down', 'retreating']
 
     def __init__(self, args):
@@ -187,7 +187,7 @@ def main():
 
     args = vars(parser.parse_args())
 
-    decision_making_block = Decision_Making_Block(args)
+    decision_making_block = DecisionMakingBlock(args)
 
     rospy.spin()
 

@@ -1,0 +1,5 @@
+<launch>
+    <arg name="debug" default=""/>
+
+    <node name="object_color_segmenter" pkg="pamaral_color_image_processing" type="object_color_segmenter.py" args="$(arg debug)" output="screen"/>
+</launch>

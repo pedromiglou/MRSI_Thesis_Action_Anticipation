@@ -9,7 +9,7 @@ from geometry_msgs.msg import PointStamped, Point
 import argparse
 
 
-class HumanLocation:
+class HumanLocater:
     """This node should receive depth images and detect the position of the human."""
 
     def __init__(self, debug) -> None:
@@ -83,7 +83,7 @@ def main():
 
     args, _ = parser.parse_known_args()
 
-    human_location = HumanLocation(debug = args.debug)
+    human_location = HumanLocater(debug = args.debug)
 
     rospy.spin()
 

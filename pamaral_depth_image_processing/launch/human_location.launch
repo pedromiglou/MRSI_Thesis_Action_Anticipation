@@ -1,5 +1,0 @@
-<launch>
-    <arg name="debug" default=""/>
-
-    <node name="human_location_detector" pkg="pamaral_depth_image_processing" type="human_location.py" args="$(arg debug)" output="screen"/>
-</launch>
