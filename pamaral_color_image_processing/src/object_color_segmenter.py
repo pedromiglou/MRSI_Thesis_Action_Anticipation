@@ -8,13 +8,16 @@ import numpy as np
 import rospy
 from sensor_msgs.msg import Image
 from sklearn.cluster import DBSCAN
-from pamaral_color_segmentation.msg import PointListStamped
+from pamaral_color_image_processing.msg import PointListStamped
+import argparse
 
 
-class Color_Segmenter:
+class ObjectColorSegmenter:
     """This node should receive color images and detect objects using color segmentation."""
 
-    def __init__(self) -> None:
+    def __init__(self, debug) -> None:
+        self.debug = debug
+        
         self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_color_segmentation/config/"
 
         f = open(self.path + "red.json")
@@ -42,7 +45,8 @@ class Color_Segmenter:
         self.green_mask = None
         self.cimage_subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.cimage_callback)
         
-        self.showImage()
+        if self.debug:
+            self.showImage()
     
 
     def cimage_callback(self, msg):
@@ -179,10 +183,16 @@ def main():
     # ---------------------------------------------------
     # INITIALIZATION
     # ---------------------------------------------------
-    default_node_name = 'color_segmenter'
+    default_node_name = 'object_color_segmenter'
     rospy.init_node(default_node_name, anonymous=False)
 
-    color_segmenter = Color_Segmenter()
+    parser = argparse.ArgumentParser(description="Arguments for object color segmenter")
+    parser.add_argument("-d", "--debug", action='store_true',
+                    help="if present, then the object positions are shown in a window")
+
+    args, _ = parser.parse_known_args()
+
+    color_segmenter = ObjectColorSegmenter(debug = args.debug)
 
     rospy.spin()
 
