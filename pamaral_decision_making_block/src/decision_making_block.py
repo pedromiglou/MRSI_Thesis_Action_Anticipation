@@ -21,6 +21,7 @@ class DecisionMakingBlock:
         moving_closer - moving closer to the user
         putting_down - putting down the object close to the user
         stopping - while the robot is stopping
+        wrong_guess - the robot made a wrong guess and must recover
     """
 
     def __init__(self, position_list):
@@ -72,9 +73,17 @@ class DecisionMakingBlock:
         if len(self.pieces)>0:
             if self.pieces[1] == "4G" and self.pieces_index == 1 and self.orientation == "parallel":
                 self.pieces = ["8G", "8R", "4R", "4G", "2G"]
+
+                if self.state == "waiting" or self.state == "moving_closer":
+                    self.state = "wrong_guess"
+                    self.arm_gripper_comm.stop_arm()
             
             elif self.pieces[1] == "8R" and self.pieces_index == 1 and self.orientation == "perpendicular":
                 self.pieces = ["8G", "4G", "2G"]
+
+                if self.state == "waiting" or self.state == "moving_closer":
+                    self.state = "wrong_guess"
+                    self.arm_gripper_comm.stop_arm()
 
 
     def red_centroids_callback(self, msg):
@@ -145,6 +154,9 @@ class DecisionMakingBlock:
             
             elif self.state == "stopping":
                 self.stopping_state()
+            
+            elif self.state == "wrong_guess":
+                self.wrong_guess_state()
 
 
     def idle_state(self):
@@ -208,6 +220,29 @@ class DecisionMakingBlock:
 
         if self.state == "stopping":
             self.state = "moving_closer"
+    
+
+    def wrong_guess_state(self):
+        #self.arm_gripper_comm.stop_arm()
+
+        time.sleep(0.5)
+
+        if self.pieces[1] == "8R":
+            self.go_to("above_4G")
+            self.go_to("4G")
+            self.arm_gripper_comm.gripper_open_fast()
+            self.go_to("above_4G")
+        
+        else:
+            self.go_to("above_8R")
+            self.go_to("8R")
+            self.arm_gripper_comm.gripper_open_fast()
+            self.go_to("above_8R")
+        
+        time.sleep(0.5)
+        
+        if self.state == "wrong_guess":
+            self.state = "picking_up"
 
 
     def go_to(self, pos):
