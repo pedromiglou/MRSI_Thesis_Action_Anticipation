@@ -31,6 +31,8 @@ class HumanLocater:
         try:
             dimage = self.bridge.imgmsg_to_cv2(msg, "passthrough")
 
+            dimage = dimage.copy()
+
             dimage[dimage==0] = np.max(dimage)
 
             c = np.argmin(dimage)
@@ -60,9 +62,9 @@ class HumanLocater:
     def show_images(self):
         while True:
             if self.cimage is not None and self.dimage is not None:
-                cv2.putText(self.cimage, '+', (self.pose.x, self.pose.y), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
+                cv2.putText(self.cimage, '+', (int(self.pose.x), int(self.pose.y)), cv2.FONT_ITALIC, 1, (255,0,0), 2, cv2.LINE_8)
                 cv2.imshow("Depth Image", self.dimage)
-                cv2.imshow("Color Image", cv2.cvtColor(self.cimage, cv2.COLOR_HSV2BGR))
+                cv2.imshow("Human Location", self.cimage)
 
                 key = cv2.waitKey(100)
                 if key == ord('q'):  # q for quit
@@ -86,6 +88,8 @@ def main():
     human_location = HumanLocater(debug = args.debug)
 
     rospy.spin()
+
+    cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':

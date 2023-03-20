@@ -13,12 +13,12 @@ import time
 class DecisionMakingBlock(object):
     # states = ['idle', 'picking_up', 'moving_closer', 'putting_down', 'retreating']
 
-    def __init__(self, args):
+    def __init__(self, position_list):
         # read registed positions
         self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/"
 
         try:
-            f = open(self.path + args['position_list'] + ".json")
+            f = open(self.path + position_list + ".json")
             self.positions = json.load(f)
             self.positions = self.positions["positions"]
             f.close()
@@ -185,9 +185,9 @@ def main():
     parser.add_argument("-pl", "--position_list", type=str, default="positions",
                     help="It is the name of the configuration JSON containing the list of positions in the config directory of this package")
 
-    args = vars(parser.parse_args())
+    args, _ = parser.parse_known_args()
 
-    decision_making_block = DecisionMakingBlock(args)
+    decision_making_block = DecisionMakingBlock(position_list = args.position_list)
 
     rospy.spin()
 
