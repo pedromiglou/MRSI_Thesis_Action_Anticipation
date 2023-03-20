@@ -3,7 +3,7 @@
     <arg name="color_debug" default="true"/>
 
     <!--launch files for robot drivers, controllers and planner-->
-    <include file="$(find larcc_launches)/launch/script_control_ur10e.launch"/>
+    <include file="$(find larcc_launches)/ur10e_control/script_control_ur10e.launch"/>
 
     <!--launch file for communicating with an orbbec pro camera-->
     <include file="$(find pamaral_perception_block)/launch/orbbec_camera.launch"/>
@@ -19,5 +19,5 @@
     </include>
 
     <!--launch file for the decision making block-->
-    <include file="$(find pamaral_decision_making_block)/launch/decision_making_block.launch"/>
+    <!-- <include file="$(find pamaral_decision_making_block)/launch/decision_making_block.launch"/> -->
 </launch>

@@ -18,7 +18,7 @@ class ObjectColorSegmenter:
     def __init__(self, debug) -> None:
         self.debug = debug
         
-        self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_color_segmentation/config/"
+        self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_color_image_processing/config/"
 
         f = open(self.path + "red.json")
         red = json.load(f)
@@ -195,6 +195,8 @@ def main():
     color_segmenter = ObjectColorSegmenter(debug = args.debug)
 
     rospy.spin()
+
+    cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
