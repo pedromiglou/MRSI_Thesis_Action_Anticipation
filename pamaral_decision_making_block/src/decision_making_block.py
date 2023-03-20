@@ -8,10 +8,20 @@ import argparse
 import json
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 import time
+from std_msgs.msg import String
 
 
-class DecisionMakingBlock(object):
-    # states = ['idle', 'picking_up', 'moving_closer', 'putting_down', 'retreating']
+class DecisionMakingBlock:
+    """State machine to decide what should be the action of the robot.
+
+    States:
+        idle - waiting for the desired sequence of objects
+        picking_up - picking up a given object
+        waiting - waiting for the user to finish so it can give him the next piece
+        moving_closer - moving closer to the user
+        putting_down - putting down the object close to the user
+        stopping - while the robot is stopping
+    """
 
     def __init__(self, position_list):
         # read registed positions
@@ -40,30 +50,45 @@ class DecisionMakingBlock(object):
         # subscribe data derived from sensors
         self.red_centroids = []
         self.green_centroids = []
+        self.orientation = ""
         self.red_centroids_subscriber = rospy.Subscriber("/red_centroids", PointListStamped, self.red_centroids_callback)
         self.green_centroids_subscriber = rospy.Subscriber("/green_centroids", PointListStamped, self.green_centroids_callback)
+        self.orientation_subscriber = rospy.Subscriber("/orientation", String, self.orientation_callback)
 
         self.user_pose = ""
         self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)
 
         # define pieces and states
         self.pieces = []
+        self.pieces_index = 0
         self.state = 'idle'
 
         self.loop()
+    
+
+    def orientation_callback(self, msg):
+        self.orientation = msg.data
+
+        if len(self.pieces)>0:
+            if self.pieces[1] == "4G" and self.pieces_index == 1 and self.orientation == "parallel":
+                self.pieces = ["8G", "8R", "4R", "4G", "2G"]
+            
+            elif self.pieces[1] == "8R" and self.pieces_index == 1 and self.orientation == "perpendicular":
+                self.pieces = ["8G", "4G", "2G"]
 
 
     def red_centroids_callback(self, msg):
         red_centroids = msg.points
         if len(red_centroids) > len(self.red_centroids):
             self.red_centroids = red_centroids
-            
+
             if self.state == "idle":
-                if len(self.pieces) > 0 and self.pieces[0][1] == "R":
-                    self.state = "picking_up"
-                else:
-                    self.pieces = ["8R", "4R"]
-                    self.state = "picking_up"
+                self.pieces = ["8R", "4R"]
+                self.state = "picking_up"
+            
+            if self.pieces_index < len(self.pieces):
+                if self.state == "waiting":
+                    self.state = "moving_closer"
 
         else:
             self.red_centroids = red_centroids
@@ -75,11 +100,13 @@ class DecisionMakingBlock(object):
             self.green_centroids = green_centroids
 
             if self.state == "idle":
-                if len(self.pieces) > 0 and self.pieces[0][1] == "G":
-                    self.state = "picking_up"
-                else:
-                    self.pieces = ["8G", "4G", "2G"]
-                    self.state = "picking_up"
+                self.pieces = ["8G", "4G", "2G"]
+                self.state = "picking_up"
+
+            if self.pieces_index < len(self.pieces):                
+                if self.state == "waiting":
+                    self.state = "moving_closer"
+
         else:
             self.green_centroids = green_centroids
     
@@ -95,7 +122,7 @@ class DecisionMakingBlock(object):
             self.user_pose = "right"
         
         if self.state == "moving_closer" and old_pose != self.user_pose:
-            self.state = "retreating"
+            self.state = "stopping"
             self.arm_gripper_comm.stop_arm()
     
 
@@ -107,14 +134,17 @@ class DecisionMakingBlock(object):
             elif self.state == "picking_up":
                 self.picking_up_state()
             
+            elif self.state == "waiting":
+                self.waiting_state()
+            
             elif self.state == "moving_closer":
                 self.moving_closer_state()
             
             elif self.state == "putting_down":
                 self.putting_down_state()
             
-            elif self.state == "retreating":
-                self.retreating_state()
+            elif self.state == "stopping":
+                self.stopping_state()
 
 
     def idle_state(self):
@@ -122,17 +152,23 @@ class DecisionMakingBlock(object):
 
 
     def picking_up_state(self):
-        self.go_to(f'above_{self.pieces[0]}')
+        p = self.pieces[self.pieces_index]
+        self.go_to(f'above_{p}')
         self.arm_gripper_comm.gripper_open_fast()
-        self.go_to(f'{self.pieces[0]}')
+        self.go_to(f'{p}')
         self.arm_gripper_comm.gripper_close_fast()
-        self.go_to(f'above_{self.pieces[0]}')
+        self.go_to(f'above_{p}')
         self.go_to('retreat')
 
-        self.pieces = self.pieces[1:]
-
         if self.state == "picking_up":
+            self.state = "waiting"
+    
+
+    def waiting_state(self):
+        if self.pieces_index == 0:
             self.state = "moving_closer"
+        else:
+            pass
     
     
     def moving_closer_state(self):
@@ -155,17 +191,22 @@ class DecisionMakingBlock(object):
             self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table1")
         
+        self.pieces_index += 1
+        
         self.go_to('retreat')
 
         if self.state == "putting_down":
-            self.state = 'idle'
+            if self.pieces_index < len(self.pieces):
+                self.state = 'picking_up'
+            else:
+                self.state = 'idle'
 
     
-    def retreating_state(self):
+    def stopping_state(self):
         #self.go_to('retreat')
         self.arm_gripper_comm.stop_arm()
 
-        if self.state == "retreating":
+        if self.state == "stopping":
             self.state = "moving_closer"
 
 

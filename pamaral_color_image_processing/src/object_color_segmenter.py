@@ -10,6 +10,7 @@ from sensor_msgs.msg import Image
 from sklearn.cluster import DBSCAN
 from pamaral_color_image_processing.msg import PointListStamped
 import argparse
+from std_msgs.msg import String
 
 
 class ObjectColorSegmenter:
@@ -38,6 +39,7 @@ class ObjectColorSegmenter:
 
         self.red_centroids_publisher = rospy.Publisher("/red_centroids", PointListStamped, queue_size=1)
         self.green_centroids_publisher = rospy.Publisher("/green_centroids", PointListStamped, queue_size=1)
+        self.orientation_publisher = rospy.Publisher("/orientation", String, queue_size=1)
 
         self.bridge = CvBridge()
         self.cimage = None
@@ -76,11 +78,11 @@ class ObjectColorSegmenter:
             (cX, cY) = centroids[i]
             cX, cY = int(cX), int(cY)
 
-            if area > 250 and cX > 100 and cY<415:
+            if area > 250 and cX > 180 and cY<415:
                 red_pieces.append((cX, cY))
         
         self.red_pieces.append(red_pieces[1:])
-        self.red_pieces = self.red_pieces[-5:]
+        self.red_pieces = self.red_pieces[-3:]
         
         # detect green objects
         green_pieces = cv2.connectedComponentsWithStats(green_mask)
@@ -92,11 +94,36 @@ class ObjectColorSegmenter:
             (cX, cY) = centroids[i]
             cX, cY = int(cX), int(cY)
 
-            if area > 250 and cX > 100 and cY<415:
+            if area > 250 and cX > 180 and cY<415:
                 green_pieces.append((cX, cY))
+
+                if area < 2000:
+                    piece_mask = labels == i
+
+                    s = piece_mask.shape
+
+                    top, bottom, left, right = np.inf,0,np.inf,0
+                    
+                    for i in range(s[0]):
+                        for j in range(s[1]):
+                            if piece_mask[i,j]:
+                                if i < top:
+                                    top = i
+                                if i > bottom:
+                                    bottom = i
+                                if j < left:
+                                    left = j
+                                if j > right:
+                                    right = j
+                    
+                    if bottom-top > right-left:
+                        self.orientation_publisher.publish("perpendicular")
+                    else:
+                        self.orientation_publisher.publish("parallel")
+                
         
         self.green_pieces.append(green_pieces[1:])
-        self.green_pieces = self.green_pieces[-5:]
+        self.green_pieces = self.green_pieces[-3:]
 
         # draw centroids
         cimage = cv2.cvtColor(cimage, cv2.COLOR_HSV2BGR)
