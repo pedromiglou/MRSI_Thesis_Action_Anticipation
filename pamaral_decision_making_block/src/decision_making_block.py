@@ -62,6 +62,7 @@ class DecisionMakingBlock:
         # define pieces and states
         self.pieces = []
         self.pieces_index = 0
+        self.holding = ''
         self.state = 'idle'
 
         self.loop()
@@ -74,14 +75,16 @@ class DecisionMakingBlock:
             if self.pieces[1] == "4G" and self.pieces_index == 1 and self.orientation == "parallel":
                 self.pieces = ["8G", "8R", "4R", "4G", "2G"]
 
-                if self.state == "waiting" or self.state == "moving_closer":
+                #if self.state == "waiting" or self.state == "moving_closer":
+                if len(self.holding) > 0:
                     self.state = "wrong_guess"
                     self.arm_gripper_comm.stop_arm()
             
             elif self.pieces[1] == "8R" and self.pieces_index == 1 and self.orientation == "perpendicular":
                 self.pieces = ["8G", "4G", "2G"]
 
-                if self.state == "waiting" or self.state == "moving_closer":
+                #if self.state == "waiting" or self.state == "moving_closer":
+                if len(self.holding) > 0:
                     self.state = "wrong_guess"
                     self.arm_gripper_comm.stop_arm()
 
@@ -91,7 +94,7 @@ class DecisionMakingBlock:
         if len(red_centroids) > len(self.red_centroids):
             self.red_centroids = red_centroids
 
-            if self.state == "idle":
+            if self.state == "idle" and self.pieces_index == 0:
                 self.pieces = ["8R", "4R"]
                 self.state = "picking_up"
             
@@ -108,7 +111,7 @@ class DecisionMakingBlock:
         if len(green_centroids) > len(self.green_centroids):
             self.green_centroids = green_centroids
 
-            if self.state == "idle":
+            if self.state == "idle" and self.pieces_index == 0:
                 self.pieces = ["8G", "4G", "2G"]
                 self.state = "picking_up"
 
@@ -170,6 +173,9 @@ class DecisionMakingBlock:
         self.go_to(f'{p}')
         self.arm_gripper_comm.gripper_close_fast()
         self.go_to(f'above_{p}')
+
+        self.holding = p
+
         self.go_to('retreat')
 
         if self.state == "picking_up":
@@ -203,6 +209,8 @@ class DecisionMakingBlock:
             self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table1")
         
+        self.holding = ''
+
         self.pieces_index += 1
         
         self.go_to('retreat')
@@ -227,17 +235,13 @@ class DecisionMakingBlock:
 
         time.sleep(0.5)
 
-        if self.pieces[1] == "8R":
-            self.go_to("above_4G")
-            self.go_to("4G")
+        if self.holding != '':
+            self.go_to(f"above_{self.holding}")
+            self.go_to(f"{self.holding}")
             self.arm_gripper_comm.gripper_open_fast()
-            self.go_to("above_4G")
-        
-        else:
-            self.go_to("above_8R")
-            self.go_to("8R")
-            self.arm_gripper_comm.gripper_open_fast()
-            self.go_to("above_8R")
+            self.go_to(f"above_{self.holding}")
+
+            self.holding = ''
         
         time.sleep(0.5)
         
