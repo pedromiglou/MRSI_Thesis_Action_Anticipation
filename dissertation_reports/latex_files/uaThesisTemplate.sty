@@ -506,7 +506,6 @@
 %
 % First thesis pages
 %
-\if{0}
 \newcommand{\yourSecondSupervisor}{}
 \ifdefined \ciSecondSupervisorName
   \def\yourSecondSupervisor{, e do Doutor {\ciSecondSupervisorName}, Professor {\ciSecondSupervisorTitle} {\ciSecondSupervisorDepart} {\ciSecondSupervisorSchool}}
@@ -539,7 +538,6 @@ Disserta\c c\~ao%
 \fi
    \EndTitlePage
 \titlepage\ \endtitlepage % empty page
-\fi
 
 %
 % Dedicatory
@@ -558,13 +556,13 @@ Disserta\c c\~ao%
 % Juri Page
 %
 %
-%\TitlePage
-%  \vspace*{55mm}
-%  \SECTION{o j\'uri~/~the jury}
-%       {}
-%    \dolistloop{\ciJuriMember}
-%   \EndTitlePage
-%\titlepage\ \endtitlepage % empty page
+\TitlePage
+  \vspace*{55mm}
+  \SECTION{o j\'uri~/~the jury}
+       {}
+    \dolistloop{\ciJuriMember}
+   \EndTitlePage
+\titlepage\ \endtitlepage % empty page
 
 
 %

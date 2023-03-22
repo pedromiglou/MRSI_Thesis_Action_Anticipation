@@ -38,3 +38,8 @@ https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_deskt
 ## Other thesis in action anticipation
 
 - https://repository.kaust.edu.sa/handle/10754/673882
+
+## Future Work
+
+- mais posições intermédias
+- waypoints
