@@ -1,0 +1,74 @@
+%% by vsantos, 23 Mar 2023
+\definecolor{vColorA}{HTML}{545454}
+\definecolor{vColorB}{HTML}{8fa8d3}
+\begin{tikzpicture}[scale=0.75,transform shape,
+	mindmap,
+	grow cyclic,
+	every node/.append style={
+				concept,
+				inner sep=0pt,
+				concept color=vColorB,
+    font=\sffamily,
+				}, %this is appended to all local props!
+	concept color=vColorB,
+	text=white,
+%	font=\sffamily\bfseries\Large,
+	level 1/.append style={
+%							level distance=5cm,
+%							sibling angle=60,
+	%						font=\sffamily,
+%							concept color=vColorB,
+							},
+	level 2/.append style={
+%							level distance=2.75cm,
+							sibling angle=45,
+%							font=\small \sffamily,
+							text=black,
+%							concept color=white,
+						  },
+]
+
+\node[] (HRC) at (0,0){\large\bfseries HUMAN ROBOT COMMUNICATION}
+	[counterclockwise from = -30]
+child[]
+{
+	node[](Gaze){GAZE}
+	[clockwise from = 0]
+	child{node[](dhp){Derived from human pose}}
+	child{node[](eye) {Eye-tracking Wearable Device}}
+}
+child[]
+{
+	node [] (Semantics) {SEMANTICS}
+	[counterclockwise from = 0]
+	child{node[](hp){Human Poses}}
+	child{node[](op) {Object Positions}}
+}
+child[]
+{
+	node [] (VoiceCommands) {VOICE COMMANDS}
+}
+child[]
+{
+	node []  (Gestures) {GESTURES}
+		[counterclockwise from = 60] %[grow=180]
+		child{node[](mv){Markerless Vision}}
+		child{node[](vbm) {Vision based with Markers}}
+		child{node[](di) {Depth Images}}
+		child{node[](id) {Inertial Data}}	
+		child{node[](pc) {Point clouds}}	
+}
+child[]
+{
+	node [] (Biometrics) {BIO-METRICS}
+		[counterclockwise from = 180]
+		child{node[](ma){Muscular Activity}}
+		child{node[](ba) {Brain Activity}}	
+}
+child[]
+{
+	node [] (Emotions) {EMOTIONS}
+}
+;
+
+\end{tikzpicture}

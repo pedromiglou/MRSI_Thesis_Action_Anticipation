@@ -1,0 +1,32 @@
+\chapter{Methodologies}
+\label{chapter:methologies}
+
+\section{First Version}
+
+The first version developed comprised simple actions that were triggered by sensor data based on a set of rules with the end goal being building a tower of blocks with 3 possible orders.
+
+\textcolor{red}{maybe an image with the different orders to better visualize the solution?}
+
+\subsection{ROS Architecture}
+
+The robot communication is established using Robot Operating System (ROS) with 5 main nodes.
+
+\begin{itemize}
+    \item \textbf{orbbec\_camera}: node responsible for receiving the images from the camera and publishing them to ROS;
+    \item \textbf{human\_locator}: node responsible for analyzing the depth images and returning the position of the highest point in a certain region of interest which is then considered as the position of the human in the workspace;
+    \item \textbf{object\_color\_segmenter}: node responsible for analyzing the color images and returning the position and orientation of the objects in the workspace using color segmentation;
+    \item \textbf{decision\_making\_block}: node responsible for receiving the information resulting from the sensor data and keeping an internal state machine to decide what actions should be taken and when they should be taken;
+    \item \textbf{move\_it!}: group of nodes responsible for planning the robot trajectory in each action.
+\end{itemize}
+
+\textcolor{red}{image with the architecture}
+
+\subsection{Logic}
+
+Initially, the robot would wait until it detected a red or green object using color segmentation. This information would help him determine not only the first block but possibly the entire sequence since if started with a red block there would only be one option. If it started with a green block then the orientation of the block would give the system information about which sequence should be used.
+
+Before the robot gives a block to the user, it waits for the user to stop taking care of the previous one. This is implemented by tracking when one block reappears in the color image indicating that the user has stopped working on it.
+
+So that the robot avoids being too close to the user, the position of the user is detected using the depth images and the robots puts down a block in the opposite side of the table. Furthermore, if the user switches to the other side the robot will also switch the put down location.
+
+This solution intrinsically consisted of a set of rules where the movements resulted from the direct communication between the robot and the human. Therefore, it was not yet considered an anticipatory system.
