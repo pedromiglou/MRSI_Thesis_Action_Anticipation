@@ -1,0 +1,15 @@
+Algeria -> green | white
+Andorra -> blue | yellow | red
+Argentina -> blue - white - blue
+Armenia -> red - blue - orange
+Austria -> red - white - red
+Azerbaijan -> blue - red - green
+Belarus -> red - red - green
+Belgium -> black | yellow | red
+Bolivia -> red - yellow - green
+Bulgaria -> white - green - red
+Burkina Faso -> red - green
+Côte d'Ivoire -> orange | white | green
+Cambodia -> blue - red - blue
+Cameroon -> green | red | yellow
+Canada -> red | white | red
