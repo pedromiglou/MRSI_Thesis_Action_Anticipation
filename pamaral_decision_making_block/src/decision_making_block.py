@@ -20,8 +20,8 @@ class DecisionMakingBlock:
         waiting - waiting for the user to finish so it can give him the next piece
         moving_closer - moving closer to the user
         putting_down - putting down the object close to the user
-        stopping - while the robot is stopping
-        wrong_guess - the robot made a wrong guess and must recover
+        stop_side_switch - while the robot is stopping because the user changed sides
+        stop_wrong_guess - the robot made a wrong guess and must recover
     """
 
     def __init__(self, position_list):
@@ -77,7 +77,7 @@ class DecisionMakingBlock:
 
                 #if self.state == "waiting" or self.state == "moving_closer":
                 if len(self.holding) > 0:
-                    self.state = "wrong_guess"
+                    self.state = "stop_wrong_guess"
                     self.arm_gripper_comm.stop_arm()
             
             elif self.pieces[1] == "8R" and self.pieces_index == 1 and self.orientation == "perpendicular":
@@ -85,7 +85,7 @@ class DecisionMakingBlock:
 
                 #if self.state == "waiting" or self.state == "moving_closer":
                 if len(self.holding) > 0:
-                    self.state = "wrong_guess"
+                    self.state = "stop_wrong_guess"
                     self.arm_gripper_comm.stop_arm()
 
 
@@ -134,7 +134,7 @@ class DecisionMakingBlock:
             self.user_pose = "right"
         
         if self.state == "moving_closer" and old_pose != self.user_pose:
-            self.state = "stopping"
+            self.state = "stop_side_switch"
             self.arm_gripper_comm.stop_arm()
     
 
@@ -155,11 +155,11 @@ class DecisionMakingBlock:
             elif self.state == "putting_down":
                 self.putting_down_state()
             
-            elif self.state == "stopping":
-                self.stopping_state()
+            elif self.state == "stop_side_switch":
+                self.stop_side_switch_state()
             
-            elif self.state == "wrong_guess":
-                self.wrong_guess_state()
+            elif self.state == "stop_wrong_guess":
+                self.stop_wrong_guess_state()
 
 
     def idle_state(self):
@@ -222,15 +222,15 @@ class DecisionMakingBlock:
                 self.state = 'idle'
 
     
-    def stopping_state(self):
+    def stop_side_switch_state(self):
         #self.go_to('retreat')
         self.arm_gripper_comm.stop_arm()
 
-        if self.state == "stopping":
+        if self.state == "stop_side_switch":
             self.state = "moving_closer"
     
 
-    def wrong_guess_state(self):
+    def stop_wrong_guess_state(self):
         #self.arm_gripper_comm.stop_arm()
 
         time.sleep(0.5)
@@ -245,7 +245,7 @@ class DecisionMakingBlock:
         
         time.sleep(0.5)
         
-        if self.state == "wrong_guess":
+        if self.state == "stop_wrong_guess":
             self.state = "picking_up"
 
 
