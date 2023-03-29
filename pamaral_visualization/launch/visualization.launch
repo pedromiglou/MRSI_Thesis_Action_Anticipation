@@ -1,0 +1,8 @@
+<launch>
+    <!-- Launch rviz, loading configuration file -->
+    <node name="rviz" pkg="rviz" type="rviz"
+          args="--display-config $(find pamaral_visualization)/config/config.rviz" required="false"/>
+    
+    <!-- Launch python script to process some of the data shown in rviz -->
+    <node name="data_merger" pkg="pamaral_visualization" type="data_merger.py" output="screen"/>
+</launch>

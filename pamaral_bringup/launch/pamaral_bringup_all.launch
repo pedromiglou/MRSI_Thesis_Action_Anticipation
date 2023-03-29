@@ -18,9 +18,8 @@
         <arg name="debug" value="-d" if="$(arg color_debug)"/>
     </include>
 
-    <!-- Launch rviz, loading configuration file -->
-    <node name="rviz" pkg="rviz" type="rviz"
-          args="--display-config $(find pamaral_bringup)/config/config.rviz" required="false"/>
+    <!-- Launch file to visualize details of the system using rviz -->
+    <include file="$(find pamaral_visualization)/launch/visualization.launch"/>
 
     <!--launch file for the decision making block-->
     <!-- <include file="$(find pamaral_decision_making_block)/launch/decision_making_block.launch"/> -->
