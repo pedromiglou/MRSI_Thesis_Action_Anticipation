@@ -1,0 +1,3 @@
+<launch>
+    <node name="arm_gripper_movement" pkg="pamaral_decision_making_block" type="arm_gripper_movement.py" output="screen"/>
+</launch>

@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 
-from cv_bridge import CvBridge
+import argparse
 import cv2
-from geometry_msgs.msg import Point
 import json
 import numpy as np
 import rospy
+
+from cv_bridge import CvBridge
+from geometry_msgs.msg import Point
 from sensor_msgs.msg import Image
 from sklearn.cluster import DBSCAN
-from pamaral_color_image_processing.msg import PointListStamped
-import argparse
 from std_msgs.msg import String
+
+from pamaral_color_image_processing.msg import PointListStamped
 
 
 class ObjectColorSegmenter:

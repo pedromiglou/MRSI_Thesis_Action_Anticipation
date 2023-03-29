@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
-import rospy
-from pamaral_color_image_processing.msg import PointListStamped
-from geometry_msgs.msg import PointStamped
-import sys
 import argparse
 import json
-from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
+import rospy
+import sys
 import time
+
+from geometry_msgs.msg import PointStamped
 from std_msgs.msg import String
+
+from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
+from pamaral_color_image_processing.msg import PointListStamped
 
 
 class DecisionMakingBlock:
