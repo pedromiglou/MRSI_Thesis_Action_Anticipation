@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
+
 import argparse
 import json
 import os
+import rospy
 import sys
+import time
 
 #from config.definitions import ROOT_DIR
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
-import rospy
-import time
 
 
 parser = argparse.ArgumentParser(description="Arguments for trainning script")

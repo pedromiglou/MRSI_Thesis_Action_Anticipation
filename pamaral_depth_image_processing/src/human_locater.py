@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
-from cv_bridge import CvBridge
-from sensor_msgs.msg import Image
 import numpy as np
-from geometry_msgs.msg import Point, PointStamped
 import rospy
+
+from cv_bridge import CvBridge
+from geometry_msgs.msg import Point, PointStamped
+from sensor_msgs.msg import Image
 
 
 class HumanLocater:
     """This node should receive depth images and detect the position of the human."""
 
-    def __init__(self) -> None:
+    def __init__(self):
         self.bridge = CvBridge()
         self.pose_publisher = rospy.Publisher("/user_pose", PointStamped, queue_size=1)
         self.dimage_subscriber = rospy.Subscriber("/camera/depth/image_raw", Image, self.dimage_callback)

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-from cv_bridge import CvBridge
 import cv2
 import rospy
-from sensor_msgs.msg import Image
-from pamaral_color_image_processing.msg import PointListStamped
+
+from cv_bridge import CvBridge
 from geometry_msgs.msg import PointStamped
+from pamaral_color_image_processing.msg import PointListStamped
+from sensor_msgs.msg import Image
 
 
 class DataMerger:
