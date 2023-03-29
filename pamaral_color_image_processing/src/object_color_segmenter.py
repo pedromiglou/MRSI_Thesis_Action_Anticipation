@@ -16,7 +16,7 @@ from std_msgs.msg import String
 class ObjectColorSegmenter:
     """This node should receive color images and detect objects using color segmentation."""
 
-    def __init__(self, debug) -> None:
+    def __init__(self, debug):
         self.debug = debug
         
         self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_color_image_processing/config/"
@@ -42,7 +42,6 @@ class ObjectColorSegmenter:
         self.orientation_publisher = rospy.Publisher("/orientation", String, queue_size=1)
 
         self.bridge = CvBridge()
-        self.cimage = None
         self.red_mask = None
         self.green_mask = None
         self.cimage_subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.cimage_callback)
@@ -60,16 +59,16 @@ class ObjectColorSegmenter:
             print("Error reading color image")
         
         # process red and green mask
-        red_mask = cv2.inRange(cimage, self.red_mins, self.red_maxs)
-        green_mask = cv2.inRange(cimage, self.green_mins, self.green_maxs)
+        self.red_mask = cv2.inRange(cimage, self.red_mins, self.red_maxs)
+        self.green_mask = cv2.inRange(cimage, self.green_mins, self.green_maxs)
 
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(10,10))
 
-        red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_CLOSE, kernel)
-        green_mask = cv2.morphologyEx(green_mask, cv2.MORPH_CLOSE, kernel)
+        self.red_mask = cv2.morphologyEx(self.red_mask, cv2.MORPH_CLOSE, kernel)
+        self.green_mask = cv2.morphologyEx(self.green_mask, cv2.MORPH_CLOSE, kernel)
 
         # detect red objects
-        red_pieces = cv2.connectedComponentsWithStats(red_mask)
+        red_pieces = cv2.connectedComponentsWithStats(self.red_mask)
         (numLabels, labels, stats, centroids) = red_pieces
 
         red_pieces = []
@@ -85,7 +84,7 @@ class ObjectColorSegmenter:
         self.red_pieces = self.red_pieces[-3:]
         
         # detect green objects
-        green_pieces = cv2.connectedComponentsWithStats(green_mask)
+        green_pieces = cv2.connectedComponentsWithStats(self.green_mask)
         (numLabels, labels, stats, centroids) = green_pieces
 
         green_pieces = []
@@ -120,14 +119,11 @@ class ObjectColorSegmenter:
                         self.orientation_publisher.publish("perpendicular")
                     else:
                         self.orientation_publisher.publish("parallel")
-                
         
         self.green_pieces.append(green_pieces[1:])
         self.green_pieces = self.green_pieces[-3:]
 
-        # draw centroids
-        cimage = cv2.cvtColor(cimage, cv2.COLOR_HSV2BGR)
-
+        # obtain centroids
         green_centroids = []
         red_centroids = []
 
@@ -151,9 +147,6 @@ class ObjectColorSegmenter:
                         l.append(green_pieces[j])
                 
                 green_centroids.append(l[0])
-            
-            for c in green_centroids:
-                cv2.putText(cimage, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,255,0), 2, cv2.LINE_8)
         
         if len(red_pieces) > 0:
             clustering = DBSCAN(eps=15, min_samples=2).fit(red_pieces)
@@ -172,11 +165,6 @@ class ObjectColorSegmenter:
                         l.append(red_pieces[j])
                 
                 red_centroids.append(l[0])
-            
-            for c in red_centroids:
-                cv2.putText(cimage, '+', (c[0], c[1]), cv2.FONT_ITALIC, 1, (0,0,255), 2, cv2.LINE_8)
-        
-        self.cimage, self.red_mask, self.green_mask = cimage, red_mask, green_mask
 
         # publish centroids
         msg = PointListStamped()
@@ -194,8 +182,7 @@ class ObjectColorSegmenter:
 
     def showImage(self):
         while True:
-            if self.cimage is not None and self.red_mask is not None and self.green_mask is not None:
-                cv2.imshow("Color Image", self.cimage)
+            if self.red_mask is not None and self.green_mask is not None:
                 cv2.imshow("Red Mask", self.red_mask)
                 cv2.imshow("Green Mask", self.green_mask)
 
@@ -215,11 +202,11 @@ def main():
 
     parser = argparse.ArgumentParser(description="Arguments for object color segmenter")
     parser.add_argument("-d", "--debug", action='store_true',
-                    help="if present, then the object positions are shown in a window")
+                    help="if present, then the masks are shown")
 
     args, _ = parser.parse_known_args()
 
-    color_segmenter = ObjectColorSegmenter(debug = args.debug)
+    object_color_segmenter = ObjectColorSegmenter(debug = args.debug)
 
     rospy.spin()
 

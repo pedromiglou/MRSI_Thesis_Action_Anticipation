@@ -11,7 +11,7 @@ from geometry_msgs.msg import PointStamped
 class DataMerger:
     """This node should receive data relevant for visualization and process it to show in rviz."""
 
-    def __init__(self) -> None:
+    def __init__(self):
         self.bridge = CvBridge()
         self.cimage = None
         self.cimage_subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.cimage_callback)
