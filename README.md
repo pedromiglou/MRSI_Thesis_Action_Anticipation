@@ -43,3 +43,4 @@ https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_deskt
 
 - mais posições intermédias
 - waypoints
+- make the color limits be read from an argument
