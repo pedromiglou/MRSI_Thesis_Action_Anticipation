@@ -1,0 +1,38 @@
+\begin{tikzpicture}[
+        > = stealth, % arrow head style
+        shorten > = 1pt, % don't touch arrow head to node
+        auto,
+        node distance = 3.5cm, % distance between nodes
+        semithick % line style
+    ]
+    
+    \tikzstyle{every state}=[
+        draw = black,
+        thick,
+        fill = white,
+        minimum size = 4mm,
+        text width = 1.5cm,
+        align = center
+    ]
+    
+    \node[state] (idle) at (0,0) {idle};
+    \node[state] (picking_up) [right of=idle] {picking up};
+    \node[state] (waiting) [right of=picking_up] {waiting};
+    \node[state] (moving_closer) [right of=waiting] {moving closer};
+    \node[state] (putting_down) [below of=picking_up] {putting down};
+    \node[state] (stop_side_switch) [below right of=moving_closer] {stop side switch};
+    \node[state] (stop_wrong_guess) [above of=picking_up] {stop wrong guess};
+    
+    \path[->] (idle) edge node[align=center] {received new\\sequence} (picking_up);
+    \path[->] (picking_up) edge node[align=center] {object\\picked up} (waiting);
+    \path[->] (waiting) edge node[align=center] {user\\finished} (moving_closer);
+    \path[->] (moving_closer) edge node[align=center] {robot in put\\down position} (putting_down);
+    \path[->] (putting_down) edge node[align=center] {object\\put down} (picking_up);
+    \path[->] (putting_down) edge[bend left] node[align=center] {sequence\\finished} (idle);
+    \path[->] (moving_closer) edge[bend left] node[align=center] {user changed\\side} (stop_side_switch);
+    \path[->] (stop_side_switch) edge[bend left] node[align=center] {robot\\stopped} (moving_closer);
+    \path[->] (picking_up) edge[bend right] node[align=center] {} (stop_wrong_guess);
+    \path[->] (waiting) edge node[align=center] {} (stop_wrong_guess);
+    \path[->] (moving_closer) edge[bend right] node[align=center] {wrong assembly\\sequence} (stop_wrong_guess);
+    \path[->] (stop_wrong_guess) edge[bend right] node[align=center] {reverted\\previous guess} (picking_up);
+\end{tikzpicture}
