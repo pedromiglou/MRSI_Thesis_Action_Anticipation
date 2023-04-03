@@ -6,3 +6,6 @@ arm_movement:
 
 echo_joints:
 	rostopic echo \joint_states
+
+create_postgres:
+	docker run -d --name postgres -e POSTGRES_PASSWORD=password -e PGDATA=/var/lib/postgresql/data/pgdata -v /home/miglou/postgres_data:/var/lib/postgresql/data -p 5432:5432 postgres

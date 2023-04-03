@@ -1,0 +1,70 @@
+# orange, dark-blue, yellow, green, red, light-blue, white, violet
+country: Côte d'Ivoire
+color1: orange
+color2: white
+color3: green
+---
+country: Cameroon
+color1: green
+color2: red
+color3: yellow
+---
+country: Canada
+color1: red
+color2: white
+color3: red
+---
+country: France
+color1: dark-blue
+color2: white
+color3: red
+---
+country: Guatemala
+color1: light-blue
+color2: white
+color3: light-blue
+---
+country: Guinea
+color1: red
+color2: yellow
+color3: green
+---
+country: Ireland
+color1: green
+color2: white
+color3: orange
+---
+country: Italy
+color1: green
+color2: white
+color3: red
+---
+country: Mali
+color1: green
+color2: yellow
+color3: red
+---
+country: Mongolia
+color1: red
+color2: dark-blue
+color3: red
+---
+country: Nigeria
+color1: green
+color2: white
+color3: green
+---
+country: Romania
+color1: dark-blue
+color2: yellow
+color3: red
+---
+country: Romania
+color1: green
+color2: yellow
+color3: red
+---
+country: St. Vincent Grenadines
+color1: dark-blue
+color2: yellow
+color3: green
