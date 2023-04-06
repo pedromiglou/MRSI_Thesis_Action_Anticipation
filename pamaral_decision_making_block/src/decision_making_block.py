@@ -28,7 +28,7 @@ class DecisionMakingBlock:
 
     def __init__(self, position_list):
         # read registed positions
-        self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/"
+        self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/joints_poses/"
 
         try:
             f = open(self.path + position_list + ".json")
