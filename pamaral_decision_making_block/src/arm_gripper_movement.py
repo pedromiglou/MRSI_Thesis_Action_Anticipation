@@ -20,7 +20,7 @@ parser.add_argument("-pl", "--position_list", type=str, default="positions",
 args = vars(parser.parse_args())
 
 # path = ROOT_DIR + "/use_cases/config/"
-path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/"
+path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/joints_poses/"
 
 try:
     f = open(path + args['position_list'] + ".json")
@@ -45,59 +45,59 @@ arm_gripper_comm.gripper_connect()
 if not arm_gripper_comm.state_dic["activation_completed"]: 
     arm_gripper_comm.gripper_init()
 
-pos = [0.283, 0.474, 1.507, 0.007, 0.997, -0.076, -0.003]
-arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6])
+#pos = [0.258, 0.111, 1.412, 0, 1, 0, 0]
+#arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6])
 
-# if args['movement'] == "":
-#     res = os.listdir(path)
-#     res.remove(args['position_list'] + ".json")
+if args['movement'] == "":
+    res = os.listdir(path)
+    res.remove(args['position_list'] + ".json")
 
-#     while True:
-#         i = 0
+    while True:
+        i = 0
 
-#         for file in res:
-#             print(f'[{i}]:' + file)
-#             i += 1
+        for file in res:
+            print(f'[{i}]:' + file)
+            i += 1
 
-#         idx = input("Select idx from test json: ")
+        idx = input("Select idx from test json: ")
 
-#         try:
-#             f = open(path + res[int(idx)])
-#             config = json.load(f)
-#             f.close()
+        try:
+            f = open(path + res[int(idx)])
+            config = json.load(f)
+            f.close()
         
-#         except:
-#             rospy.logerr("Invalid file! Closing...")
-#             arm_gripper_comm.gripper_disconnect()
-#             sys.exit(0)
+        except:
+            rospy.logerr("Invalid file! Closing...")
+            arm_gripper_comm.gripper_disconnect()
+            sys.exit(0)
 
-#         for pos, gripper in config["positions"]:
-#             pos = positions[pos]
-#             arm_gripper_comm.move_arm_to_joints_state(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
+        for pos, gripper in config["positions"]:
+            pos = positions[pos]
+            arm_gripper_comm.move_arm_to_joints_state(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
 
-#             if gripper == 1:
-#                 arm_gripper_comm.gripper_open_fast()
-#             if gripper == -1:
-#                 arm_gripper_comm.gripper_close_fast()
+            if gripper == 1:
+                arm_gripper_comm.gripper_open_fast()
+            if gripper == -1:
+                arm_gripper_comm.gripper_close_fast()
 
-# else:
-#     try:
-#         f = open(path + args["movement"] + '.json')
-#         config = json.load(f)
-#         f.close()
+else:
+    try:
+        f = open(path + args["movement"] + '.json')
+        config = json.load(f)
+        f.close()
     
-#     except:
-#         rospy.logerr("Invalid file! Closing...")
-#         arm_gripper_comm.gripper_disconnect()
-#         sys.exit(0)
+    except:
+        rospy.logerr("Invalid file! Closing...")
+        arm_gripper_comm.gripper_disconnect()
+        sys.exit(0)
 
-#     for pos, gripper in config["positions"]:
-#         pos = positions[pos]
-#         arm_gripper_comm.move_arm_to_joints_state(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
+    for pos, gripper in config["positions"]:
+        pos = positions[pos]
+        arm_gripper_comm.move_arm_to_joints_state(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
 
-#         if gripper == 1:
-#             arm_gripper_comm.gripper_open_fast()
-#         if gripper == -1:
-#             arm_gripper_comm.gripper_close_fast()
+        if gripper == 1:
+            arm_gripper_comm.gripper_open_fast()
+        if gripper == -1:
+            arm_gripper_comm.gripper_close_fast()
 
 arm_gripper_comm.gripper_disconnect()
