@@ -21,7 +21,7 @@ class HumanLocater:
         try:
             dimage = self.bridge.imgmsg_to_cv2(msg, "passthrough")
 
-            dimage = dimage.copy()
+            dimage = dimage.copy()[:,350:]
 
             dimage[dimage==0] = np.max(dimage)
 
@@ -30,7 +30,7 @@ class HumanLocater:
             msg = PointStamped()
             msg.header.stamp = rospy.Time.now()
             msg.header.frame_id = "/camera/depth/image_raw"
-            msg.point = Point(c%640,c/640,0)
+            msg.point = Point(c%290+350,c/290,0)
             self.pose_publisher.publish(msg)
 
         except:

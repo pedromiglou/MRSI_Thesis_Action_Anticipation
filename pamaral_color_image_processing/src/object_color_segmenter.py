@@ -32,7 +32,8 @@ class ObjectColorSegmenter:
 
         self.pieces = []
 
-        self.centroids_publisher = rospy.Publisher(f"/{self.color}_centroids", CentroidList, queue_size=1)
+        #self.centroids_publisher = rospy.Publisher(f"/{self.color}_centroids", CentroidList, queue_size=1)
+        self.centroids_publisher = rospy.Publisher(f"/centroids", CentroidList, queue_size=1)
 
         self.bridge = CvBridge()
         self.mask = None
@@ -46,6 +47,9 @@ class ObjectColorSegmenter:
         try:
             img_bgr = self.bridge.imgmsg_to_cv2(msg, "bgr8")
             img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
+
+            # create ROI
+            img = img[17:474, 193:454]
 
         except:
             print("Error reading color image")
@@ -64,9 +68,9 @@ class ObjectColorSegmenter:
         for i in range(len(centroids)):
             area = stats[i, cv2.CC_STAT_AREA]
             (cX, cY) = centroids[i]
-            cX, cY = int(cX), int(cY)
+            cX, cY = int(cX+193), int(cY+17)
 
-            if area > 250 and cX > 180 and cY<415:
+            if area > 200:
                 pieces.append((cX, cY))
         
         self.pieces.append(pieces[1:])
@@ -93,12 +97,13 @@ class ObjectColorSegmenter:
                     if clustering.labels_[j] == i:
                         l.append(pieces[j])
                 
-                pieces.append(l[0])
+                centroids.append(l[0])
 
         # publish centroids
-        msg = PointListStamped()
+        msg = CentroidList()
         msg.header.stamp = rospy.Time.now()
         msg.header.frame_id = "/camera/color/image_raw"
+        msg.color = self.color
         msg.points = [Point(c[0],c[1],0) for c in centroids]
         self.centroids_publisher.publish(msg)
 
