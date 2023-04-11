@@ -11,7 +11,7 @@ from geometry_msgs.msg import Point
 from sensor_msgs.msg import Image
 from sklearn.cluster import DBSCAN
 
-from pamaral_color_image_processing.msg import PointListStamped
+from pamaral_color_image_processing.msg import CentroidList
 
 
 class ObjectColorSegmenter:
@@ -32,7 +32,7 @@ class ObjectColorSegmenter:
 
         self.pieces = []
 
-        self.centroids_publisher = rospy.Publisher(f"/{self.color}_centroids", PointListStamped, queue_size=1)
+        self.centroids_publisher = rospy.Publisher(f"/{self.color}_centroids", CentroidList, queue_size=1)
 
         self.bridge = CvBridge()
         self.mask = None

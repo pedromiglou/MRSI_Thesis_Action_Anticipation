@@ -1,3 +1,3 @@
-# PointStamped but with a list of Points 
 std_msgs/Header header
+string color
 geometry_msgs/Point[] points
