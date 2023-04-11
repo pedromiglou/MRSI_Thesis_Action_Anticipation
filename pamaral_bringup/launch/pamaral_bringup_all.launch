@@ -1,8 +1,8 @@
 <launch>
-    <arg name="mask_debug" default="true"/>
+    <arg name="mask_debug" default="false"/>
 
     <!--launch files for robot drivers, controllers and planner-->
-    <include file="$(find larcc_launches)/ur10e_control/script_control_ur10e.launch"/>
+    <!--<include file="$(find larcc_launches)/ur10e_control/script_control_ur10e.launch"/>-->
 
     <!--launch file for communicating with an orbbec pro camera-->
     <include file="$(find pamaral_perception_block)/launch/orbbec_camera.launch"/>
@@ -19,6 +19,36 @@
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="debug" value="-d" if="$(arg mask_debug)"/>
         <arg name="color_name" value="red"/>
+    </include>
+
+    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
+        <arg name="debug" value="-d" if="$(arg mask_debug)"/>
+        <arg name="color_name" value="light_blue"/>
+    </include>
+
+    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
+        <arg name="debug" value="-d" if="$(arg mask_debug)"/>
+        <arg name="color_name" value="dark_blue"/>
+    </include>
+
+    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
+        <arg name="debug" value="-d" if="$(arg mask_debug)"/>
+        <arg name="color_name" value="white"/>
+    </include>
+
+    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
+        <arg name="debug" value="-d" if="$(arg mask_debug)"/>
+        <arg name="color_name" value="yellow"/>
+    </include>
+
+    <!--<include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
+        <arg name="debug" value="-d" if="$(arg mask_debug)"/>
+        <arg name="color_name" value="orange"/>
+    </include>-->
+
+    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
+        <arg name="debug" value="-d" if="$(arg mask_debug)"/>
+        <arg name="color_name" value="violet"/>
     </include>
 
     <!-- Launch file to visualize details of the system using rviz -->

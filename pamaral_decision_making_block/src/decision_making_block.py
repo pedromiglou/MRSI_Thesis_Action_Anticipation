@@ -10,7 +10,7 @@ from geometry_msgs.msg import PointStamped
 from std_msgs.msg import String
 
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
-from pamaral_color_image_processing.msg import PointListStamped
+from pamaral_color_image_processing.msg import ObjectList
 
 
 class DecisionMakingBlock:
@@ -54,8 +54,8 @@ class DecisionMakingBlock:
         self.red_centroids = []
         self.green_centroids = []
         self.orientation = ""
-        self.red_centroids_subscriber = rospy.Subscriber("/red_centroids", PointListStamped, self.red_centroids_callback)
-        self.green_centroids_subscriber = rospy.Subscriber("/green_centroids", PointListStamped, self.green_centroids_callback)
+        self.red_centroids_subscriber = rospy.Subscriber("/red_centroids", ObjectList, self.red_centroids_callback)
+        self.green_centroids_subscriber = rospy.Subscriber("/green_centroids", ObjectList, self.green_centroids_callback)
         self.orientation_subscriber = rospy.Subscriber("/orientation", String, self.orientation_callback)
 
         self.user_pose = ""
