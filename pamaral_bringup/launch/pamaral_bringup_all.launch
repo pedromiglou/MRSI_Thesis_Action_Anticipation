@@ -2,7 +2,7 @@
     <arg name="mask_debug" default="false"/>
 
     <!--launch files for robot drivers, controllers and planner-->
-    <!--<include file="$(find larcc_launches)/ur10e_control/script_control_ur10e.launch"/>-->
+    <include file="$(find larcc_launches)/ur10e_control/script_control_ur10e.launch"/>
 
     <!--launch file for communicating with an orbbec pro camera-->
     <include file="$(find pamaral_perception_block)/launch/orbbec_camera.launch"/>
@@ -16,6 +16,7 @@
         <arg name="color_name" value="green"/>
     </include>
 
+    <!--
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="debug" value="-d" if="$(arg mask_debug)"/>
         <arg name="color_name" value="red"/>
@@ -29,7 +30,7 @@
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="debug" value="-d" if="$(arg mask_debug)"/>
         <arg name="color_name" value="dark_blue"/>
-    </include>
+    </include>-->
 
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="debug" value="-d" if="$(arg mask_debug)"/>
