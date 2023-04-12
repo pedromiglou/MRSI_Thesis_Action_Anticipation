@@ -15,8 +15,7 @@
         <arg name="debug" value="-d" if="$(arg mask_debug)"/>
         <arg name="color_name" value="green"/>
     </include>
-
-    <!--
+    
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="debug" value="-d" if="$(arg mask_debug)"/>
         <arg name="color_name" value="red"/>
@@ -30,7 +29,7 @@
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="debug" value="-d" if="$(arg mask_debug)"/>
         <arg name="color_name" value="dark_blue"/>
-    </include>-->
+    </include>
 
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="debug" value="-d" if="$(arg mask_debug)"/>
