@@ -10,7 +10,7 @@ from geometry_msgs.msg import PointStamped
 from std_msgs.msg import String
 
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
-from pamaral_color_image_processing.msg import ObjectList
+from pamaral_color_image_processing.msg import CentroidList
 
 
 class DecisionMakingBlock:
@@ -28,7 +28,7 @@ class DecisionMakingBlock:
 
     def __init__(self, position_list):
         # read registed positions
-        self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/joints_poses/"
+        self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/quaternion_poses/"
 
         try:
             f = open(self.path + position_list + ".json")
@@ -51,78 +51,61 @@ class DecisionMakingBlock:
             self.arm_gripper_comm.gripper_init()
 
         # subscribe data derived from sensors
-        self.red_centroids = []
-        self.green_centroids = []
-        self.orientation = ""
-        self.red_centroids_subscriber = rospy.Subscriber("/red_centroids", ObjectList, self.red_centroids_callback)
-        self.green_centroids_subscriber = rospy.Subscriber("/green_centroids", ObjectList, self.green_centroids_callback)
-        self.orientation_subscriber = rospy.Subscriber("/orientation", String, self.orientation_callback)
+        self.centroids = {"red": [], "dark_blue": [], "light_blue": [], "green": [],
+                          "yellow": [], "orange": [], "violet": [], "white": []}
+
+        self.centroids_subscriber = rospy.Subscriber("/centroids", CentroidList, self.centroids_callback)
 
         self.user_pose = ""
         self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)
 
         # define pieces and states
-        self.pieces = []
-        self.pieces_index = 0
-        self.holding = ''
+        self.piece = None
+        #self.pieces_index = 0
+        self.holding = None
         self.state = 'idle'
+
+        rospy.loginfo("Class Initialized")
 
         self.loop()
     
 
-    def orientation_callback(self, msg):
-        self.orientation = msg.data
+    # def orientation_callback(self, msg):
+    #     self.orientation = msg.data
 
-        if len(self.pieces)>0:
-            if self.pieces[1] == "4G" and self.pieces_index == 1 and self.orientation == "parallel":
-                self.pieces = ["8G", "8R", "4R", "4G", "2G"]
+    #     if len(self.pieces)>0:
+    #         if self.pieces[1] == "4G" and self.pieces_index == 1 and self.orientation == "parallel":
+    #             self.pieces = ["8G", "8R", "4R", "4G", "2G"]
 
-                #if self.state == "waiting" or self.state == "moving_closer":
-                if len(self.holding) > 0:
-                    self.state = "stop_wrong_guess"
-                    self.arm_gripper_comm.stop_arm()
+    #             #if self.state == "waiting" or self.state == "moving_closer":
+    #             if len(self.holding) > 0:
+    #                 self.state = "stop_wrong_guess"
+    #                 self.arm_gripper_comm.stop_arm()
             
-            elif self.pieces[1] == "8R" and self.pieces_index == 1 and self.orientation == "perpendicular":
-                self.pieces = ["8G", "4G", "2G"]
+    #         elif self.pieces[1] == "8R" and self.pieces_index == 1 and self.orientation == "perpendicular":
+    #             self.pieces = ["8G", "4G", "2G"]
 
-                #if self.state == "waiting" or self.state == "moving_closer":
-                if len(self.holding) > 0:
-                    self.state = "stop_wrong_guess"
-                    self.arm_gripper_comm.stop_arm()
+    #             #if self.state == "waiting" or self.state == "moving_closer":
+    #             if len(self.holding) > 0:
+    #                 self.state = "stop_wrong_guess"
+    #                 self.arm_gripper_comm.stop_arm()
 
 
-    def red_centroids_callback(self, msg):
-        red_centroids = msg.points
-        if len(red_centroids) > len(self.red_centroids):
-            self.red_centroids = red_centroids
+    def centroids_callback(self, msg):
+        centroids = msg.points
 
-            if self.state == "idle" and self.pieces_index == 0:
-                self.pieces = ["8R", "4R"]
+        if len(centroids) > len(self.centroids[msg.color]):
+            self.centroids[msg.color] = centroids
+
+            if self.state == "idle" and msg.color != "violet":
+                self.piece = msg.color
                 self.state = "picking_up"
             
-            if self.pieces_index < len(self.pieces):
-                if self.state == "waiting":
-                    self.state = "moving_closer"
+            #if (self.state == "picking_up" or self.state == "moving_closer") and msg.color == "violet":
+            #    self.state = "stop_wrong_guess"
 
         else:
-            self.red_centroids = red_centroids
-    
-
-    def green_centroids_callback(self, msg):
-        green_centroids = msg.points
-        if len(green_centroids) > len(self.green_centroids):
-            self.green_centroids = green_centroids
-
-            if self.state == "idle" and self.pieces_index == 0:
-                self.pieces = ["8G", "4G", "2G"]
-                self.state = "picking_up"
-
-            if self.pieces_index < len(self.pieces):                
-                if self.state == "waiting":
-                    self.state = "moving_closer"
-
-        else:
-            self.green_centroids = green_centroids
+            self.centroids[msg.color] = centroids
     
 
     def user_pose_callback(self, msg):
@@ -148,8 +131,8 @@ class DecisionMakingBlock:
             elif self.state == "picking_up":
                 self.picking_up_state()
             
-            elif self.state == "waiting":
-                self.waiting_state()
+            #elif self.state == "waiting":
+            #    self.waiting_state()
             
             elif self.state == "moving_closer":
                 self.moving_closer_state()
@@ -169,7 +152,7 @@ class DecisionMakingBlock:
 
 
     def picking_up_state(self):
-        p = self.pieces[self.pieces_index]
+        p = self.piece
         self.go_to(f'above_{p}')
         self.arm_gripper_comm.gripper_open_fast()
         self.go_to(f'{p}')
@@ -181,14 +164,14 @@ class DecisionMakingBlock:
         self.go_to('retreat')
 
         if self.state == "picking_up":
-            self.state = "waiting"
+            self.state = "moving_closer"
     
 
-    def waiting_state(self):
-        if self.pieces_index == 0:
-            self.state = "moving_closer"
-        else:
-            pass
+    #def waiting_state(self):
+    #    if self.pieces_index == 0:
+    #        self.state = "moving_closer"
+    #    else:
+    #        pass
     
     
     def moving_closer_state(self):
@@ -211,17 +194,19 @@ class DecisionMakingBlock:
             self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table1")
         
-        self.holding = ''
+        self.holding = None
 
-        self.pieces_index += 1
+        self.piece = None
+
+        #self.pieces_index += 1
         
         self.go_to('retreat')
 
         if self.state == "putting_down":
-            if self.pieces_index < len(self.pieces):
-                self.state = 'picking_up'
-            else:
-                self.state = 'idle'
+            #if self.pieces_index < len(self.pieces):
+            #    self.state = 'picking_up'
+            #else:
+            self.state = 'idle'
 
     
     def stop_side_switch_state(self):
@@ -253,7 +238,7 @@ class DecisionMakingBlock:
 
     def go_to(self, pos):
         pos = self.positions[pos]
-        self.arm_gripper_comm.move_arm_to_joints_state(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
+        self.arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6])
 
 
 def main():
