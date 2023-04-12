@@ -103,6 +103,7 @@ class DecisionMakingBlock:
             
             if (self.state == "picking_up" or self.state == "moving_closer") and msg.color == "violet":
                 self.state = "stop_wrong_guess"
+                self.arm_gripper_comm.stop_arm()
 
         else:
             self.centroids[msg.color] = centroids
@@ -153,11 +154,11 @@ class DecisionMakingBlock:
 
     def picking_up_state(self):
         p = self.piece
-        self.go_to(f'above_{p}')
+        self.go_to(f'above_{p}1')
         self.arm_gripper_comm.gripper_open_fast()
-        self.go_to(f'{p}')
+        self.go_to(f'{p}1')
         self.arm_gripper_comm.gripper_close_fast()
-        self.go_to(f'above_{p}')
+        self.go_to(f'above_{p}1')
 
         self.holding = p
 
@@ -211,7 +212,9 @@ class DecisionMakingBlock:
     
     def stop_side_switch_state(self):
         #self.go_to('retreat')
-        self.arm_gripper_comm.stop_arm()
+        #self.arm_gripper_comm.stop_arm()
+
+        time.sleep(0.5)
 
         if self.state == "stop_side_switch":
             self.state = "moving_closer"
