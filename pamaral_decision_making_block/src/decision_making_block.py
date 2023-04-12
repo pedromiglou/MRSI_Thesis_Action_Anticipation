@@ -51,8 +51,8 @@ class DecisionMakingBlock:
             self.arm_gripper_comm.gripper_init()
 
         # subscribe data derived from sensors
-        self.centroids = {"red": [], "dark_blue": [], "light_blue": [], "green": [],
-                          "yellow": [], "orange": [], "violet": [], "white": []}
+        self.centroids = {"red": None, "dark_blue": None, "light_blue": None, "green": None,
+                          "yellow": None, "orange": None, "violet": None, "white": None}
 
         self.centroids_subscriber = rospy.Subscriber("/centroids", CentroidList, self.centroids_callback)
 
@@ -94,15 +94,15 @@ class DecisionMakingBlock:
     def centroids_callback(self, msg):
         centroids = msg.points
 
-        if len(centroids) > len(self.centroids[msg.color]):
+        if self.centroids[msg.color] is not None and len(centroids) > len(self.centroids[msg.color]):
             self.centroids[msg.color] = centroids
 
             if self.state == "idle" and msg.color != "violet":
                 self.piece = msg.color
                 self.state = "picking_up"
             
-            #if (self.state == "picking_up" or self.state == "moving_closer") and msg.color == "violet":
-            #    self.state = "stop_wrong_guess"
+            if (self.state == "picking_up" or self.state == "moving_closer") and msg.color == "violet":
+                self.state = "stop_wrong_guess"
 
         else:
             self.centroids[msg.color] = centroids
