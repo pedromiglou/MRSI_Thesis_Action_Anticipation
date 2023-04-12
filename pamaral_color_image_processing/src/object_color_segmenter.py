@@ -70,7 +70,7 @@ class ObjectColorSegmenter:
             (cX, cY) = centroids[i]
             cX, cY = int(cX+193), int(cY+17)
 
-            if area > 250:
+            if area > 150:
                 pieces.append((cX, cY))
         
         self.pieces.append(pieces[1:])

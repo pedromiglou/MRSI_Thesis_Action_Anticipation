@@ -214,7 +214,7 @@ class DecisionMakingBlock:
         #self.go_to('retreat')
         #self.arm_gripper_comm.stop_arm()
 
-        time.sleep(0.5)
+        time.sleep(1)
 
         if self.state == "stop_side_switch":
             self.state = "moving_closer"
@@ -223,13 +223,13 @@ class DecisionMakingBlock:
     def stop_wrong_guess_state(self):
         #self.arm_gripper_comm.stop_arm()
 
-        time.sleep(0.5)
+        time.sleep(1)
 
         if self.holding != '':
-            self.go_to(f"above_{self.holding}")
-            self.go_to(f"{self.holding}")
+            self.go_to(f"above_{self.holding}1")
+            self.go_to(f"{self.holding}1")
             self.arm_gripper_comm.gripper_open_fast()
-            self.go_to(f"above_{self.holding}")
+            self.go_to(f"above_{self.holding}1")
 
             self.holding = ''
         
