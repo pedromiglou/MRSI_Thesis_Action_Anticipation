@@ -7,8 +7,6 @@
     </include>
 
     <!--Depth and IR Camera-->
-    <remap from="/camera/color/image_raw" to="/_"/>
-
     <include file="$(find astra_camera)/launch/astra_pro.launch">
         <arg name="enable_color" value="false"/>
         <arg name="use_uvc_camera" value="false"/>
