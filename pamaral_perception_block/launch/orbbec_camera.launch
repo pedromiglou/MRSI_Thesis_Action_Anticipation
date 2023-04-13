@@ -1,22 +1,16 @@
 <launch>
+    <!--Color Camera-->
     <remap from="/usb_cam/image_raw" to="/camera/color/image_raw"/>
 
-    <!--Color Camera-->
-    <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
-        <param name="video_device" value="/dev/video4" />
-        <param name="image_width" value="640" />
-        <param name="image_height" value="480" />
-        <param name="pixel_format" value="yuyv" />
-        <param name="color_format" value="yuv422p" />
-        <param name="camera_frame_id" value="usb_cam" />
-        <param name="io_method" value="mmap"/>
-    </node>
-
-    <remap from="/camera/color/image_raw" to="/_"/>
+    <include file="$(find pamaral_perception_block)/launch/usb_cam.launch">
+        <arg name="image_view" value="false" />
+    </include>
 
     <!--Depth and IR Camera-->
+    <remap from="/camera/color/image_raw" to="/_"/>
+
     <include file="$(find astra_camera)/launch/astra_pro.launch">
-        <param name="enable_color" value="false"/>
-        <param name="use_uvc_camera" value="false"/>
+        <arg name="enable_color" value="false"/>
+        <arg name="use_uvc_camera" value="false"/>
     </include>
 </launch>
