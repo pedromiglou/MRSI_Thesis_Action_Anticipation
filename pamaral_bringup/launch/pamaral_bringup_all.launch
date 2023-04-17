@@ -10,6 +10,9 @@
     <!--launch file to locate human using the depth images-->
     <include file="$(find pamaral_depth_image_processing)/launch/human_locater.launch"/>
 
+    <!--launch file to color image preprocessing-->
+    <include file="$(find pamaral_color_image_processing)/launch/image_preprocessing.launch"/>
+
     <!--launch file to locate objects using the color images-->
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="debug" value="-d" if="$(arg mask_debug)"/>

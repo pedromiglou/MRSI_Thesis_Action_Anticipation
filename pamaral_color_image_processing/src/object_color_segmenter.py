@@ -32,12 +32,11 @@ class ObjectColorSegmenter:
 
         self.pieces = []
 
-        #self.centroids_publisher = rospy.Publisher(f"/{self.color}_centroids", CentroidList, queue_size=1)
         self.centroids_publisher = rospy.Publisher(f"/centroids", CentroidList, queue_size=1)
 
         self.bridge = CvBridge()
         self.mask = None
-        self.image_subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.image_callback)
+        self.image_subscriber = rospy.Subscriber("/preprocessed_image", Image, self.image_callback)
         
         if self.debug:
             self.showMask()
@@ -45,14 +44,11 @@ class ObjectColorSegmenter:
 
     def image_callback(self, msg):
         try:
-            img_bgr = self.bridge.imgmsg_to_cv2(msg, "bgr8")
-            img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
-
-            # create ROI
-            img = img[17:474, 193:454]
+            img = self.bridge.imgmsg_to_cv2(msg)
 
         except:
             print("Error reading color image")
+            return
         
         # process mask
         self.mask = cv2.inRange(img, self.c_mins, self.c_maxs)
