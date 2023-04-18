@@ -8,7 +8,11 @@
 
     <!--Depth and IR Camera-->
     <include file="$(find astra_camera)/launch/astra_pro.launch">
+        <arg name="enable_point_cloud" value="false"/>
         <arg name="enable_color" value="false"/>
+        <arg name="depth_fps" default="10"/>
+        <arg name="enable_ir" default="false"/>
+        <arg name="publish_tf" default="false"/>
         <arg name="use_uvc_camera" value="false"/>
     </include>
 </launch>

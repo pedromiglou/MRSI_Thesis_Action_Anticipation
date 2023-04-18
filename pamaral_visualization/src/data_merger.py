@@ -30,14 +30,11 @@ class DataMerger:
         self.cimage = None
         self.cimage_subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.cimage_callback)
 
-
     def centroids_callback(self, msg):
         self.centroids[msg.color] = msg.points
 
-
     def user_pose_callback(self, msg):
         self.user_pose = msg.point
-
 
     def cimage_callback(self, msg):
         try:
@@ -59,7 +56,7 @@ class DataMerger:
 
         except:
             print("Error reading color image")
-    
+
 
 def main():
     # ---------------------------------------------------
@@ -71,8 +68,6 @@ def main():
     data_merger = DataMerger()
 
     rospy.spin()
-
-    cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':

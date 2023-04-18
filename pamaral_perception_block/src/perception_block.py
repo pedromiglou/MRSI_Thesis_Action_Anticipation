@@ -7,7 +7,7 @@ from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 
 
-class Perception_Block:
+class PerceptionBlock:
 
     def __init__(self) -> None:
         self.bridge = CvBridge()
@@ -15,9 +15,8 @@ class Perception_Block:
         self.cimage_subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.cimage_callback)
         self.dimage = None
         self.dimage_subscriber = rospy.Subscriber("/camera/depth/image_raw", Image, self.dimage_callback)
-        
-        self.showImages()
-    
+
+        self.show_images()
 
     def cimage_callback(self, msg):
         try:
@@ -27,7 +26,6 @@ class Perception_Block:
         except:
             print("Error reading color image")
 
-
     def dimage_callback(self, msg):
         try:
             self.dimage = self.bridge.imgmsg_to_cv2(msg, "passthrough")
@@ -36,8 +34,7 @@ class Perception_Block:
             print("Error reading depth image")
             return
 
-
-    def showImages(self):
+    def show_images(self):
         while True:
             if self.cimage is not None and self.dimage is not None:
                 cv2.imshow("Depth Image", self.dimage)
@@ -56,7 +53,7 @@ def main():
     default_node_name = 'perception_block'
     rospy.init_node(default_node_name, anonymous=False)
 
-    perception_block = Perception_Block()
+    perception_block = PerceptionBlock()
 
     rospy.spin()
 

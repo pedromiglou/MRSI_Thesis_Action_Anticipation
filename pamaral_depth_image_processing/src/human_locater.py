@@ -16,21 +16,20 @@ class HumanLocater:
         self.pose_publisher = rospy.Publisher("/user_pose", PointStamped, queue_size=1)
         self.dimage_subscriber = rospy.Subscriber("/camera/depth/image_raw", Image, self.dimage_callback)
 
-
     def dimage_callback(self, msg):
         try:
             dimage = self.bridge.imgmsg_to_cv2(msg, "passthrough")
 
-            dimage = dimage.copy()[:,350:]
+            dimage = dimage.copy()[:, 350:]
 
-            dimage[dimage==0] = np.max(dimage)
+            dimage[dimage == 0] = np.max(dimage)
 
             c = np.argmin(dimage)
 
             msg = PointStamped()
             msg.header.stamp = rospy.Time.now()
             msg.header.frame_id = "/camera/depth/image_raw"
-            msg.point = Point(c%290+350,c/290,0)
+            msg.point = Point(c % 290 + 350, c / 290, 0)
             self.pose_publisher.publish(msg)
 
         except:

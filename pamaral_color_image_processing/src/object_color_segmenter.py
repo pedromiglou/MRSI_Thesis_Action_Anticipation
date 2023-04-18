@@ -17,13 +17,10 @@ from pamaral_color_image_processing.msg import CentroidList
 class ObjectColorSegmenter:
     """This node should receive color images and detect objects of a certain color using segmentation."""
 
-    def __init__(self, debug, color):
-        self.debug = debug
+    def __init__(self, color):
         self.color = color
-        
-        path = f"/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_color_image_processing/config/{self.color}.json"
 
-        f = open(path)
+        f = open(f"/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_color_image_processing/config/{self.color}.json")
         c_limits = json.load(f)['limits']
         f.close()
 
@@ -32,15 +29,11 @@ class ObjectColorSegmenter:
 
         self.pieces = []
 
-        self.centroids_publisher = rospy.Publisher(f"/centroids", CentroidList, queue_size=1)
+        self.centroids_publisher = rospy.Publisher("/centroids", CentroidList, queue_size=1)
 
         self.bridge = CvBridge()
-        self.mask = None
+        self.mask_publisher = rospy.Publisher(f"/{self.color}_mask", Image, queue_size=1)
         self.image_subscriber = rospy.Subscriber("/preprocessed_image", Image, self.image_callback)
-        
-        if self.debug:
-            self.showMask()
-    
 
     def image_callback(self, msg):
         try:
@@ -49,26 +42,26 @@ class ObjectColorSegmenter:
         except:
             print("Error reading color image")
             return
-        
+
         # process mask
-        self.mask = cv2.inRange(img, self.c_mins, self.c_maxs)
+        mask = cv2.inRange(img, self.c_mins, self.c_maxs)
 
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(10,10))
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
 
-        self.mask = cv2.morphologyEx(self.mask, cv2.MORPH_CLOSE, kernel)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
         # detect objects
-        (numLabels, labels, stats, centroids) = cv2.connectedComponentsWithStats(self.mask)
+        (numLabels, labels, stats, centroids) = cv2.connectedComponentsWithStats(mask)
 
         pieces = []
         for i in range(len(centroids)):
             area = stats[i, cv2.CC_STAT_AREA]
             (cX, cY) = centroids[i]
-            cX, cY = int(cX+193), int(cY+17)
+            cX, cY = int(cX + 193), int(cY + 17)
 
             if area > 150:
                 pieces.append((cX, cY))
-        
+
         self.pieces.append(pieces[1:])
         self.pieces = self.pieces[-3:]
 
@@ -92,28 +85,17 @@ class ObjectColorSegmenter:
                 for j in range(len(clustering.labels_)):
                     if clustering.labels_[j] == i:
                         l.append(pieces[j])
-                
+
                 centroids.append(l[0])
 
-        # publish centroids
+        # publish centroids and mask
         msg = CentroidList()
         msg.header.stamp = rospy.Time.now()
         msg.header.frame_id = "/camera/color/image_raw"
         msg.color = self.color
-        msg.points = [Point(c[0],c[1],0) for c in centroids]
+        msg.points = [Point(c[0], c[1], 0) for c in centroids]
         self.centroids_publisher.publish(msg)
-
-
-    def showMask(self):
-        while True:
-            if self.mask is not None:
-                cv2.imshow(f"{self.color} mask", self.mask)
-
-                key = cv2.waitKey(100)
-
-                if key == ord('q'):  # q for quit
-                    print('You pressed q ... aborting')
-                    break
+        self.mask_publisher.publish(self.bridge.cv2_to_imgmsg(mask))
 
 
 def main():
@@ -124,18 +106,14 @@ def main():
     rospy.init_node(default_node_name, anonymous=False)
 
     parser = argparse.ArgumentParser(description="Arguments for object color segmenter")
-    parser.add_argument("-d", "--debug", action='store_true',
-                        help="if present, then the masks are shown")
     parser.add_argument("-c", "--color", type=str, default="green",
                         help="color to be segmented")
 
     args, _ = parser.parse_known_args()
 
-    object_color_segmenter = ObjectColorSegmenter(debug = args.debug, color = args.color)
+    object_color_segmenter = ObjectColorSegmenter(args.color)
 
     rospy.spin()
-
-    cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
