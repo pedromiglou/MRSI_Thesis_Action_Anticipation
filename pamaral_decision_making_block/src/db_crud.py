@@ -7,6 +7,7 @@ import rospy
 import yaml
 
 from db_models import Base, Flag, Probability
+from pamaral_decision_making_block.srv import GetProbabilities, GetProbabilitiesResponse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -21,6 +22,10 @@ class Database:
         self.engine = create_engine('postgresql+psycopg2://postgres:password@localhost:5432/postgres')
 
         self.Session = sessionmaker(bind=self.engine)
+
+        self.recreate_db()
+
+        rospy.Service("get_probabilities", GetProbabilities, self.get_probabilities)
 
     def recreate_db(self):
         # recreate all tables
@@ -46,22 +51,28 @@ class Database:
         colors = set(colors)
 
         for color1 in colors:
-            p = Probability(color1=color1, color2="", color3="", value=len([f for f in flags if f.color1==color1])/len(flags))
+            p = Probability(color1=color1, color2="", color3="",
+                            value=len([f for f in flags if f.color1 == color1])/len(flags))
             s.add(p)
-            if len([f for f in flags if f.color1==color1]) != 0:
+            if len([f for f in flags if f.color1 == color1]) != 0:
                 for color2 in colors:
-                    if color2!=color1:
+                    if color2 != color1:
                         p = Probability(color1=color1, color2=color2, color3="",
-                                        value=len([f for f in flags if f.color1 == color1 and f.color2==color2]) / len([f for f in flags if f.color1==color1]))
+                                        value=len([f for f in flags if f.color1 == color1 and f.color2 == color2]) /
+                                        len([f for f in flags if f.color1 == color1]))
                         s.add(p)
-                        if len([f for f in flags if f.color1 == color1 and f.color2==color2]) != 0:
+                        if len([f for f in flags if f.color1 == color1 and f.color2 == color2]) != 0:
                             for color3 in colors:
-                                if color3!=color1 and color3!=color2:
+                                if color3 != color1 and color3 != color2:
                                     p = Probability(color1=color1, color2=color2, color3=color3,
-                                            value=len([f for f in flags if f.color1 == color1 and f.color2==color2 and f.color3==color3]) / len([f for f in flags if f.color1 == color1 and f.color2==color2]))
+                                                    value=len([f for f in flags if f.color1 == color1 and
+                                                               f.color2 == color2 and f.color3 == color3]) /
+                                                    len([f for f in flags if f.color1 == color1 and f.color2 == color2]))
                                     s.add(p)
 
         s.commit()
+
+        self.colors = colors
 
         s.close()
 
@@ -81,6 +92,43 @@ class Database:
 
         return flags
 
+    def get_probabilities(self, req):
+        s = self.Session()
+
+        d = dict()
+
+        for c in self.colors:
+            d[c] = 0
+
+        if len(req.color1) == 0:
+            probs = s.query(Probability).filter_by(color2="").all()
+
+            for p in probs:
+                d[p.color1] = p.value
+
+        elif len(req.color2) == 0:
+            probs = s.query(Probability).filter_by(color1=req.color1, color3="").all()
+
+            for p in probs:
+                d[p.color1] = p.value
+
+        else:
+            probs = s.query(Probability).filter_by(color1=req.color1, color2=req.color2).all()
+
+            for p in probs:
+                d[p.color1] = p.value
+
+        s.close()
+
+        colors = []
+        probs = []
+
+        for k, v in d.items():
+            colors.append(k)
+            probs.append(v)
+
+        return GetProbabilitiesResponse(colors=colors, probabilities=probs)
+
 
 def main():
     # ---------------------------------------------------
@@ -90,10 +138,6 @@ def main():
     rospy.init_node(default_node_name, anonymous=False)
 
     database = Database()
-
-    database.recreate_db()
-
-    print(database.get_flags())
 
     rospy.spin()
 
