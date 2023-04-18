@@ -14,7 +14,6 @@ class ImagePreprocessing:
         self.bridge = CvBridge()
         self.publisher = rospy.Publisher("/preprocessed_image", Image, queue_size=1)
         self.subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.image_callback)
-    
 
     def image_callback(self, msg):
         # read as bgr8
@@ -24,7 +23,7 @@ class ImagePreprocessing:
         except:
             print("Error reading color image")
             return
-        
+
         # crop to ROI
         img = img[17:474, 193:454]
 
