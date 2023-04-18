@@ -43,10 +43,7 @@ https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_deskt
 
 - mais posições intermédias
 - waypoints
-- make the color limits be read from an argument
 - base de dados com as bandeiras possíveis, probabilidades de uma cor dado outra ou outras 2
 - formalizar as regras do problema
-- criar as peças
-- criar a interface com peças pequenas para escolher a cor manualmente (roxo para comunicar erro)
 - ter uma segunda versão que faça antecipação usando as probabilidades
 - antecipar a posição do utilizador não só com a posição mas também a velocidade

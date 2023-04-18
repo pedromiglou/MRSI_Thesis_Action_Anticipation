@@ -6,7 +6,7 @@
 import rospy
 import yaml
 
-from pamaral_decision_making_block.db_models import Base, Flag
+from db_models import Base, Flag, Probability
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -23,14 +23,43 @@ class Database:
         self.Session = sessionmaker(bind=self.engine)
 
     def recreate_db(self):
+        # recreate all tables
         Base.metadata.drop_all(self.engine)
         Base.metadata.create_all(self.engine)
 
         s = self.Session()
 
+        # add flags to database
         for data in yaml.load_all(open("/home/miglou/catkin_ws/src/MRSI_Thesis/data/flags.yaml")):
             flag = Flag(**data)
             s.add(flag)
+
+        s.commit()
+
+        # add probabilities to database
+        # color1 color2 color3 value
+        flags = s.query(Flag).all()
+
+        colors = []
+        for f in flags:
+            colors.extend([f.color1, f.color2, f.color3])
+        colors = set(colors)
+
+        for color1 in colors:
+            p = Probability(color1=color1, color2="", color3="", value=len([f for f in flags if f.color1==color1])/len(flags))
+            s.add(p)
+            if len([f for f in flags if f.color1==color1]) != 0:
+                for color2 in colors:
+                    if color2!=color1:
+                        p = Probability(color1=color1, color2=color2, color3="",
+                                        value=len([f for f in flags if f.color1 == color1 and f.color2==color2]) / len([f for f in flags if f.color1==color1]))
+                        s.add(p)
+                        if len([f for f in flags if f.color1 == color1 and f.color2==color2]) != 0:
+                            for color3 in colors:
+                                if color3!=color1 and color3!=color2:
+                                    p = Probability(color1=color1, color2=color2, color3=color3,
+                                            value=len([f for f in flags if f.color1 == color1 and f.color2==color2 and f.color3==color3]) / len([f for f in flags if f.color1 == color1 and f.color2==color2]))
+                                    s.add(p)
 
         s.commit()
 
@@ -61,6 +90,10 @@ def main():
     rospy.init_node(default_node_name, anonymous=False)
 
     database = Database()
+
+    database.recreate_db()
+
+    print(database.get_flags())
 
     rospy.spin()
 
