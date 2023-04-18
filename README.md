@@ -47,3 +47,4 @@ https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_deskt
 - formalizar as regras do problema
 - ter uma segunda versão que faça antecipação usando as probabilidades
 - antecipar a posição do utilizador não só com a posição mas também a velocidade
+- aprender transformers
