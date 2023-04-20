@@ -110,13 +110,15 @@ class Database:
             probs = s.query(Probability).filter_by(color1=req.color1, color3="").all()
 
             for p in probs:
-                d[p.color1] = p.value
+                if p.color2 != "":
+                    d[p.color2] = p.value
 
         else:
             probs = s.query(Probability).filter_by(color1=req.color1, color2=req.color2).all()
 
             for p in probs:
-                d[p.color1] = p.value
+                if p.color3 != "":
+                    d[p.color3] = p.value
 
         s.close()
 

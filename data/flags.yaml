@@ -1,4 +1,4 @@
-# orange, dark-blue, yellow, green, red, light-blue, white, violet
+# orange, dark_blue, yellow, green, red, light_blue, white, violet
 country: Côte d'Ivoire
 color1: orange
 color2: white
@@ -15,14 +15,14 @@ color2: white
 color3: red
 ---
 country: France
-color1: dark-blue
+color1: dark_blue
 color2: white
 color3: red
 ---
 country: Guatemala
-color1: light-blue
+color1: light_blue
 color2: white
-color3: light-blue
+color3: light_blue
 ---
 country: Guinea
 color1: red
@@ -46,7 +46,7 @@ color3: red
 ---
 country: Mongolia
 color1: red
-color2: dark-blue
+color2: dark_blue
 color3: red
 ---
 country: Nigeria
@@ -55,7 +55,7 @@ color2: white
 color3: green
 ---
 country: Romania
-color1: dark-blue
+color1: dark_blue
 color2: yellow
 color3: red
 ---
@@ -65,6 +65,6 @@ color2: yellow
 color3: red
 ---
 country: St. Vincent Grenadines
-color1: dark-blue
+color1: dark_blue
 color2: yellow
 color3: green
