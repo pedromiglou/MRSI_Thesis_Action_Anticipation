@@ -283,7 +283,7 @@ class DecisionMakingBlock:
 
     def go_to(self, pos):
         pos = self.positions[pos]
-        self.arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6], vel=0.5, a=0.1)
+        self.arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6], vel=0.3, a=0.3)
 
 
 def main():
