@@ -11,7 +11,7 @@ from std_msgs.msg import String
 
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 from pamaral_color_image_processing.msg import CentroidList
-#from pamaral_decision_making_block.scripts.crud import get_flags
+from pamaral_decision_making_block.srv import GetProbabilities, GetProbabilitiesRequest
 
 
 class DecisionMakingBlock:
@@ -60,13 +60,17 @@ class DecisionMakingBlock:
         self.user_pose = ""
         self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)
 
+        # wait for database service
+        rospy.wait_for_service('get_probabilities')
+        self.get_probabilities_proxy = rospy.ServiceProxy('get_probabilities', GetProbabilities)
+
         # define pieces and states
         self.piece = None
         #self.pieces_index = 0
         self.holding = None
         self.state = 'idle'
 
-        #self.blocks = []
+        self.blocks = []
 
         rospy.loginfo("Class Initialized")
 
@@ -152,7 +156,26 @@ class DecisionMakingBlock:
 
 
     def idle_state(self):
-        pass
+        if len(self.blocks) == 0:
+            return
+        elif len(self.blocks) == 1:
+            resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[0], color2=""))
+        elif len(self.blocks) == 2:
+            resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[0], color2=self.blocks[1]))
+
+        colors, probabilities = resp.colors, resp.probabilities
+
+        colors = zip(colors, probabilities)
+
+        colors = sorted(colors, key=lambda x: x[1], reverse=True)
+
+        self.piece = colors[0][0]
+
+        print(self.blocks)
+        print(resp)
+
+        if self.state == "idle":
+            self.state = "picking_up"
 
 
     def picking_up_state(self):
@@ -191,6 +214,12 @@ class DecisionMakingBlock:
 
 
     def putting_down_state(self):
+        self.blocks.append(self.piece)
+
+        self.holding = None
+
+        self.piece = None
+
         if self.user_pose == "left":
             self.go_to("table2")
             self.arm_gripper_comm.gripper_open_fast()
@@ -199,10 +228,9 @@ class DecisionMakingBlock:
             self.go_to("table1")
             self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table1")
-        
-        self.holding = None
 
-        self.piece = None
+        if len(self.blocks) == 3:
+            self.blocks = []
 
         #if len(self.blocks)==1:
         #    flags = get_flags(self.blocks[0])
@@ -255,7 +283,7 @@ class DecisionMakingBlock:
 
     def go_to(self, pos):
         pos = self.positions[pos]
-        self.arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6])
+        self.arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6], vel=0.5, a=0.1)
 
 
 def main():

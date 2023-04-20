@@ -47,6 +47,9 @@
     <!-- Launch file to visualize details of the system using rviz -->
     <include file="$(find pamaral_visualization)/launch/visualization.launch"/>
 
+    <!-- Database node -->
+    <include file="$(find pamaral_decision_making_block)/launch/database.launch"/>
+
     <!--launch file for the decision making block-->
     <!-- <include file="$(find pamaral_decision_making_block)/launch/decision_making_block.launch"/> -->
 </launch>
