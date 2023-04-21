@@ -2,16 +2,7 @@
 
 MRSI Thesis Repository
 
-## Teacher Structure
-
-- introdução
-- definição do problema (possivelmente num capitulo a parte)
-- estado da arte - ferramentas importantes, background material(conhecimento relevante para o problema assumido adquirido), revisão de artigos
-- planeamento - divisão das tarefas e calendarização (maybe diagrama de Grant)
-- conclusão
-- 15/30 páginas
-
-## Search Keywords
+## Paper Search Keywords
 
 ### Review Paper
 combination of keywords was used: (‘‘human–robot
@@ -39,12 +30,10 @@ https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_deskt
 
 - https://repository.kaust.edu.sa/handle/10754/673882
 
-## Future Work
+## Backlog
 
-- mais posições intermédias
-- waypoints
-- base de dados com as bandeiras possíveis, probabilidades de uma cor dado outra ou outras 2
-- formalizar as regras do problema
-- ter uma segunda versão que faça antecipação usando as probabilidades
-- antecipar a posição do utilizador não só com a posição mas também a velocidade
-- aprender transformers
+- antecipate user side with both position and velocity
+- learn transformers neural networks
+- finish up wrong guess state
+- record new demonstration
+- fix socket problem
