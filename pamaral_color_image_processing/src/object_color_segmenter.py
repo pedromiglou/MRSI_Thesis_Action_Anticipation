@@ -20,7 +20,7 @@ class ObjectColorSegmenter:
     def __init__(self, color):
         self.color = color
 
-        f = open(f"/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_color_image_processing/config/{self.color}.json")
+        f = open(f"/home/miglou/catkin_ws/src/MRSI_Thesis_Action_Anticipation/pamaral_color_image_processing/config/{self.color}.json")
         c_limits = json.load(f)['limits']
         f.close()
 
