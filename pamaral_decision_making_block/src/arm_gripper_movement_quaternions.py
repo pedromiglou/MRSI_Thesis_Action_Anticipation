@@ -8,7 +8,7 @@ import time
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 
 try:
-    f = open("/home/miglou/catkin_ws/src/MRSI_Thesis/pamaral_decision_making_block/config/quaternion_poses/positions.json")
+    f = open("/home/miglou/catkin_ws/src/MRSI_Thesis_Action_Anticipation/pamaral_decision_making_block/config/quaternion_poses/positions.json")
     positions = json.load(f)
     positions = positions["positions"]
     positions = list(positions.items())
