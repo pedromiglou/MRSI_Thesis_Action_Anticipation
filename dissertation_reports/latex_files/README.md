@@ -1,9 +1,12 @@
-# ua-thesis-template
+# University of Aveiro Thesis Template
 
 A thesis LaTeX template that complies with the University of Aveiro's
 guidelines and provides a simple CLI workflow around `make` that was developed
-and tested for cross-compatibility on Linux (Slackware, ArchLinux) and macOS
-(High Sierra 10.13.6).
+and tested for cross-compatibility on Linux (Slackware, ArchLinux, Debian, Ubuntu) and macOS.
+
+This template was developed by professors and students. 
+We will try to keep up to date with thesis requirements but some discrepancies may exist.
+Feel free to open issues and pull requests with new options, packages and fixes.
 
 ## Usage
 
@@ -74,17 +77,26 @@ I've chosen the last of these options, as it seems to be the most flexible and
 easy-to-use alternative. Here follow the main commands you will need should you
 choose to go along with this too.
 ```
-$ git subtree add  --prefix $DESTDIR git@github.com:fabiomaia/ua-thesis-template.git master --squash;
-$ git subtree pull --prefix $DESTDIR git@github.com:fabiomaia/ua-thesis-template.git master --squash;
+$ mkdir mythesis
+$ git init .
+$ git commit --allow-empty -n -m "Initial commit."
+$ git subtree add  --prefix document https://github.com/detiuaveiro/ua-thesis-template.git master --squash;
+$ git subtree pull --prefix document https://github.com/detiuaveiro/ua-thesis-template.git master --squash;
 ```
 
-They should be self explanatory, but:
-- The first of these will pull this repository for the first time to
-  `$DESTDIR`.
+- The first line will init a new repository for your thesis
+- It will create an initial commit
+- It will pull this repository for the first time to `document`
 - The second is used for subsequent pulls.
 
-This assumes that you are within an already initialized git repo. Look for more
-on the documentation.
+The result should be a git repository for your thesis work. In the `$DESTDIR` (e.g. `document`)
+you will have the document to edit. If you wish you can add a reference to another git repository
+to track your own changes.
+
+## Use as a template in github
+
+Please check the [github instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
+to create your own repository using this as a template.
 
 ## Use it in [Overleaf](https://www.overleaf.com)
 
@@ -92,8 +104,9 @@ It is possible to use this template in overleaf.
 
 To enable it:
 
-- in `matter.tex`change `\def\useoverleaf{0}`to 1
-- add `fc-portuges.def`to the project the file be can found in [here](http://mirrors.ctan.org/install/macros/latex/contrib/fmtcount.tds.zip) 
+- in `matter.tex` change `\def\useoverleaf{0}`to 1
+- add `fc-portuges.def` to the project the file be can found in [here](http://mirrors.ctan.org/install/macros/latex/contrib/fmtcount.tds.zip) 
+- change the main document to `matter.tex`
 
 ## Dependencies
 
