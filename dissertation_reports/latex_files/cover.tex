@@ -40,12 +40,12 @@
 %%% |             |   | demac      |
 %%% |             |   | decivil    |
 %%% |             |   | dem        |
-%%% |             |   | fis        |
+%%% |             |   | dfis        |
 %%% |             |   | dlc        |
 %%% |             |   | dmat       |
 %%% |             |   | dq         |
 %%% |             |   | dcm        |
-%%% |             |   | geo        |
+%%% |             |   | dgeo        |
 %%% ---------------   --------------
 %% Import the UA thesis template
 \usepackage[engineering,deti]{uaThesisTemplate}
@@ -66,7 +66,7 @@
 %%% This package is only used to create a dummy
 %%%  text for the abstract. You can remove the
 %%%  following line in the final document.
-\usepackage{blindtext}
+%\usepackage{blindtext}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,9 +79,20 @@
 \ThesisYear{\the\year}
 
 
-%%% Uncomment one of the following
+%%% Uncomment one of the following options:
 %\DocumentTypeThesis
-\DocumentTypeDissertation
+\DocumentTypeThesisProposal
+%\DocumentTypeDissertation
+
+%%% Uncomment if you are a student of a MAP Doctoral program 
+%%% http://www.map.edu.pt/
+%%% | area                | identifier |
+%%% | Biology of Plants   | bioplant   |
+%%% | Computer Science    | i          |
+%%% | Physics             | fis        |
+%%% | Telecommunications  | tele       |
+
+%\MAPProgram{i}
 
 %%% Edit author's name
 %% Author's full name
@@ -90,7 +101,7 @@
 %%% Edit thesis title in Portuguese
 %% Thesis Mandatory Title in Portuguese
 %% MÁXIMO 70 CARACTERES
-\Title{\selectlanguage{portuguese}Antecipação de Ações pelo Robô em Tarefas de Montagem Colaborativa }
+\TitlePT{Antecipação de Ações pelo Robô em Tarefas de Montagem Colaborativa}
 
 %%% OPTIONAL: you can write your thesis title in
 %%%  other languages. You can repeat the following
@@ -98,7 +109,7 @@
 %%%  if you only want the portuguese title.
 %% Optional Titles in additional languages.
 %% MAX 70 CHARACTERS
-\Title{\selectlanguage{english}Robot Action Anticipation for Collaborative Assembly Tasks }
+\TitleEN{Robot Action Anticipation for Collaborative Assembly Tasks}
 
 %%% OPTIONAL: add a quotation if you like.
 %% Optional Quotation
@@ -171,7 +182,7 @@ the problem in a way that will allow a solution}{Bertrand Russell}
 %%% Don't remove the \selectlanguage statement or you will end with incorrect hyphenation
 %% Mandatory Keywords and Abstract in Portuguese
 \Abstract{Palavras Chave}{texto livro, arquitetura, história, construção, materiais de construção, saber tradicional.}
-         {Resumo}{\selectlanguage{portuguese}\blindtext[3]}
+         {Resumo}{\selectlanguage{portuguese}Um resumo é um pequeno apanhado de um trabalho mais longo (como uma tese, dissertação ou trabalho de pesquisa). O resumo relata de forma concisa os objetivos e resultados da sua pesquisa, para que os leitores saibam exatamente o que se aborda no seu documento.\\Embora a estrutura possa variar um pouco dependendo da sua área de estudo, o seu resumo deve descrever o propósito do seu trabalho, os métodos que você usou e as conclusões a que chegou.\\Uma maneira comum de estruturar um resumo é usar a estrutura IMRaD. Isso significa: \begin{itemize} \item Introdução \item Métodos \item Resultados \item Discussão \end{itemize} Veja mais pormenores aqui:\\\texttt{https://www.scribbr.com/dissertation/abstract/}}
 
 %%% OPTIONAL: you can write the keywords and
 %%%  abstract in other languages. You can repeat
@@ -180,6 +191,8 @@ the problem in a way that will allow a solution}{Bertrand Russell}
 %%% Don't remove the \selectlanguage statement or you will end with incorrect hyphenation.
 %%% You can modify the language to any other supported by Latex
 %% Optional Keywords and Abstract in additional languages.
+%\Abstract{Keywords}{textbook, architecture, history, construction, construction materials, traditional knowledge.}
+%         {Abstract}{\selectlanguage{english}An abstract is a short summary of a longer work (such as a thesis, dissertation or research paper).\\The abstract concisely reports the aims and outcomes of your research, so that readers know exactly what your paper is about.\\Although the structure may vary slightly depending on your discipline, your abstract should describe the purpose of your work, the methods you’ve used, and the conclusions you’ve drawn.\\One common way to structure your abstract is to use the IMRaD structure. This stands for: \begin{itemize} \item Introduction \item Methods \item Results \item Discussion \end{itemize} Check for more details here:\\\texttt{https://www.scribbr.com/dissertation/abstract/}}
 \Abstract{Keywords}{Human-Robot Collaboration, Machine Learning, Action Anticipation, Predictive Model, Robot Controller, Collaborative Robot}
          {Abstract}{\selectlanguage{english}The increase in the diversity of products on sale due to the evolution of technology and standard of life results in a growing demand for flexible manufacturing that can meet the necessary production, especially in small companies. Although the usual solution for these needs is to use human operators, which provide the necessary flexibility and precision, this comes at a greater cost. In contrast, industrial robots offer a relatively smaller price and show more value in repetitive and heavy tasks. This is where Human-Robot Collaboration (HRC) comes into action since it complements the flexibility of a human worker with the strength and lower cost of the robotic worker in the same workspace. However, to achieve true collaboration it is not enough to react to the partner's movements and intentions, the robot must anticipate them. Inside HRC, Action Anticipation is a technique used to predict the actions of the human workers so that the robot can better plan its movements, increasing manufacturing efficiency and safety. This dissertation aims at the development of an anticipatory system that allows to enhance human-robot collaboration in an industrial setting. The collaborative scenario will be one in which the robot observes the actions of the human operator, makes predictions about the human’s intention, and reacts accordingly by executing a physical action. This document reviews the research in this field, including the commonly used data sources and algorithms with a particular focus on machine learning methodologies. The nature of anticipation and the mechanisms that support it remains open questions in the field of HRC. To this extent, this study may have an impact on how to model, implement and validate anticipatory processes in an assembly task. }
 
@@ -212,6 +225,6 @@ the problem in a way that will allow a solution}{Bertrand Russell}
 %%% Set the proper language or you will end with incorrect hyphenation!
 \selectlanguage{english}
 
-\MakeCover
 
+\MakeCover
 \end{document}
