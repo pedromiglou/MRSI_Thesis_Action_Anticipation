@@ -1,18 +1,13 @@
 # orange, dark_blue, yellow, green, red, light_blue, white, violet
-country: Côte d'Ivoire
-color1: orange
-color2: white
-color3: green
+country: Barbados
+color1: dark_blue
+color2: orange
+color3: dark_blue
 ---
 country: Cameroon
 color1: green
 color2: red
 color3: yellow
----
-country: Canada
-color1: red
-color2: white
-color3: red
 ---
 country: France
 color1: dark_blue
@@ -34,12 +29,17 @@ color1: green
 color2: white
 color3: orange
 ---
-country: Italy
+country: Italy # also Mexico
 color1: green
 color2: white
 color3: red
 ---
-country: Mali
+country: Ivory Coast
+color1: orange
+color2: white
+color3: green
+---
+country: Mali # also Senegal
 color1: green
 color2: yellow
 color3: red
@@ -48,19 +48,19 @@ country: Mongolia
 color1: red
 color2: dark_blue
 color3: red
+# ---
+# country: Nigeria # not enough green blocks
+# color1: green
+# color2: white
+# color3: green
 ---
-country: Nigeria
-color1: green
+country: Peru # also Canada
+color1: red
 color2: white
-color3: green
----
-country: Romania
-color1: dark_blue
-color2: yellow
 color3: red
 ---
-country: Senegal
-color1: green
+country: Romania # also Andorra, Chad, Moldova
+color1: dark_blue
 color2: yellow
 color3: red
 ---
