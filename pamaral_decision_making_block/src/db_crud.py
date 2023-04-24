@@ -6,10 +6,12 @@
 import rospy
 import yaml
 
-from db_models import Base, Flag, Probability
-from pamaral_decision_making_block.srv import GetProbabilities, GetProbabilitiesResponse
+from itertools import permutations
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+from db_models import Base, Flag, Probability
+from pamaral_decision_making_block.srv import GetProbabilities, GetProbabilitiesResponse
 
 
 class Database:
@@ -50,25 +52,17 @@ class Database:
             colors.extend([f.color1, f.color2, f.color3])
         colors = set(colors)
 
-        for color1 in colors:
-            p = Probability(color1=color1, color2="", color3="",
-                            value=len([f for f in flags if f.color1 == color1])/len(flags))
-            s.add(p)
-            if len([f for f in flags if f.color1 == color1]) != 0:
-                for color2 in colors:
-                    if color2 != color1:
-                        p = Probability(color1=color1, color2=color2, color3="",
-                                        value=len([f for f in flags if f.color1 == color1 and f.color2 == color2]) /
-                                        len([f for f in flags if f.color1 == color1]))
-                        s.add(p)
-                        if len([f for f in flags if f.color1 == color1 and f.color2 == color2]) != 0:
-                            for color3 in colors:
-                                if color3 != color1 and color3 != color2:
-                                    p = Probability(color1=color1, color2=color2, color3=color3,
-                                                    value=len([f for f in flags if f.color1 == color1 and
-                                                               f.color2 == color2 and f.color3 == color3]) /
-                                                    len([f for f in flags if f.color1 == color1 and f.color2 == color2]))
-                                    s.add(p)
+        for p in permutations(colors, 1):
+            s.add(Probability(color1=p[0], color2="", color3="", value=len([f for f in flags if f.color1 == p[0]])/len(flags)))
+        
+        for p in permutations(colors, 2):
+            s.add(Probability(color1=p[0], color2=p[1], color3="",
+                            value=len([f for f in flags if f.color1 == p[0] and f.color2 == p[1]]) / len([f for f in flags if f.color1 == p[0]])))
+        
+        for p in permutations(colors, 3):
+            s.add(Probability(color1=p[0], color2=p[1], color3=p[2],
+                            value=len([f for f in flags if f.color1 == p[0] and f.color2 == p[1] and f.color3 == p[2]]) /
+                                                    len([f for f in flags if f.color1 == p[0] and f.color2 == p[1]])))
 
         s.commit()
 
