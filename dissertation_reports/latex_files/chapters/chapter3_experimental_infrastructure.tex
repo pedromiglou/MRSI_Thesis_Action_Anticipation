@@ -1,13 +1,17 @@
 \chapter{Experimental Infrastructure}
 \label{chapter:experimental_infrastructure}
 
-This chapter covers a review of the experimental setup and relevant software tools helpful in developing the final solution.
+This chapter covers a review of the experimental infrastructure including relevant hardware and software tools used while developing the final solution.
 
-\section{Experimental Setup}
+% robot, gripper, camera, ros, robot communication, move it
+
+\section{Hardware Setup}
 
 The experimental part of this thesis was developed using the setup available at the Laboratory for Automation and Robotics (LAR) located in the Department of Mechanical Engineering at the University of Aveiro. The available setup contains an UR10e collaborative robot with an Orbbec Astra Pro RGBD camera above the workspace.
 
-\textcolor{red}{Robot and Camera images here}
+\subsection{UR10e Robot}
+
+\subsection{Camera}
 
 \begin{figure}[h]
 \centerline{\includegraphics[height=1.2in]{figs/Astra.jpg}}
@@ -15,9 +19,11 @@ The experimental part of this thesis was developed using the setup available at 
 \label{openpose}
 \end{figure}
 
-All communication is set up using ROS with Rviz being used to help visualize the functioning of the system. Additionally, the MoveIt! framework was used to take care of the planning of the robot movements.
+\section{Software Tools}
 
-\section{\acf{ros}}
+\subsection{\acf{ros}}
+
+All communication is set up using ROS with Rviz being used to help visualize the functioning of the system.
 
 \acs{ros}\cite{ROS2}\footnote{\acs{ros} 1 documentation: \url{https://wiki.ros.org}}\footnote{\acs{ros} 2 documentation: \url{https://docs.ros.org/en/humble}} is an open-source collection of tools and software libraries used to develop a robotics application. Its main features are:
 
@@ -33,6 +39,12 @@ All communication is set up using ROS with Rviz being used to help visualize the
 \end{itemize}
 
 \acs{ros} can be used by installing on Ubuntu or Mac OS X systems, and then nodes can be launched from existing repositories or can be programmed in Python, C++ or Lisp with more languages still under development.
+
+\subsection{Move It!}
+
+Additionally, the MoveIt! framework was used to take care of the planning of the robot movements.
+
+\if{0}
 
 \section{Machine Learning Frameworks}
 
@@ -96,3 +108,5 @@ OpenPifPaf\cite{Kreiss2021,Kreiss2019}\footnote{OpenPifPaf documentation: \url{h
 \caption[OpenPifPaf Example]{OpenPifPaf Example \cite{Kreiss2021}}
 \label{openpifpaf}
 \end{figure}
+
+\fi
