@@ -37,7 +37,7 @@ class Database:
         s = self.Session()
 
         # add flags to database
-        for data in yaml.load_all(open("/home/miglou/catkin_ws/src/MRSI_Thesis/data/flags.yaml")):
+        for data in yaml.load_all(open("/home/miglou/catkin_ws/src/MRSI_Thesis_Action_Anticipation/data/flags.yaml")):
             flag = Flag(**data)
             s.add(flag)
 
@@ -53,14 +53,17 @@ class Database:
         colors = set(colors)
 
         for p in permutations(colors, 1):
-            s.add(Probability(color1=p[0], color2="", color3="", value=len([f for f in flags if f.color1 == p[0]])/len(flags)))
+            if len(flags) != 0:
+                s.add(Probability(color1=p[0], color2="", color3="", value=len([f for f in flags if f.color1 == p[0]])/len(flags)))
         
         for p in permutations(colors, 2):
-            s.add(Probability(color1=p[0], color2=p[1], color3="",
+            if len([f for f in flags if f.color1 == p[0]]) != 0:
+                s.add(Probability(color1=p[0], color2=p[1], color3="",
                             value=len([f for f in flags if f.color1 == p[0] and f.color2 == p[1]]) / len([f for f in flags if f.color1 == p[0]])))
         
         for p in permutations(colors, 3):
-            s.add(Probability(color1=p[0], color2=p[1], color3=p[2],
+            if len([f for f in flags if f.color1 == p[0] and f.color2 == p[1]]) != 0:
+                s.add(Probability(color1=p[0], color2=p[1], color3=p[2],
                             value=len([f for f in flags if f.color1 == p[0] and f.color2 == p[1] and f.color3 == p[2]]) /
                                                     len([f for f in flags if f.color1 == p[0] and f.color2 == p[1]])))
 

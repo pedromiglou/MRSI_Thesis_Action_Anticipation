@@ -7,7 +7,6 @@ import sys
 import time
 
 from geometry_msgs.msg import PointStamped
-from std_msgs.msg import String
 
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 from pamaral_color_image_processing.msg import CentroidList
@@ -64,38 +63,15 @@ class DecisionMakingBlock:
         rospy.wait_for_service('get_probabilities')
         self.get_probabilities_proxy = rospy.ServiceProxy('get_probabilities', GetProbabilities)
 
-        # define pieces and states
-        self.piece = None
-        #self.pieces_index = 0
-        self.holding = None
+        # define state variables
         self.state = 'idle'
-
         self.blocks = []
-
+        self.current_block = []
+        self.holding = None
+        
         rospy.loginfo("Class Initialized")
 
         self.loop()
-    
-
-    # def orientation_callback(self, msg):
-    #     self.orientation = msg.data
-
-    #     if len(self.pieces)>0:
-    #         if self.pieces[1] == "4G" and self.pieces_index == 1 and self.orientation == "parallel":
-    #             self.pieces = ["8G", "8R", "4R", "4G", "2G"]
-
-    #             #if self.state == "waiting" or self.state == "moving_closer":
-    #             if len(self.holding) > 0:
-    #                 self.state = "stop_wrong_guess"
-    #                 self.arm_gripper_comm.stop_arm()
-            
-    #         elif self.pieces[1] == "8R" and self.pieces_index == 1 and self.orientation == "perpendicular":
-    #             self.pieces = ["8G", "4G", "2G"]
-
-    #             #if self.state == "waiting" or self.state == "moving_closer":
-    #             if len(self.holding) > 0:
-    #                 self.state = "stop_wrong_guess"
-    #                 self.arm_gripper_comm.stop_arm()
 
 
     def centroids_callback(self, msg):
@@ -104,8 +80,8 @@ class DecisionMakingBlock:
         if self.centroids[msg.color] is not None and len(centroids) > len(self.centroids[msg.color]):
             self.centroids[msg.color] = centroids
 
-            if self.state == "idle" and msg.color != "violet": #and len(self.blocks)<1:
-                self.piece = msg.color
+            if self.state == "idle" and len(self.current_block)==0 and msg.color != "violet":
+                self.piece = [msg.color]
                 self.state = "picking_up"
             
             if (self.state == "picking_up" or self.state == "moving_closer") and msg.color == "violet":
@@ -156,12 +132,12 @@ class DecisionMakingBlock:
 
 
     def idle_state(self):
-        if len(self.blocks) == 0:
+        if len(self.blocks) % 3 == 0:
             return
-        elif len(self.blocks) == 1:
-            resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[0], color2=""))
-        elif len(self.blocks) == 2:
-            resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[0], color2=self.blocks[1]))
+        elif len(self.blocks) % 3 == 1:
+            resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[-1], color2=""))
+        elif len(self.blocks) % 3 == 2:
+            resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[-2], color2=self.blocks[-1]))
 
         colors, probabilities = resp.colors, resp.probabilities
 
@@ -169,27 +145,22 @@ class DecisionMakingBlock:
 
         colors = sorted(colors, key=lambda x: x[1], reverse=True)
 
-        self.piece = colors[0][0]
-
-        print(self.blocks)
-        print(resp)
+        self.current_block = [c[0] for c in colors if c[1] > 0]
 
         if self.state == "idle":
             self.state = "picking_up"
 
 
     def picking_up_state(self):
-        p = self.piece
+        p = self.current_block[0]
         self.go_to(f'above_{p}1')
         self.arm_gripper_comm.gripper_open_fast()
         self.go_to(f'{p}1')
         self.arm_gripper_comm.gripper_close_fast()
-        self.go_to(f'above_{p}1')
 
         self.holding = p
 
-        #self.blocks.append(p)
-
+        self.go_to(f'above_{p}1')
         self.go_to('retreat')
 
         if self.state == "picking_up":
@@ -214,11 +185,11 @@ class DecisionMakingBlock:
 
 
     def putting_down_state(self):
-        self.blocks.append(self.piece)
+        self.blocks.append(self.holding)
 
         self.holding = None
 
-        self.piece = None
+        self.current_block = []
 
         if self.user_pose == "left":
             self.go_to("table2")
@@ -229,8 +200,8 @@ class DecisionMakingBlock:
             self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table1")
 
-        if len(self.blocks) == 3:
-            self.blocks = []
+        #if len(self.blocks) == 3:
+        #    self.blocks = []
 
         #if len(self.blocks)==1:
         #    flags = get_flags(self.blocks[0])
@@ -242,10 +213,7 @@ class DecisionMakingBlock:
         self.go_to('retreat')
 
         if self.state == "putting_down":
-            if self.piece is not None:
-                self.state = 'picking_up'
-            else:
-                self.state = 'idle'
+            self.state = 'idle'
 
     
     def stop_side_switch_state(self):
@@ -273,12 +241,15 @@ class DecisionMakingBlock:
 
             self.holding = None
 
-        self.piece = None
+        self.current_block = self.current_block[1:]
         
         #time.sleep(0.5)
         
         if self.state == "stop_wrong_guess":
-            self.state = "idle"
+            if len(self.current_block) == 0:
+                self.state = "idle"
+            else:
+                self.state = "picking_up"
 
 
     def go_to(self, pos):
