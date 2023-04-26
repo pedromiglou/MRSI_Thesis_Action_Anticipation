@@ -37,7 +37,7 @@ class Database:
         s = self.Session()
 
         # add flags to database
-        for data in yaml.load_all(open("/home/miglou/catkin_ws/src/MRSI_Thesis_Action_Anticipation/data/flags.yaml")):
+        for data in yaml.load_all(open("/home/pedroamaral/catkin_ws/src/MRSI_Thesis_Action_Anticipation/data/flags.yaml")):
             flag = Flag(**data)
             s.add(flag)
 
