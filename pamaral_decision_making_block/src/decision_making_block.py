@@ -27,8 +27,14 @@ class DecisionMakingBlock:
     """
 
     def __init__(self, position_list):
+        # define state variables
+        self.state = 'idle'
+        self.blocks = []
+        self.current_block = []
+        self.holding = None
+
         # read registed positions
-        self.path = "/home/miglou/catkin_ws/src/MRSI_Thesis_Action_Anticipation/pamaral_decision_making_block/config/quaternion_poses/"
+        self.path = "/home/pedroamaral/catkin_ws/src/MRSI_Thesis_Action_Anticipation/pamaral_decision_making_block/config/quaternion_poses/"
 
         try:
             f = open(self.path + position_list + ".json")
@@ -62,12 +68,6 @@ class DecisionMakingBlock:
         # wait for database service
         rospy.wait_for_service('get_probabilities')
         self.get_probabilities_proxy = rospy.ServiceProxy('get_probabilities', GetProbabilities)
-
-        # define state variables
-        self.state = 'idle'
-        self.blocks = []
-        self.current_block = []
-        self.holding = None
         
         rospy.loginfo("Class Initialized")
 
@@ -77,11 +77,11 @@ class DecisionMakingBlock:
     def centroids_callback(self, msg):
         centroids = msg.points
 
-        if self.centroids[msg.color] is not None and len(centroids) > len(self.centroids[msg.color]):
+        if self.centroids[msg.color] is not None and len(centroids) == 1 and len(self.centroids[msg.color])==0:
             self.centroids[msg.color] = centroids
 
-            if self.state == "idle" and len(self.current_block)==0 and msg.color != "violet":
-                self.piece = [msg.color]
+            if self.state == "idle" and (self.current_block is None or len(self.current_block)==0) and msg.color != "violet":
+                self.current_block = [msg.color]
                 self.state = "picking_up"
             
             if (self.state == "picking_up" or self.state == "moving_closer") and msg.color == "violet":
@@ -132,23 +132,28 @@ class DecisionMakingBlock:
 
 
     def idle_state(self):
-        if len(self.blocks) % 3 == 0:
-            return
-        elif len(self.blocks) % 3 == 1:
-            resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[-1], color2=""))
-        elif len(self.blocks) % 3 == 2:
-            resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[-2], color2=self.blocks[-1]))
+        if self.current_block is not None: # get colors from database, else wait for user input
+            if len(self.blocks) % 3 == 0:
+                return
+            elif len(self.blocks) % 3 == 1:
+                resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[-1], color2=""))
+            elif len(self.blocks) % 3 == 2:
+                resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[-2], color2=self.blocks[-1]))
 
-        colors, probabilities = resp.colors, resp.probabilities
+            colors, probabilities = resp.colors, resp.probabilities
 
-        colors = zip(colors, probabilities)
+            colors = zip(colors, probabilities)
 
-        colors = sorted(colors, key=lambda x: x[1], reverse=True)
+            colors = sorted(colors, key=lambda x: x[1])
+            colors = sorted(colors, key=lambda x: x[0], reverse=True)
 
-        self.current_block = [c[0] for c in colors if c[1] > 0]
+            self.current_block = [c[0] for c in colors if c[1] > 0]
 
-        if self.state == "idle":
-            self.state = "picking_up"
+            if self.state == "idle":
+                if len(self.current_block)>0:
+                    self.state = "picking_up"
+                else:
+                    self.current_block = None
 
 
     def picking_up_state(self):
@@ -248,6 +253,7 @@ class DecisionMakingBlock:
         if self.state == "stop_wrong_guess":
             if len(self.current_block) == 0:
                 self.state = "idle"
+                self.current_block = None
             else:
                 self.state = "picking_up"
 
