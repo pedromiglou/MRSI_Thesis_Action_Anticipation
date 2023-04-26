@@ -59,6 +59,11 @@ color1: red
 color2: white
 color3: red
 ---
+country: Portugal
+color1: green
+color2: red
+color3: red
+---
 country: Romania # also Andorra, Chad, Moldova
 color1: dark_blue
 color2: yellow
