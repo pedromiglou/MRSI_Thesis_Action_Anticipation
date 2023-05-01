@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import argparse
 import cv2
 import json
 import numpy as np
@@ -17,10 +16,10 @@ from pamaral_color_image_processing.msg import CentroidList
 class ObjectColorSegmenter:
     """This node should receive color images and detect objects of a certain color using segmentation."""
 
-    def __init__(self, color):
+    def __init__(self, colors_path, color):
         self.color = color
 
-        f = open(f"/home/pedroamaral/catkin_ws/src/MRSI_Thesis_Action_Anticipation/pamaral_color_image_processing/config/{self.color}.json")
+        f = open(f"{colors_path}{self.color}.json")
         c_limits = json.load(f)['limits']
         f.close()
 
@@ -105,13 +104,10 @@ def main():
     default_node_name = 'object_color_segmenter'
     rospy.init_node(default_node_name, anonymous=False)
 
-    parser = argparse.ArgumentParser(description="Arguments for object color segmenter")
-    parser.add_argument("-c", "--color", type=str, default="green",
-                        help="color to be segmented")
+    colors_path = rospy.get_param(rospy.search_param('colors_path'))
+    color = rospy.get_param(rospy.search_param('color'))
 
-    args, _ = parser.parse_known_args()
-
-    object_color_segmenter = ObjectColorSegmenter(args.color)
+    ObjectColorSegmenter(colors_path, color)
 
     rospy.spin()
 

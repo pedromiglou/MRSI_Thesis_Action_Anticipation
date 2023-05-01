@@ -1,5 +1,8 @@
 <launch>
     <arg name="color_name" default="green"/>
 
-    <node name="$(arg color_name)_object_segmenter" pkg="pamaral_color_image_processing" type="object_color_segmenter.py" args="-c $(arg color_name)" output="screen"/>
+    <node name="$(arg color_name)_object_segmenter" pkg="pamaral_color_image_processing" type="object_color_segmenter.py" output="screen">
+        <param name="colors_path" value="$(find pamaral_color_image_processing)/config/"/>
+        <param name="color" value="$(arg color_name)"/>
+    </node>
 </launch>
