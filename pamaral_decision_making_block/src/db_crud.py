@@ -19,17 +19,17 @@ class Database:
     Class containing methods to communicate with the database.
     """
 
-    def __init__(self):
+    def __init__(self, flags_path):
         # Scheme: "postgres+psycopg2://<USERNAME>:<PASSWORD>@<IP_ADDRESS>:<PORT>/<DATABASE_NAME>"
         self.engine = create_engine('postgresql+psycopg2://postgres:password@localhost:5432/postgres')
 
         self.Session = sessionmaker(bind=self.engine)
 
-        self.recreate_db()
+        self.recreate_db(flags_path)
 
         rospy.Service("get_probabilities", GetProbabilities, self.get_probabilities)
 
-    def recreate_db(self):
+    def recreate_db(self, flags_path):
         # recreate all tables
         Base.metadata.drop_all(self.engine)
         Base.metadata.create_all(self.engine)
@@ -37,7 +37,7 @@ class Database:
         s = self.Session()
 
         # add flags to database
-        for data in yaml.load_all(open("/home/pedroamaral/catkin_ws/src/MRSI_Thesis_Action_Anticipation/data/flags.yaml")):
+        for data in yaml.load_all(open(flags_path)):
             flag = Flag(**data)
             s.add(flag)
 
@@ -136,7 +136,9 @@ def main():
     default_node_name = 'database'
     rospy.init_node(default_node_name, anonymous=False)
 
-    database = Database()
+    flags_path = rospy.get_param(rospy.search_param('flags_path'))
+
+    Database(flags_path)
 
     rospy.spin()
 

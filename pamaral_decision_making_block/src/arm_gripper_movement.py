@@ -20,7 +20,7 @@ parser.add_argument("-pl", "--position_list", type=str, default="positions",
 args = vars(parser.parse_args())
 
 # path = ROOT_DIR + "/use_cases/config/"
-path = "/home/miglou/catkin_ws/src/MRSI_Thesis_Action_Anticipation/pamaral_decision_making_block/config/joints_poses/"
+path = rospy.get_param(rospy.search_param('joints_poses'))
 
 try:
     f = open(path + args['position_list'] + ".json")
