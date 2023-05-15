@@ -2,6 +2,32 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
+from collections import Counter
+
+
+def split_and_shuffle2(X, y):
+    label_counts = Counter(y)
+    num_labels = len(label_counts.values())
+
+    while True:
+        X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=1/10)
+        label_counts = Counter(y_test)
+
+        counts = list(label_counts.values())
+
+        if max(counts) - min(counts)<2 and len(counts)==num_labels:
+            break
+    
+    while True:
+        X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=1/9)
+        label_counts = Counter(y_val)
+
+        counts = list(label_counts.values())
+
+        if max(counts) - min(counts)<2 and len(counts)==num_labels:
+            break
+    
+    return X_train, y_train, X_val, y_val, X_test, y_test
 
 
 def split_and_shuffle(X, y):
