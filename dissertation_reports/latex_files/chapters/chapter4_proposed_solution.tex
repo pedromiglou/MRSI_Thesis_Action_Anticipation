@@ -5,7 +5,11 @@
 
 \textcolor{red}{(Should the first solution be my first demo or just the interactive one)}
 
-\section{Machine Learning Models}
+\section{Predictive Models}
+
+\subsection{LSTM}
+
+\subsection{Transformer}
 
 \section{Robot Controller}
 
@@ -45,7 +49,7 @@ This version was developed as a state machine with 7 different states, as shown 
     \item \textbf{moving closer}: State corresponding to the movement between the waiting and the put-down position opposite to the user so that the robot does not constrain him. After the robot reaches the put-down position the state changes to $putting$ $down$. If the robot is holding the wrong object then the state changes to $stop$ $wrong$ $guess$ instead and if the user changes side the state changes to $stop$ $side$ $switch$.
     \item \textbf{putting down}: State corresponding to the movement necessary to put down the block in the table and the retreat of the robot outside the user's workspace. If there are still more blocks to give then the state changes to $picking$ $up$ and if there are not then the sequence is finished and the state changes to $idle$.
     \item \textbf{stop side switch}: State corresponding to the action of stopping the robot because the user changed sides. After the robot is stopped the state changes back to $moving$ $closer$.
-    \item \textbf{stop wrong guess}: State corresponding to the action of stopping the robot because the first block was rotated indicating a different sequence. If the robot was already holding a block then that block is put back where it was while in this state. After the robot is stopped and is not holding a block the state changes to $picking$ $up$.
+    \item \textbf{stop wrong guess}: State corresponding to the action of stopping the robot because the first block was rotated indicating a different sequence. If the robot was already holding a block then that block is put back where it was while in this state. After the robot is stopped and it is not holding a block the state changes to $picking$ $up$.
 \end{itemize}
 
 \if{0}
@@ -59,5 +63,27 @@ So that the robot avoids being too close to the user, the position of the user i
 This solution intrinsically consisted of a set of rules where the movements resulted from the direct communication between the robot and the human. Therefore, it was not yet considered an anticipatory system.
 
 \subsection{Second Solution - Probability Based}
+
+The second version developed consisted in having a database of probabilities that the robot would check to anticipate the block that the user would need next. These probabilities were established according to the possible country flags \textcolor{red}{(missing example)}. However, the first block is still requested by the user and, if the robot exhausts all possibilities that it knows of, the user is able to request the following block.
+
+\subsubsection{State Machine Logic}
+
+This version was developed as a state machine with 7 different states, as shown in \if {0} Fig.~\ref{fig:demo1_state_machine}.
+
+\begin{figure}[H]%[!ht]
+    \centering
+    \input{figs/demo1_state_machine.tikz}
+    \caption{First Version - State Machine}
+    \label{fig:demo1_state_machine}
+\end{figure}\fi
+
+\begin{itemize}
+    \item \textbf{idle}: State corresponding to when the robot does not know which is the next block. If the sequence has not started yet then it waits for the user to choose the first block and then the state changes to $picking$ $up$. If the sequence has already started then the database is fetched for the possible next blocks and then if at least one block is returned the state changes to $picking$ $up$ or if none is returned the system waits for the user to choose the next block.
+    \item \textbf{picking up}: State corresponding to while the robot is picking up a certain block. After it picks it up the state changes to $moving$ $closer$ unless it was picking the wrong object in which case it changes to $stop$ $wrong$ $guess$.
+    \item \textbf{moving closer}: State corresponding to the movement until the put-down position opposite to the user so that the robot does not constrain him. After the robot reaches the put-down position the state changes to $putting$ $down$. If the robot is holding the wrong object then the state changes to $stop$ $wrong$ $guess$ instead and if the user changes side the state changes to $stop$ $side$ $switch$.
+    \item \textbf{putting down}: State corresponding to the movement necessary to put down the block in the table and the retreat of the robot outside the user's workspace. After that, the state changes to $idle$.
+    \item \textbf{stop side switch}: State corresponding to the action of stopping the robot because the user changed sides. After the robot is stopped the state changes back to $moving$ $closer$.
+    \item \textbf{stop wrong guess}: State corresponding to the action of stopping the robot because the user indicated that it was the wrong block. If the robot was already holding a block then that block is put back where it was while in this state. After the robot is stopped and it is not holding a block the state changes to $picking$ $up$ if there are still more possible blocks in the database. Otherwise the state changes to $idle$ so that it waits for an user request.
+\end{itemize}
 
 \subsection{Third Solution - Learning Based}

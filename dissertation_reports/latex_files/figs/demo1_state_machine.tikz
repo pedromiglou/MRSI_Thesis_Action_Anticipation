@@ -57,7 +57,7 @@
 (picking_up)       edge[bend right] node {}                         (stop_wrong_guess)
 (waiting)          edge             node {}                         (stop_wrong_guess)
 (moving_closer)    edge[bend right] node {wrong assembly sequence} (stop_wrong_guess)
-(stop_wrong_guess) edge[bend right] node {reverted previous guess} (picking_up)
+(stop_wrong_guess) edge[bend right] node[above left] {reverted previous guess} (picking_up)
 ; 
     
 \end{tikzpicture}

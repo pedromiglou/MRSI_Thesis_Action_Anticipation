@@ -21,7 +21,7 @@ UR10e is a collaborative robot model developed by Universal Robots focused on ve
 
 \subsection{Orbbec Astra Pro}
 
-Orbbec Astra Pro is a RGBD camera developed by Orbbec Technologies. It is frequently used in computer vision and robotics for tasks such as face recognition, gesture recognition, human body tracking, three-dimensional measurement, environment perception, and three-dimensional map reconstruction\cite{AstraPro}. In this work, the camera is placed above the environment facing down capturing both color and depth real-time images.
+Orbbec Astra Pro is an RGBD camera developed by Orbbec Technologies. It is frequently used in computer vision and robotics for tasks such as face recognition, gesture recognition, human body tracking, three-dimensional measurement, environment perception, and three-dimensional map reconstruction\cite{AstraPro}. In this work, the camera is placed above the environment facing down capturing both color and depth real-time images.
 
 \begin{figure}[h]
 \centerline{\includegraphics[height=1.2in]{figs/Astra.jpg}}
@@ -50,9 +50,9 @@ In this work, \acs{ros} is used to establish communication throughout all of the
 
 \subsection{MoveIt}
 
-MoveIt\footnote{MoveIt documentation: \url{https://ros-planning.github.io/moveit_tutorials}} is a widely-used open-source framework for robotics applications involving motion planning, manipulation, 3D perception, kinematics, control, navigation and collision checking. MoveIt is implemented on top of ROS taking advantage of the latter's features such as the messaging and build systems as well as common tools such as ROS Visualizer (Rviz) and the ROS robot format (URDF).
+MoveIt\footnote{MoveIt documentation: \url{https://ros-planning.github.io/moveit_tutorials}} is a widely-used open-source framework for robotics applications involving motion planning, manipulation, 3D perception, kinematics, control, navigation, and collision checking. MoveIt is implemented on top of ROS taking advantage of the latter's features such as the messaging and build systems as well as standard tools such as ROS Visualizer (Rviz) and the ROS robot format (URDF).
 
-In this work, the MoveIt framework is used to plan and execute the robot arm movements with OMPL, an open-source motion planning library, being used by MoveIt for the motion planning tasks.
+In this work, the MoveIt framework is used to plan and execute the robot arm movements with OMPL, an open-source motion planning library used by MoveIt for motion planning tasks.
 
 \subsection{Tensorflow}
 
@@ -68,8 +68,36 @@ In this work, Tensorflow is used to design and train the machine learning models
 
 \section{Methods}
 
-This section explains the methods that are used in this work in greater detail.
+This section explains the methods used in this work in greater detail.
 
 \subsection{LSTM}
 
 \subsection{Transformer Neural Networks}
+
+Transformer Neural Networks consist of a new kind of neural network architecture that aims to solve tasks involving sequence data such as those in natural language processing. They were initially proposed in the "Attention Is All You Need" paper published by Google Research in 2017\cite{Vaswani2017} and proceeded to surpass several established architectures in numerous tasks using attention mechanisms that identify complex relationships between elements in the input sequence.
+
+According to \textcolor{red}{https://learning.oreilly.com/library/view/deep-learning-with/9781803232911/}, the transformer's architectures are built upon 4 core concepts: positional encoding, attention, self-attention, and multi-head (self-)attention.
+
+\subsubsection{Positional encoding}
+
+RNNs are able to work with sequences given that the tokens are processed sequentially. However, this approach comes with the disadvantage of the model having greater difficulty in analyzing long sequences, since important data might be forgotten. Transformers address this issue by using positional encoding, assigning a unique number to each token representing its position in the input sequence. This enables the transformer to learn the significance of each token's position.
+
+\subsubsection{Attention}
+
+Attention is a concept that consists in measuring the relative importance of the input tokens to the output tokens. It was initially designed to facilitate language translation given that, when translating text from one language to the other, each word in the output can be influenced by multiple words from the input, and it became a key idea behind the transformer's architecture.
+
+\subsubsection{Self-attention}
+
+Self-attention derives from attention but consists in measuring the relative importance of the input tokens to the other tokens of the input sequence instead of the output tokens. This concept allows the model to learn the relationships between tokens and their relevance in the input sequence even if they are far away.
+ 
+\subsubsection{Multi-head (self-)attention}
+
+Multi-head (self-)attention refers to the fact that a transformer can have multiple attention heads. Each attention head performs a parallel process of (self-)attention allowing for multiple resulting weight matrices and, therefore, multiple definitions of relevance between the tokens.
+
+\subsubsection{Architecture}
+
+\begin{figure}[h]
+\centerline{\includegraphics[height=6in]{figs/transformer.jpg}}
+\caption[Transformer Architecture]{Transformer Architecture \cite{Vaswani2017}}
+\label{fig:transformer_arch}
+\end{figure}
