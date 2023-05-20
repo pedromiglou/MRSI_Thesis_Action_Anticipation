@@ -13,35 +13,7 @@
 
     <!--launch file to locate objects using the color images-->
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
-        <arg name="color_name" value="green"/>
-    </include>
-
-    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
-        <arg name="color_name" value="red"/>
-    </include>
-
-    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
-        <arg name="color_name" value="light_blue"/>
-    </include>
-
-    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
-        <arg name="color_name" value="dark_blue"/>
-    </include>
-
-    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
-        <arg name="color_name" value="white"/>
-    </include>
-
-    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
-        <arg name="color_name" value="yellow"/>
-    </include>
-
-    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
-        <arg name="color_name" value="orange"/>
-    </include>
-
-    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
-        <arg name="color_name" value="violet"/>
+        <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange;violet"/>
     </include>
 
     <!-- Launch file to visualize details of the system using rviz -->
