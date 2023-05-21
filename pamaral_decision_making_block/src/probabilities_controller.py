@@ -10,16 +10,16 @@ from itertools import permutations
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from base_controller import BaseController
 from db_models import Base, Flag, Probability
-from pamaral_decision_making_block.srv import GetProbabilities, GetProbabilitiesResponse
 
 
-class Database:
+class ProbabilitiesController(BaseController):
     """
     Class containing methods to communicate with the database.
     """
 
-    def __init__(self, flags_path):
+    def __init__(self, position_list, flags_path):
         # Scheme: "postgres+psycopg2://<USERNAME>:<PASSWORD>@<IP_ADDRESS>:<PORT>/<DATABASE_NAME>"
         self.engine = create_engine('postgresql+psycopg2://postgres:password@localhost:5432/postgres')
 
@@ -27,7 +27,7 @@ class Database:
 
         self.recreate_db(flags_path)
 
-        rospy.Service("get_probabilities", GetProbabilities, self.get_probabilities)
+        super().__init__(position_list)
 
     def recreate_db(self, flags_path):
         # recreate all tables
@@ -89,7 +89,7 @@ class Database:
 
         return flags
 
-    def get_probabilities(self, req):
+    def get_probabilities(self, color1="", color2=""):
         s = self.Session()
 
         d = dict()
@@ -97,21 +97,21 @@ class Database:
         for c in self.colors:
             d[c] = 0
 
-        if len(req.color1) == 0:
+        if len(color1) == 0:
             probs = s.query(Probability).filter_by(color2="").all()
 
             for p in probs:
                 d[p.color1] = p.value
 
-        elif len(req.color2) == 0:
-            probs = s.query(Probability).filter_by(color1=req.color1, color3="").all()
+        elif len(color2) == 0:
+            probs = s.query(Probability).filter_by(color1=color1, color3="").all()
 
             for p in probs:
                 if p.color2 != "":
                     d[p.color2] = p.value
 
         else:
-            probs = s.query(Probability).filter_by(color1=req.color1, color2=req.color2).all()
+            probs = s.query(Probability).filter_by(color1=color1, color2=color2).all()
 
             for p in probs:
                 if p.color3 != "":
@@ -119,28 +119,45 @@ class Database:
 
         s.close()
 
-        colors = []
-        probs = []
+        return d.items()
 
-        for k, v in d.items():
-            colors.append(k)
-            probs.append(v)
+    def idle_state(self):
+        if self.current_block is not None: # get colors from database, else wait for user input
+            if len(self.blocks) % 3 == 0:
+                return
+            elif len(self.blocks) % 3 == 1:
+                probs = self.get_probabilities(color1=self.blocks[-1])
+            elif len(self.blocks) % 3 == 2:
+                probs = self.get_probabilities(color1=self.blocks[-2], color2=self.blocks[-1])
 
-        return GetProbabilitiesResponse(colors=colors, probabilities=probs)
+            probs = sorted(probs, key=lambda x: x[1], reverse=True)
+
+            self.current_block = [p[0] for p in probs if p[1] > 0]
+
+            if self.state == "idle":
+                if len(self.current_block)>0:
+                    self.state = "picking_up"
+                else:
+                    self.current_block = None
 
 
 def main():
     # ---------------------------------------------------
     # INITIALIZATION
     # ---------------------------------------------------
-    default_node_name = 'database'
+    default_node_name = 'probabilities_controller'
     rospy.init_node(default_node_name, anonymous=False)
 
+    quaternion_poses = rospy.get_param(rospy.search_param('quaternion_poses'))
     flags_path = rospy.get_param(rospy.search_param('flags_path'))
 
-    Database(flags_path)
+    probabilities_controller = ProbabilitiesController(position_list = quaternion_poses, flags_path=flags_path)
+
+    probabilities_controller.loop()
 
     rospy.spin()
+
+    probabilities_controller.arm_gripper_comm.gripper_disconnect()
 
 
 if __name__ == "__main__":

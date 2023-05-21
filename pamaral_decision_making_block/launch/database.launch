@@ -1,5 +1,0 @@
-<launch>
-    <node name="database" pkg="pamaral_decision_making_block" type="db_crud.py" output="screen">
-        <param name="flags_path" value="$(find data)/flags/flags.yaml"/>
-    </node>
-</launch>
