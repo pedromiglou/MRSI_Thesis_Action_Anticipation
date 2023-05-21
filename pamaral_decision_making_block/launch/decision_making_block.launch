@@ -1,3 +1,0 @@
-<launch>
-    <node name="decision_making_block" pkg="pamaral_decision_making_block" type="decision_making_block.py" output="screen"/>
-</launch>

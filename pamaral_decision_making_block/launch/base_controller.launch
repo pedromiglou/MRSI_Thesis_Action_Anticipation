@@ -1,0 +1,5 @@
+<launch>
+    <node name="base_controller" pkg="pamaral_decision_making_block" type="base_controller.py" output="screen">
+        <param name="quaternion_poses" value="$(find pamaral_decision_making_block)/config/quaternion_poses/positions.json"/>
+    </node>
+</launch>

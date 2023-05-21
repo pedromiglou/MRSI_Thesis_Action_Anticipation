@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import argparse
 import json
 import rospy
 import sys
@@ -10,16 +9,14 @@ from geometry_msgs.msg import PointStamped
 
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 from pamaral_color_image_processing.msg import CentroidList
-from pamaral_decision_making_block.srv import GetProbabilities, GetProbabilitiesRequest
 
 
-class DecisionMakingBlock:
+class BaseController:
     """State machine to decide what should be the action of the robot.
 
     States:
         idle - waiting for the desired sequence of objects
         picking_up - picking up a given object
-        waiting - waiting for the user to finish so it can give him the next piece
         moving_closer - moving closer to the user
         putting_down - putting down the object close to the user
         stop_side_switch - while the robot is stopping because the user changed sides
@@ -65,14 +62,7 @@ class DecisionMakingBlock:
         self.user_pose = ""
         self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)
 
-        # wait for database service
-        rospy.wait_for_service('get_probabilities')
-        self.get_probabilities_proxy = rospy.ServiceProxy('get_probabilities', GetProbabilities)
-        
-        rospy.loginfo("Class Initialized")
-
-        self.loop()
-
+        rospy.loginfo("Controller Ready")
 
     def centroids_callback(self, msg):
         centroids = msg.points
@@ -90,7 +80,6 @@ class DecisionMakingBlock:
 
         else:
             self.centroids[msg.color] = centroids
-    
 
     def user_pose_callback(self, msg):
         old_pose = self.user_pose
@@ -105,7 +94,6 @@ class DecisionMakingBlock:
         if self.state == "moving_closer" and old_pose != self.user_pose:
             self.state = "stop_side_switch"
             self.arm_gripper_comm.stop_arm()
-    
 
     def loop(self):
         while True:
@@ -114,9 +102,6 @@ class DecisionMakingBlock:
             
             elif self.state == "picking_up":
                 self.picking_up_state()
-            
-            #elif self.state == "waiting":
-            #    self.waiting_state()
             
             elif self.state == "moving_closer":
                 self.moving_closer_state()
@@ -130,31 +115,8 @@ class DecisionMakingBlock:
             elif self.state == "stop_wrong_guess":
                 self.stop_wrong_guess_state()
 
-
     def idle_state(self):
-        if self.current_block is not None: # get colors from database, else wait for user input
-            if len(self.blocks) % 3 == 0:
-                return
-            elif len(self.blocks) % 3 == 1:
-                resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[-1], color2=""))
-            elif len(self.blocks) % 3 == 2:
-                resp = self.get_probabilities_proxy(GetProbabilitiesRequest(color1=self.blocks[-2], color2=self.blocks[-1]))
-
-            colors, probabilities = resp.colors, resp.probabilities
-
-            colors = zip(colors, probabilities)
-
-            colors = sorted(colors, key=lambda x: x[1])
-            colors = sorted(colors, key=lambda x: x[0], reverse=True)
-
-            self.current_block = [c[0] for c in colors if c[1] > 0]
-
-            if self.state == "idle":
-                if len(self.current_block)>0:
-                    self.state = "picking_up"
-                else:
-                    self.current_block = None
-
+        pass
 
     def picking_up_state(self):
         p = self.current_block[0]
@@ -171,14 +133,6 @@ class DecisionMakingBlock:
         if self.state == "picking_up":
             self.state = "moving_closer"
     
-
-    #def waiting_state(self):
-    #    if self.pieces_index == 0:
-    #        self.state = "moving_closer"
-    #    else:
-    #        pass
-    
-    
     def moving_closer_state(self):
         if self.user_pose == "left":
             self.go_to("above_table2")
@@ -187,7 +141,6 @@ class DecisionMakingBlock:
         
         if self.state == "moving_closer":
             self.state = "putting_down"
-
 
     def putting_down_state(self):
         self.blocks.append(self.holding)
@@ -204,51 +157,26 @@ class DecisionMakingBlock:
             self.go_to("table1")
             self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table1")
-
-        #if len(self.blocks) == 3:
-        #    self.blocks = []
-
-        #if len(self.blocks)==1:
-        #    flags = get_flags(self.blocks[0])
-        #    self.piece = flags[0].color2
-        #elif len(self.blocks)==2:
-        #    flags = get_flags(self.blocks[0], self.blocks[1])
-        #    self.piece = flags[0].color3
         
         self.go_to('retreat')
 
         if self.state == "putting_down":
             self.state = 'idle'
 
-    
     def stop_side_switch_state(self):
-        #self.go_to('retreat')
-        #self.arm_gripper_comm.stop_arm()
-
-        #time.sleep(0)
-
         if self.state == "stop_side_switch":
             self.state = "moving_closer"
-    
 
     def stop_wrong_guess_state(self):
-        #self.arm_gripper_comm.stop_arm()
-
-        #time.sleep(0)
-
         if self.holding is not None:
             self.go_to(f"above_{self.holding}1")
             self.go_to(f"{self.holding}1")
             self.arm_gripper_comm.gripper_open_fast()
             self.go_to(f"above_{self.holding}1")
 
-            #self.blocks = self.blocks[-1:]
-
             self.holding = None
 
         self.current_block = self.current_block[1:]
-        
-        #time.sleep(0.5)
         
         if self.state == "stop_wrong_guess":
             if len(self.current_block) == 0:
@@ -256,7 +184,6 @@ class DecisionMakingBlock:
                 self.current_block = None
             else:
                 self.state = "picking_up"
-
 
     def go_to(self, pos):
         pos = self.positions[pos]
@@ -267,20 +194,18 @@ def main():
     # ---------------------------------------------------
     # INITIALIZATION
     # ---------------------------------------------------
-    default_node_name = 'decision_making_block'
+    default_node_name = 'base_controller'
     rospy.init_node(default_node_name, anonymous=False)
 
-    parser = argparse.ArgumentParser(description="Arguments for trainning script")
-    parser.add_argument("-pl", "--position_list", type=str, default="positions",
-                    help="It is the name of the configuration JSON containing the list of positions in the config directory of this package")
+    quaternion_poses = rospy.get_param(rospy.search_param('quaternion_poses'))
 
-    args, _ = parser.parse_known_args()
+    base_controller = BaseController(position_list = quaternion_poses)
 
-    decision_making_block = DecisionMakingBlock(position_list = args.position_list)
+    base_controller.loop()
 
     rospy.spin()
 
-    decision_making_block.arm_gripper_comm.gripper_disconnect()
+    base_controller.arm_gripper_comm.gripper_disconnect()
 
 
 if __name__ == '__main__':
