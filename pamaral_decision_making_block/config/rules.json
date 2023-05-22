@@ -1,0 +1,22 @@
+[
+    {
+        "blocks": ["red"],
+        "refused": [],
+        "next_block": "red"
+    },
+    {
+        "blocks": ["red","red"],
+        "refused": [],
+        "next_block": "green"
+    },
+    {
+        "blocks": ["red"],
+        "refused": "red",
+        "next_block": "white"
+    },
+    {
+        "blocks": ["red","white"],
+        "refused": [],
+        "next_block": "red"
+    }
+]
