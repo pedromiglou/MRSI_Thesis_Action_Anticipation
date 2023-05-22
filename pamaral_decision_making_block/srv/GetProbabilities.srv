@@ -1,5 +1,0 @@
-string color1
-string color2
----
-string[] colors
-float32[] probabilities
