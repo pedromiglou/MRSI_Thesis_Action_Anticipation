@@ -32,16 +32,8 @@ class ObjectColorSegmenter:
 
         self.bridge = CvBridge()
         self.mask_publisher = rospy.Publisher(f"/{self.color}_mask", Image, queue_size=1)
-        self.image_subscriber = rospy.Subscriber("/preprocessed_image", Image, self.image_callback)
 
-    def image_callback(self, msg):
-        try:
-            img = self.bridge.imgmsg_to_cv2(msg)
-
-        except:
-            print("Error reading color image")
-            return
-
+    def analyze_image(self, img):
         # process mask
         mask = cv2.inRange(img, self.c_mins, self.c_maxs)
 
@@ -97,6 +89,36 @@ class ObjectColorSegmenter:
         self.mask_publisher.publish(self.bridge.cv2_to_imgmsg(mask))
 
 
+class ObjectColorSegmenterManager:
+
+    def __init__(self, colors_path, colors):
+        self.colors = colors
+        self.segmenters = []
+
+        for c in self.colors:
+            self.segmenters.append(ObjectColorSegmenter(colors_path=colors_path, color=c))
+
+        self.bridge = CvBridge()
+        self.subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.image_callback)
+
+    def image_callback(self, msg):
+        try:
+            img = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+
+        except:
+            print("Error reading color image")
+            return
+        
+        # crop to ROI
+        img = img[17:474, 193:454]
+
+        # convert to hsv
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+        for segmenter in self.segmenters:
+            segmenter.analyze_image(img)
+
+
 def main():
     # ---------------------------------------------------
     # INITIALIZATION
@@ -105,9 +127,9 @@ def main():
     rospy.init_node(default_node_name, anonymous=False)
 
     colors_path = rospy.get_param(rospy.search_param('colors_path'))
-    color = rospy.get_param(rospy.search_param('color'))
+    colors = rospy.get_param(rospy.search_param('colors')).split(";")
 
-    ObjectColorSegmenter(colors_path, color)
+    ObjectColorSegmenterManager(colors_path, colors)
 
     rospy.spin()
 

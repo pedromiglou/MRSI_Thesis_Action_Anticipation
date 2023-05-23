@@ -31,10 +31,8 @@ class BaseController:
         self.holding = None
 
         # read registed positions
-        self.path = "/home/pedroamaral/catkin_ws/src/MRSI_Thesis_Action_Anticipation/pamaral_decision_making_block/config/quaternion_poses/"
-
         try:
-            f = open(self.path + position_list + ".json")
+            f = open(position_list)
             self.positions = json.load(f)
             self.positions = self.positions["positions"]
             f.close()
