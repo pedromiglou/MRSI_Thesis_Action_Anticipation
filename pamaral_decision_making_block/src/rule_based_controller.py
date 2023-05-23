@@ -7,6 +7,11 @@ from experta import Fact, KnowledgeEngine, Rule
 
 from base_controller import BaseController
 
+default_node_name = 'rule_based_controller'
+rospy.init_node(default_node_name, anonymous=False)
+rules_path = rospy.get_param(rospy.search_param('rules_path'))
+print(rules_path)
+
 class Blocks(Fact):
     """Info about the blocks in the workspace."""
     pass
@@ -18,22 +23,23 @@ class Refused(Fact):
 
 
 class RuleBasedController(KnowledgeEngine, BaseController):
+
+    f = open(rules_path, "r")
+    rules = json.load(f)
+    f.close()
+
+    for i, rule in enumerate(rules):
+        blocks = str(tuple(f"{b}"for b in rule["blocks"]))
+        refused = () if len(rule["refused"]) == 0 else "'"+rule["refused"]+"'"
+        next_block = rule["next_block"]
+        f_str = f"@Rule(Blocks(v={blocks}) & Refused(v={refused}))\n"+f"def rule{i}(self):\n\t"+f"self.current_block=['{next_block}']\n\tprint('triggered')"
+        print(f_str)
+        exec(f_str)
     
     def __init__(self, position_list, rules_path):
         KnowledgeEngine.__init__(self)
         self.reset()
 
-        f = open(rules_path, "r")
-        rules = json.load(f)
-        f.close()
-
-        for i, rule in enumerate(rules):
-            blocks = str(tuple(rule["blocks"]))
-            refused = str(tuple(rule["refused"]))
-            next_block = rule["next_block"]
-            exec(   f"@Rule(Blocks(v={blocks}) & Refused(v={refused}))\n"+
-                    f"def rule{i}(self):\n\t"+
-                        f"self.current_block=[{next_block}]")
         
         BaseController.__init__(self,position_list)
     
@@ -51,6 +57,7 @@ class RuleBasedController(KnowledgeEngine, BaseController):
         BaseController.putting_down_state(self)
 
         self.declare(Blocks(v=tuple(self.blocks)))
+        self.declare(Refused(v=()))
     
     def stop_wrong_guess_state(self):
         self.declare(Refused(v=tuple(self.current_block[0])))
@@ -62,11 +69,9 @@ def main():
     # ---------------------------------------------------
     # INITIALIZATION
     # ---------------------------------------------------
-    default_node_name = 'rule_based_controller'
-    rospy.init_node(default_node_name, anonymous=False)
+
 
     quaternion_poses = rospy.get_param(rospy.search_param('quaternion_poses'))
-    rules_path = rospy.get_param(rospy.search_param('rules_path'))
 
     rule_based_controller = RuleBasedController(position_list = quaternion_poses, rules_path=rules_path)
 
@@ -78,4 +83,5 @@ def main():
 
 
 if __name__ == "__main__":
+    
     main()
