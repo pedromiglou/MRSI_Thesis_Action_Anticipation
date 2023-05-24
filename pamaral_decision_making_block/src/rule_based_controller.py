@@ -7,10 +7,11 @@ from experta import Fact, KnowledgeEngine, Rule
 
 from base_controller import BaseController
 
+
 default_node_name = 'rule_based_controller'
 rospy.init_node(default_node_name, anonymous=False)
 rules_path = rospy.get_param(rospy.search_param('rules_path'))
-print(rules_path)
+
 
 class Blocks(Fact):
     """Info about the blocks in the workspace."""
@@ -32,15 +33,13 @@ class RuleBasedController(KnowledgeEngine, BaseController):
         blocks = str(tuple(f"{b}"for b in rule["blocks"]))
         refused = () if len(rule["refused"]) == 0 else "'"+rule["refused"]+"'"
         next_block = rule["next_block"]
-        f_str = f"@Rule(Blocks(v={blocks}) & Refused(v={refused}))\n"+f"def rule{i}(self):\n\t"+f"self.current_block=['{next_block}']\n\tprint('triggered')"
-        print(f_str)
+        f_str = f"@Rule(Blocks(v={blocks}) & Refused(v={refused}))\n"+f"def rule{i}(self):\n\t"+f"self.current_block=['{next_block}']"
         exec(f_str)
     
     def __init__(self, position_list, rules_path):
         KnowledgeEngine.__init__(self)
         self.reset()
 
-        
         BaseController.__init__(self,position_list)
     
     def idle_state(self):
@@ -66,11 +65,6 @@ class RuleBasedController(KnowledgeEngine, BaseController):
 
 
 def main():
-    # ---------------------------------------------------
-    # INITIALIZATION
-    # ---------------------------------------------------
-
-
     quaternion_poses = rospy.get_param(rospy.search_param('quaternion_poses'))
 
     rule_based_controller = RuleBasedController(position_list = quaternion_poses, rules_path=rules_path)
