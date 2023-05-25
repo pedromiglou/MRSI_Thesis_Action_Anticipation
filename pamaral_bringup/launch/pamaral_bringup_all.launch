@@ -6,11 +6,15 @@
     <include file="$(find pamaral_perception_block)/launch/orbbec_camera.launch"/>
 
     <!--launch file to locate human using the depth images-->
-    <include file="$(find pamaral_depth_image_processing)/launch/human_locater.launch"/>
+    <!-- <include file="$(find pamaral_depth_image_processing)/launch/human_locater.launch"/> -->
 
     <!--launch file to locate objects using the color images-->
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange;violet"/>
+    </include>
+
+    <include file="$(find pamaral_color_image_processing)/launch/hand_object_color_segmenter.launch">
+        <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange"/>
     </include>
 
     <!-- Launch file to visualize details of the system using rviz -->

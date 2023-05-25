@@ -1,0 +1,8 @@
+<launch>
+    <arg name="colors" default="green;red"/>
+
+    <node name="hand_object_color_segmenter" pkg="pamaral_color_image_processing" type="hand_object_color_segmenter.py" output="screen">
+        <param name="colors_path" value="$(find pamaral_color_image_processing)/config/"/>
+        <param name="colors" value="$(arg colors)"/>
+    </node>
+</launch>

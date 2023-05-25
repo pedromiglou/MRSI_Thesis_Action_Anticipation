@@ -1,3 +1,0 @@
-<launch>
-    <node name="image_preprocessing" pkg="pamaral_color_image_processing" type="image_preprocessing.py" output="screen"/>
-</launch>

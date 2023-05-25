@@ -1,12 +1,12 @@
 [
     {
         "blocks": ["red"],
-        "refused": [],
+        "refused": "",
         "next_block": "red"
     },
     {
         "blocks": ["red","red"],
-        "refused": [],
+        "refused": "",
         "next_block": "green"
     },
     {
@@ -16,7 +16,7 @@
     },
     {
         "blocks": ["red","white"],
-        "refused": [],
+        "refused": "",
         "next_block": "red"
     }
 ]
