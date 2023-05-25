@@ -151,7 +151,7 @@ class BaseController:
             self.go_to("table2")
             self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table2")
-        elif self.user_pose == "right":
+        else:# self.user_pose == "right":
             self.go_to("table1")
             self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table1")
@@ -179,7 +179,7 @@ class BaseController:
         if self.state == "stop_wrong_guess":
             if len(self.current_block) == 0:
                 self.state = "idle"
-                self.current_block = None
+                self.current_block = []
             else:
                 self.state = "picking_up"
 

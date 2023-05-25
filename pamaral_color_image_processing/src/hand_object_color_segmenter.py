@@ -4,13 +4,16 @@ import cv2
 import json
 import numpy as np
 import rospy
+import mediapipe as mp
 
 from cv_bridge import CvBridge
 from geometry_msgs.msg import Point
+from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from sklearn.cluster import DBSCAN
 
 from pamaral_color_image_processing.msg import CentroidList
+from larcc_gestures.utils.hgr_utils import find_hands
 
 
 class ObjectColorSegmenter:
@@ -28,10 +31,10 @@ class ObjectColorSegmenter:
 
         self.pieces = []
 
-        self.centroids_publisher = rospy.Publisher("/centroids", CentroidList, queue_size=1)
+        self.centroids_publisher = rospy.Publisher("/hand_object", String, queue_size=1)
 
         self.bridge = CvBridge()
-        #self.mask_publisher = rospy.Publisher(f"/{self.color}_mask", Image, queue_size=1)
+        self.mask_publisher = rospy.Publisher(f"/{self.color}_mask", Image, queue_size=1)
 
     def analyze_image(self, img):
         # process mask
@@ -80,13 +83,8 @@ class ObjectColorSegmenter:
                 centroids.append(l[0])
 
         # publish centroids and mask
-        msg = CentroidList()
-        msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = "/camera/color/image_raw"
-        msg.color = self.color
-        msg.points = [Point(c[0], c[1], 0) for c in centroids]
-        self.centroids_publisher.publish(msg)
-        #self.mask_publisher.publish(self.bridge.cv2_to_imgmsg(mask))
+        if len(centroids)>0:
+            self.centroids_publisher.publish(self.color)
 
 
 class ObjectColorSegmenterManager:
@@ -99,24 +97,46 @@ class ObjectColorSegmenterManager:
             self.segmenters.append(ObjectColorSegmenter(colors_path=colors_path, color=c))
 
         self.bridge = CvBridge()
-        self.subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.image_callback)
+        self.subscriber = rospy.Subscriber("/hand_usb_cam/image_raw", Image, self.image_callback)
+        self.test_publisher = rospy.Publisher(f"/hand_image", Image, queue_size=1)
 
     def image_callback(self, msg):
         try:
             img = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         except:
             print("Error reading color image")
             return
+
+        mp_data = {}
+        mp_data["face_points"] = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        mp_data["threshold_points"] = (11, 12, 24, 25) # shoulders and hips
+        mp_data["left_hand_points"] = (16, 18, 20, 22)
+        mp_data["right_hand_points"] = (15, 17, 19, 21)
+        mp_data["mp_drawing"] = mp.solutions.drawing_utils
+        mp_data["mp_drawing_styles"] = mp.solutions.drawing_styles
+        mp_data["mp_pose"] = mp.solutions.pose
+        mp_data["pose"] = mp_data["mp_pose"].Pose(static_image_mode=False,
+                                                model_complexity=2,
+                                                enable_segmentation=False,
+                                                min_detection_confidence=0.7)
+        
+        left_bounding, right_bounding, hand_right, hand_left, keypoints_image, mp_data["pose"] = find_hands(
+                img, mp_data, x_lim=15, y_lim=15)
         
         # crop to ROI
-        img = img[17:474, 193:454]
+        #img = img[17:474, 193:454]
 
         # convert to hsv
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        if hand_right is not None:
+            img = cv2.cvtColor(hand_right, cv2.COLOR_RGB2BGR)
+            self.test_publisher.publish(self.bridge.cv2_to_imgmsg(img))
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-        for segmenter in self.segmenters:
-            segmenter.analyze_image(img)
+            for segmenter in self.segmenters:
+                segmenter.analyze_image(img)
+
 
 
 def main():

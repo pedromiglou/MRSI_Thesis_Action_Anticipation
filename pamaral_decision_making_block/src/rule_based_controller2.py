@@ -4,6 +4,7 @@ import json
 import rospy
 
 from experta import Fact, KnowledgeEngine, Rule
+from std_msgs.msg import String
 
 from base_controller import BaseController
 
@@ -41,6 +42,15 @@ class RuleBasedController(KnowledgeEngine, BaseController):
         self.reset()
 
         BaseController.__init__(self,position_list)
+        self.hand_object_subscriber = rospy.Subscriber("hand_object", String, self.hand_object_callback)
+    
+    def hand_object_callback(self,msg):
+        if self.blocks is None:
+            self.blocks.append("red")
+
+            self.declare(Blocks(v=tuple(self.blocks)))
+            self.declare(Refused(v="0"))
+            self.current_block = []
     
     def idle_state(self):
         if self.current_block is not None:
@@ -82,3 +92,7 @@ def main():
 if __name__ == "__main__":
     
     main()
+
+
+
+
