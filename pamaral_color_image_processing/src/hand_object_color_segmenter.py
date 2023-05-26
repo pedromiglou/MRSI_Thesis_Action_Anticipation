@@ -13,7 +13,7 @@ from sensor_msgs.msg import Image
 from sklearn.cluster import DBSCAN
 
 from pamaral_color_image_processing.msg import CentroidList
-from larcc_gestures.utils.hgr_utils import find_hands
+from mediapipe_utils import find_hands
 
 
 class ObjectColorSegmenter:
@@ -122,7 +122,7 @@ class ObjectColorSegmenterManager:
                                                 enable_segmentation=False,
                                                 min_detection_confidence=0.7)
         
-        left_bounding, right_bounding, hand_right, hand_left, keypoints_image, mp_data["pose"] = find_hands(
+        left_bounding, right_bounding, hand_right, hand_left, mp_data["pose"] = find_hands(
                 img, mp_data, x_lim=15, y_lim=15)
         
         # crop to ROI
