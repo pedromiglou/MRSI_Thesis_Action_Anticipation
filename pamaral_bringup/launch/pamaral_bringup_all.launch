@@ -13,9 +13,9 @@
         <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange;violet"/>
     </include>
 
-    <include file="$(find pamaral_color_image_processing)/launch/hand_object_color_segmenter.launch">
+    <!-- <include file="$(find pamaral_color_image_processing)/launch/hand_object_color_segmenter.launch">
         <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange"/>
-    </include>
+    </include> -->
 
     <!-- Launch file to visualize details of the system using rviz -->
     <include file="$(find pamaral_visualization)/launch/visualization.launch"/>

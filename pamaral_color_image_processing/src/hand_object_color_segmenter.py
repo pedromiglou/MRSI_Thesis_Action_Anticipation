@@ -130,9 +130,9 @@ class ObjectColorSegmenterManager:
 
         # convert to hsv
         if hand_right is not None:
-            img = cv2.cvtColor(hand_right, cv2.COLOR_RGB2BGR)
-            self.test_publisher.publish(self.bridge.cv2_to_imgmsg(img))
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+            #img = cv2.cvtColor(hand_right, cv2.COLOR_RGB2BGR)
+            self.test_publisher.publish(self.bridge.cv2_to_imgmsg(hand_right))
+            img = cv2.cvtColor(hand_right, cv2.COLOR_RGB2HSV)
 
             for segmenter in self.segmenters:
                 segmenter.analyze_image(img)
