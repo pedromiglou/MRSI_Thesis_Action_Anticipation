@@ -8,9 +8,17 @@
     <!--launch file to locate human using the depth images-->
     <!-- <include file="$(find pamaral_depth_image_processing)/launch/human_locater.launch"/> -->
 
-    <!--launch file to locate objects using the color images-->
+    <!--launch file to locate objects in the table images-->
+    <include file="$(find pamaral_color_image_processing)/launch/simple_cropper.launch">
+        <arg name="input_image_topic" value="camera/color/image_raw"/>
+        <arg name="output_image_topic" value="table_image"/>
+    </include>
+    
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange;violet"/>
+        <arg name="input_image_topic" value="table_image"/>
+        <arg name="min_area" value="150"/>
+        <arg name="prefix" default="table_"/>
     </include>
 
     <!-- <include file="$(find pamaral_color_image_processing)/launch/hand_object_color_segmenter.launch">
