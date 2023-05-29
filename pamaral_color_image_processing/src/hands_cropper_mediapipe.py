@@ -9,7 +9,7 @@ from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 
 
-BBOX_SIZE = [30, 30]
+BBOX_SIZE = [15, 15]
 
 
 class HandsCropperMediapipe:
