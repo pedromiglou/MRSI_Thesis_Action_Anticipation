@@ -55,7 +55,7 @@ class BaseController:
         self.centroids = {"red": None, "dark_blue": None, "light_blue": None, "green": None,
                           "yellow": None, "orange": None, "violet": None, "white": None}
 
-        self.centroids_subscriber = rospy.Subscriber("/centroids", CentroidList, self.centroids_callback)
+        self.centroids_subscriber = rospy.Subscriber("/table_centroids", CentroidList, self.centroids_callback)
 
         self.user_pose = ""
         self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)

@@ -8,7 +8,7 @@
     <!--launch file to locate human using the depth images-->
     <!-- <include file="$(find pamaral_depth_image_processing)/launch/human_locater.launch"/> -->
 
-    <!--launch file to locate objects in the table images-->
+    <!--launch files to locate objects in the table images-->
     <include file="$(find pamaral_color_image_processing)/launch/simple_cropper.launch">
         <arg name="input_image_topic" value="camera/color/image_raw"/>
         <arg name="output_image_topic" value="table_image"/>
@@ -21,9 +21,15 @@
         <arg name="prefix" default="table_"/>
     </include>
 
-    <!-- <include file="$(find pamaral_color_image_processing)/launch/hand_object_color_segmenter.launch">
+    <!--launch files to locate objects in the user's hand-->
+    <include file="$(find pamaral_color_image_processing)/launch/hands_cropper_mediapipe.launch"/>
+
+    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange"/>
-    </include> -->
+        <arg name="input_image_topic" value="hand_image"/>
+        <arg name="min_area" value="150"/>
+        <arg name="prefix" default="hand_"/>
+    </include>
 
     <!-- Launch file to visualize details of the system using rviz -->
     <include file="$(find pamaral_visualization)/launch/visualization.launch"/>
