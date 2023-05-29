@@ -49,7 +49,7 @@ class ObjectColorSegmenter:
         for i in range(len(centroids)):
             area = stats[i, cv2.CC_STAT_AREA]
             (cX, cY) = centroids[i]
-            cX, cY = int(cX + 193), int(cY + 17)
+            cX, cY = int(cX + 237), int(cY + 34)
 
             if area > self.min_area:
                 pieces.append((cX, cY))
@@ -97,7 +97,7 @@ class ObjectColorSegmenterManager:
         self.segmenters = []
 
         for color in self.colors:
-            self.segmenters.append(ObjectColorSegmenter(colors_path, color, input_image_topic, min_area, prefix))
+            self.segmenters.append(ObjectColorSegmenter(color, colors_path, input_image_topic, min_area, prefix))
 
         self.bridge = CvBridge()
         self.subscriber = rospy.Subscriber(input_image_topic, Image, self.image_callback)

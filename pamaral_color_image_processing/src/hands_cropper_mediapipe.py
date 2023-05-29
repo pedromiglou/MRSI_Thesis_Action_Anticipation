@@ -9,7 +9,7 @@ from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 
 
-BBOX_SIZE = [50, 50]
+BBOX_SIZE = [30, 30]
 
 
 class HandsCropperMediapipe:
@@ -45,7 +45,7 @@ class HandsCropperMediapipe:
                     img_copy, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
                 break
 
-        self.mp_drawing_publisher.publish(self.bridge.cv2_to_imgmsg(img_copy))
+        self.mp_drawing_publisher.publish(self.bridge.cv2_to_imgmsg(img_copy, "bgr8"))
 
         if results.multi_hand_landmarks:
             hand_landmarks = [l for _,l in enumerate(results.multi_hand_landmarks)][0].landmark
@@ -63,7 +63,7 @@ class HandsCropperMediapipe:
 
             hand_image = img[y_min:y_max, x_min:x_max]
 
-            self.hand_image_publisher.publish(self.bridge.cv2_to_imgmsg(hand_image))
+            self.hand_image_publisher.publish(self.bridge.cv2_to_imgmsg(hand_image, "bgr8"))
 
         """
         mp_data = {}

@@ -21,7 +21,7 @@ class DataMerger:
 
         self.centroids = {"red": [], "dark_blue": [], "light_blue": [], "green": [],
                           "yellow": [], "orange": [], "violet": [], "white": []}
-        self.centroids_subscriber = rospy.Subscriber("/centroids", CentroidList, self.centroids_callback)
+        self.centroids_subscriber = rospy.Subscriber("/table_centroids", CentroidList, self.centroids_callback)
 
         self.user_pose = None
         self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)

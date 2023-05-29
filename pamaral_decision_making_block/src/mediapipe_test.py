@@ -6,7 +6,7 @@ mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
 # Initialize OpenCV video capture
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(6)
 
 with mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5) as hands:
     while cap.isOpened():
