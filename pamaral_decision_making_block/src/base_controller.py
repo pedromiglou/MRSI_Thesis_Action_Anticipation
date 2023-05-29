@@ -118,14 +118,27 @@ class BaseController:
 
     def picking_up_state(self):
         p = self.current_block[0]
-        self.go_to(f'above_{p}1')
-        self.arm_gripper_comm.gripper_open_fast()
-        self.go_to(f'{p}1')
-        self.arm_gripper_comm.gripper_close_fast()
+        if p not in self.blocks:
+            self.go_to(f'above_{p}1')
+            self.arm_gripper_comm.gripper_open_fast()
+            self.go_to(f'{p}1')
+            self.arm_gripper_comm.gripper_close_fast()
 
-        self.holding = p
+            self.holding = p
 
-        self.go_to(f'above_{p}1')
+            self.go_to(f'above_{p}1')
+        
+        else:
+            self.go_to(f'above_{p}2')
+            self.arm_gripper_comm.gripper_open_fast()
+            self.go_to(f'{p}2')
+            self.arm_gripper_comm.gripper_close_fast()
+
+            self.holding = p
+
+            self.go_to(f'above_{p}2')
+
+        
         self.go_to('retreat')
 
         if self.state == "picking_up":
@@ -147,6 +160,9 @@ class BaseController:
 
         self.current_block = []
 
+        if len(self.blocks) % 3 == 0:
+            self.blocks = []
+
         if self.user_pose == "left":
             self.go_to("table2")
             self.arm_gripper_comm.gripper_open_fast()
@@ -167,10 +183,17 @@ class BaseController:
 
     def stop_wrong_guess_state(self):
         if self.holding is not None:
-            self.go_to(f"above_{self.holding}1")
-            self.go_to(f"{self.holding}1")
-            self.arm_gripper_comm.gripper_open_fast()
-            self.go_to(f"above_{self.holding}1")
+            if self.holding not in self.blocks:
+                self.go_to(f"above_{self.holding}1")
+                self.go_to(f"{self.holding}1")
+                self.arm_gripper_comm.gripper_open_fast()
+                self.go_to(f"above_{self.holding}1")
+            
+            else:
+                self.go_to(f"above_{self.holding}2")
+                self.go_to(f"{self.holding}2")
+                self.arm_gripper_comm.gripper_open_fast()
+                self.go_to(f"above_{self.holding}2")
 
             self.holding = None
 
