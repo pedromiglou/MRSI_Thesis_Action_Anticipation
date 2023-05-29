@@ -16,8 +16,10 @@ from pamaral_color_image_processing.msg import CentroidList
 class ObjectColorSegmenter:
     """This node should receive color images and detect objects of a certain color using segmentation."""
 
-    def __init__(self, colors_path, color):
+    def __init__(self, color, colors_path, input_image_topic, min_area, prefix):
         self.color = color
+        self.input_image_topic = input_image_topic
+        self.min_area = min_area
 
         f = open(f"{colors_path}{self.color}.json")
         c_limits = json.load(f)['limits']
@@ -28,10 +30,9 @@ class ObjectColorSegmenter:
 
         self.pieces = []
 
-        self.centroids_publisher = rospy.Publisher("/centroids", CentroidList, queue_size=1)
-
         self.bridge = CvBridge()
-        self.mask_publisher = rospy.Publisher(f"/{self.color}_mask", Image, queue_size=1)
+        self.mask_publisher = rospy.Publisher(f"{prefix}{self.color}_mask", Image, queue_size=1)
+        self.centroids_publisher = rospy.Publisher(f"{prefix}centroids", CentroidList, queue_size=1)
 
     def analyze_image(self, img):
         # process mask
@@ -48,9 +49,9 @@ class ObjectColorSegmenter:
         for i in range(len(centroids)):
             area = stats[i, cv2.CC_STAT_AREA]
             (cX, cY) = centroids[i]
-            cX, cY = int(cX + 193), int(cY + 17)
+            cX, cY = int(cX + 237), int(cY + 34)
 
-            if area > 150:
+            if area > self.min_area:
                 pieces.append((cX, cY))
 
         self.pieces.append(pieces[1:])
@@ -82,7 +83,7 @@ class ObjectColorSegmenter:
         # publish centroids and mask
         msg = CentroidList()
         msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = "/camera/color/image_raw"
+        msg.header.frame_id = self.input_image_topic
         msg.color = self.color
         msg.points = [Point(c[0], c[1], 0) for c in centroids]
         self.centroids_publisher.publish(msg)
@@ -91,15 +92,15 @@ class ObjectColorSegmenter:
 
 class ObjectColorSegmenterManager:
 
-    def __init__(self, colors_path, colors):
+    def __init__(self, colors, colors_path, input_image_topic, min_area, prefix):
         self.colors = colors
         self.segmenters = []
 
-        for c in self.colors:
-            self.segmenters.append(ObjectColorSegmenter(colors_path=colors_path, color=c))
+        for color in self.colors:
+            self.segmenters.append(ObjectColorSegmenter(color, colors_path, input_image_topic, min_area, prefix))
 
         self.bridge = CvBridge()
-        self.subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.image_callback)
+        self.subscriber = rospy.Subscriber(input_image_topic, Image, self.image_callback)
 
     def image_callback(self, msg):
         try:
@@ -108,9 +109,6 @@ class ObjectColorSegmenterManager:
         except:
             print("Error reading color image")
             return
-        
-        # crop to ROI
-        img = img[17:474, 193:454]
 
         # convert to hsv
         img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -126,10 +124,13 @@ def main():
     default_node_name = 'object_color_segmenter'
     rospy.init_node(default_node_name, anonymous=False)
 
-    colors_path = rospy.get_param(rospy.search_param('colors_path'))
     colors = rospy.get_param(rospy.search_param('colors')).split(";")
+    colors_path = rospy.get_param(rospy.search_param('colors_path'))
+    input_image_topic = rospy.get_param(rospy.search_param('input_image_topic'))
+    min_area = int(rospy.get_param(rospy.search_param('min_area')))
+    prefix = rospy.get_param(rospy.search_param('prefix'))
 
-    ObjectColorSegmenterManager(colors_path, colors)
+    ObjectColorSegmenterManager(colors, colors_path, input_image_topic, min_area, prefix)
 
     rospy.spin()
 

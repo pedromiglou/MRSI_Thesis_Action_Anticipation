@@ -1,8 +1,15 @@
 <launch>
     <arg name="colors" default="green;red"/>
+    <arg name="colors_path" default="$(find pamaral_color_image_processing)/config/"/>
+    <arg name="input_image_topic" default="camera/color/image_raw"/>
+    <arg name="min_area" default="150"/>
+    <arg name="prefix" default=""/>
 
-    <node name="object_color_segmenter" pkg="pamaral_color_image_processing" type="object_color_segmenter.py" output="screen">
-        <param name="colors_path" value="$(find pamaral_color_image_processing)/config/"/>
+    <node name="$(arg prefix)object_color_segmenter" pkg="pamaral_color_image_processing" type="object_color_segmenter.py" output="screen">
         <param name="colors" value="$(arg colors)"/>
+        <param name="colors_path" value="$(arg colors_path)"/>
+        <param name="input_image_topic" value="$(arg input_image_topic)"/>
+        <param name="min_area" value="$(arg min_area)"/>
+        <param name="prefix" value="$(arg prefix)"/>
     </node>
 </launch>

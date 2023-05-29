@@ -4,8 +4,10 @@ import json
 import rospy
 
 from experta import Fact, KnowledgeEngine, Rule
+from std_msgs.msg import String
 
 from base_controller import BaseController
+from pamaral_color_image_processing.msg import CentroidList
 
 
 default_node_name = 'rule_based_controller'
@@ -41,6 +43,20 @@ class RuleBasedController(KnowledgeEngine, BaseController):
         self.reset()
 
         BaseController.__init__(self,position_list)
+        self.hand_centroids_subscriber = rospy.Subscriber("hand_centroids", CentroidList, self.hand_centroids_callback)
+    
+    def hand_centroids_callback(self,msg):
+        centroids = msg.points
+
+        if len(self.blocks) % 3 == 0 and self.current_block is None:
+            if len(centroids)>0:
+                rospy.loginfo("Received centroid -> "+msg.color)
+                self.blocks = [msg.color]
+
+                self.reset()
+                self.declare(Blocks(v=tuple(self.blocks)))
+                self.declare(Refused(v="_"))
+                self.current_block = []
     
     def idle_state(self):
         if self.current_block is not None:
@@ -82,3 +98,7 @@ def main():
 if __name__ == "__main__":
     
     main()
+
+
+
+

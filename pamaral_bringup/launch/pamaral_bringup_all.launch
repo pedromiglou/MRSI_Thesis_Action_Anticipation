@@ -6,11 +6,29 @@
     <include file="$(find pamaral_perception_block)/launch/orbbec_camera.launch"/>
 
     <!--launch file to locate human using the depth images-->
-    <include file="$(find pamaral_depth_image_processing)/launch/human_locater.launch"/>
+    <!-- <include file="$(find pamaral_depth_image_processing)/launch/human_locater.launch"/> -->
 
-    <!--launch file to locate objects using the color images-->
+    <!--launch files to locate objects in the table images-->
+    <include file="$(find pamaral_color_image_processing)/launch/simple_cropper.launch">
+        <arg name="input_image_topic" value="camera/color/image_raw"/>
+        <arg name="output_image_topic" value="table_image"/>
+    </include>
+    
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange;violet"/>
+        <arg name="input_image_topic" value="table_image"/>
+        <arg name="min_area" value="100"/>
+        <arg name="prefix" value="table_"/>
+    </include>
+
+    <!--launch files to locate objects in the user's hand-->
+    <include file="$(find pamaral_color_image_processing)/launch/hands_cropper_mediapipe.launch"/>
+
+    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
+        <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange"/>
+        <arg name="input_image_topic" value="hand_image"/>
+        <arg name="min_area" value="100"/>
+        <arg name="prefix" value="hand_"/>
     </include>
 
     <!-- Launch file to visualize details of the system using rviz -->
