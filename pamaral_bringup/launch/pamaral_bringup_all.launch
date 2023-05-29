@@ -27,7 +27,7 @@
     <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
         <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange"/>
         <arg name="input_image_topic" value="hand_image"/>
-        <arg name="min_area" value="50"/>
+        <arg name="min_area" value="100"/>
         <arg name="prefix" value="hand_"/>
     </include>
 
