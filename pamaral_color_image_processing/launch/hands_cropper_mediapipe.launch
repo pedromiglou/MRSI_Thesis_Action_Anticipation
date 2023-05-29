@@ -1,3 +1,3 @@
 <launch>
-    <node name="hand_object_color_segmenter" pkg="pamaral_color_image_processing" type="hands_cropper_mediapipe.py" output="screen"/>
+    <node name="hands_cropper_mediapipe" pkg="pamaral_color_image_processing" type="hands_cropper_mediapipe.py" output="screen"/>
 </launch>

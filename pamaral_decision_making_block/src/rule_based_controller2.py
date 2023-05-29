@@ -48,8 +48,9 @@ class RuleBasedController(KnowledgeEngine, BaseController):
     def hand_centroids_callback(self,msg):
         centroids = msg.points
 
-        if self.blocks is None:
-            if len(centroids)>1:
+        if len(self.blocks) % 3 == 0 and self.current_block is None:
+            if len(centroids)>0:
+                rospy.loginfo("Received centroid -> "+msg.color)
                 self.blocks.append(msg.color)
 
                 self.declare(Blocks(v=tuple(self.blocks)))
@@ -70,7 +71,7 @@ class RuleBasedController(KnowledgeEngine, BaseController):
     def putting_down_state(self):
         BaseController.putting_down_state(self)
 
-        self.declare(Blocks(v=tuple(self.blocks)))
+        self.declare(Blocks(v=tuple(self.blocks[(len(self.blocks)+1//3)*3-1:])))
         self.declare(Refused(v="_"))
     
     def stop_wrong_guess_state(self):
