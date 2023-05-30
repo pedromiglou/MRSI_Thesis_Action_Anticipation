@@ -1,22 +1,127 @@
 [
-    {
-        "blocks": ["red"],
-        "refused": "",
-        "next_block": "red"
-    },
-    {
-        "blocks": ["red","red"],
-        "refused": "",
-        "next_block": "green"
-    },
-    {
-        "blocks": ["red"],
-        "refused": "red",
-        "next_block": "white"
-    },
-    {
-        "blocks": ["red","white"],
-        "refused": "",
-        "next_block": "red"
-    }
+	{
+		"blocks": ["dark_blue"],
+		"refused": "",
+		"next_block": "yellow"
+	},
+	{
+		"blocks": ["dark_blue"],
+		"refused": "yellow",
+		"next_block": "orange"
+	},
+	{
+		"blocks": ["dark_blue"],
+		"refused": "orange",
+		"next_block": "white"
+	},
+	{
+		"blocks": ["dark_blue", "orange"],
+		"refused": "",
+		"next_block": "dark_blue"
+	},
+	{
+		"blocks": ["green"],
+		"refused": "",
+		"next_block": "red"
+	},
+	{
+		"blocks": ["green"],
+		"refused": "red",
+		"next_block": "yellow"
+	},
+	{
+		"blocks": ["green"],
+		"refused": "yellow",
+		"next_block": "white"
+	},
+	{
+		"blocks": ["green", "red"],
+		"refused": "",
+		"next_block": "red"
+	},
+	{
+		"blocks": ["green", "red"],
+		"refused": "red",
+		"next_block": "yellow"
+	},
+	{
+		"blocks": ["dark_blue", "white"],
+		"refused": "",
+		"next_block": "red"
+	},
+	{
+		"blocks": ["light_blue"],
+		"refused": "",
+		"next_block": "white"
+	},
+	{
+		"blocks": ["light_blue", "white"],
+		"refused": "",
+		"next_block": "light_blue"
+	},
+	{
+		"blocks": ["red"],
+		"refused": "",
+		"next_block": "dark_blue"
+	},
+	{
+		"blocks": ["red"],
+		"refused": "dark_blue",
+		"next_block": "yellow"
+	},
+	{
+		"blocks": ["red"],
+		"refused": "yellow",
+		"next_block": "white"
+	},
+	{
+		"blocks": ["red", "yellow"],
+		"refused": "",
+		"next_block": "green"
+	},
+	{
+		"blocks": ["green", "white"],
+		"refused": "",
+		"next_block": "red"
+	},
+	{
+		"blocks": ["green", "white"],
+		"refused": "red",
+		"next_block": "orange"
+	},
+	{
+		"blocks": ["orange"],
+		"refused": "",
+		"next_block": "white"
+	},
+	{
+		"blocks": ["orange", "white"],
+		"refused": "",
+		"next_block": "green"
+	},
+	{
+		"blocks": ["green", "yellow"],
+		"refused": "",
+		"next_block": "red"
+	},
+	{
+		"blocks": ["red", "dark_blue"],
+		"refused": "",
+		"next_block": "red"
+	},
+	{
+		"blocks": ["red", "white"],
+		"refused": "",
+		"next_block": "red"
+	},
+	{
+		"blocks": ["dark_blue", "yellow"],
+		"refused": "",
+		"next_block": "green"
+	},
+	{
+		"blocks": ["dark_blue", "yellow"],
+		"refused": "green",
+		"next_block": "red"
+	}
 ]
