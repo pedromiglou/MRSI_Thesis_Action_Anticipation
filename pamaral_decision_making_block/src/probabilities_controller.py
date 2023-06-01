@@ -29,6 +29,11 @@ class ProbabilitiesController(BaseController):
 
         super().__init__(position_list)
 
+        # flag so that the controller does not keep querying the database
+        self.queried_database = False
+
+        self.possible_blocks = []
+
     def recreate_db(self, flags_path):
         # recreate all tables
         Base.metadata.drop_all(self.engine)
@@ -122,7 +127,13 @@ class ProbabilitiesController(BaseController):
         return d.items()
 
     def idle_state(self):
-        if self.current_block is not None: # get colors from database, else wait for user input
+        if len(self.possible_blocks)>0:
+            self.current_block, self.possible_blocks = self.possible_blocks[0], self.possible_blocks[1:]
+            self.state = "picking_up"
+
+        elif self.current_block is None and not self.queried_database: # get colors from database
+            self.queried_database = True
+
             if len(self.blocks) % 3 == 0:
                 return
             elif len(self.blocks) % 3 == 1:
@@ -132,13 +143,11 @@ class ProbabilitiesController(BaseController):
 
             probs = sorted(probs, key=lambda x: x[1], reverse=True)
 
-            self.current_block = [p[0] for p in probs if p[1] > 0]
-
-            if self.state == "idle":
-                if len(self.current_block)>0:
-                    self.state = "picking_up"
-                else:
-                    self.current_block = None
+            self.possible_blocks = [p[0] for p in probs if p[1] > 0]
+    
+    def putting_down_state(self):
+        super().putting_down_state(self)
+        self.queried_database = False
 
 
 def main():

@@ -33,7 +33,7 @@ class RuleBasedController(KnowledgeEngine, BaseController):
         blocks = str(tuple(f"{b}"for b in rule["blocks"]))
         refused = "'_'" if len(rule["refused"]) == 0 else "'"+rule["refused"]+"'"
         next_block = rule["next_block"]
-        f_str = f"@Rule(Blocks(v={blocks}) & Refused(v={refused}))\n"+f"def rule{i}(self):\n\t"+f"self.current_block=['{next_block}']"
+        f_str = f"@Rule(Blocks(v={blocks}) & Refused(v={refused}))\n"+f"def rule{i}(self):\n\t"+f"self.current_block='{next_block}'"
         exec(f_str)
     
     def __init__(self, position_list, rules_path):
@@ -41,28 +41,31 @@ class RuleBasedController(KnowledgeEngine, BaseController):
         self.reset()
 
         BaseController.__init__(self,position_list)
+
+        # flag so that the controller does not keep making Experta run
+        self.engine_ran = False
     
     def idle_state(self):
-        if self.current_block is not None:
+        if self.current_block is None and not self.engine_ran:
             self.run()
-            rospy.loginfo("Engine ran, current_block: "+str(self.current_block))
+            self.engine_ran = True
+            rospy.loginfo("Engine ran, current_block: "+self.current_block)
 
-            if self.state == "idle":
-                if len(self.current_block)>0:
-                    self.state = "picking_up"
-                else:
-                    self.current_block = None
+            if self.state == "idle" and self.current_block is not None:
+                self.state = "picking_up"
     
     def putting_down_state(self):
         BaseController.putting_down_state(self)
 
         self.declare(Blocks(v=tuple(self.blocks)))
         self.declare(Refused(v="_"))
+        self.engine_ran = False
     
     def stop_wrong_guess_state(self):
-        self.declare(Refused(v=self.current_block[0]))
+        self.declare(Refused(v=self.current_block))
+        self.engine_ran = False
 
-        rospy.loginfo("Refused "+self.current_block[0])
+        rospy.loginfo("Refused "+self.current_block)
 
         BaseController.stop_wrong_guess_state(self)
 
