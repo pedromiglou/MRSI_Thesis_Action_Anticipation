@@ -27,7 +27,7 @@ class BaseController:
         # define state variables
         self.state = 'idle'
         self.blocks = []
-        self.current_block = []
+        self.current_block = None
         self.holding = None
 
         # read registed positions
@@ -55,29 +55,27 @@ class BaseController:
         self.centroids = {"red": None, "dark_blue": None, "light_blue": None, "green": None,
                           "yellow": None, "orange": None, "violet": None, "white": None}
 
-        self.centroids_subscriber = rospy.Subscriber("/table_centroids", CentroidList, self.centroids_callback)
+        self.table_centroids_subscriber = rospy.Subscriber("/table_centroids", CentroidList, self.table_centroids_callback)
 
         self.user_pose = ""
         self.user_pose_subscriber = rospy.Subscriber("/user_pose", PointStamped, self.user_pose_callback)
 
         rospy.loginfo("Controller Ready")
 
-    def centroids_callback(self, msg):
+    def table_centroids_callback(self, msg):
         centroids = msg.points
-
-        if self.centroids[msg.color] is not None and len(centroids) == 1 and len(self.centroids[msg.color])==0:
-            self.centroids[msg.color] = centroids
-
-            if self.state == "idle" and (self.current_block is None or len(self.current_block)==0) and msg.color != "violet":
-                self.current_block = [msg.color]
+        color = msg.color
+        
+        if self.centroids[color] is not None and len(centroids) == 1 and len(self.centroids[color])==0:
+            if self.state == "idle" and color != "violet" and self.current_block is None:
+                self.current_block = color
                 self.state = "picking_up"
             
-            if (self.state == "picking_up" or self.state == "moving_closer") and msg.color == "violet":
+            if (self.state == "picking_up" or self.state == "moving_closer") and color == "violet":
                 self.state = "stop_wrong_guess"
                 self.arm_gripper_comm.stop_arm()
 
-        else:
-            self.centroids[msg.color] = centroids
+        self.centroids[color] = centroids
 
     def user_pose_callback(self, msg):
         old_pose = self.user_pose
@@ -117,28 +115,17 @@ class BaseController:
         pass
 
     def picking_up_state(self):
-        p = self.current_block[0]
-        if p not in self.blocks:
-            self.go_to(f'above_{p}1')
-            self.arm_gripper_comm.gripper_open_fast()
-            self.go_to(f'{p}1')
-            self.arm_gripper_comm.gripper_close_fast()
+        block_name = self.current_block + "1" if self.current_block not in self.blocks else "2"
 
-            self.holding = p
+        self.go_to(f'above_{block_name}')
+        self.arm_gripper_comm.gripper_open_fast()
+        self.go_to(f'{block_name}')
+        self.arm_gripper_comm.gripper_close_fast()
 
-            self.go_to(f'above_{p}1')
-        
-        else:
-            self.go_to(f'above_{p}2')
-            self.arm_gripper_comm.gripper_open_fast()
-            self.go_to(f'{p}2')
-            self.arm_gripper_comm.gripper_close_fast()
+        self.holding = self.current_block
 
-            self.holding = p
+        self.go_to(f'above_{block_name}')
 
-            self.go_to(f'above_{p}2')
-
-        
         self.go_to('retreat')
 
         if self.state == "picking_up":
@@ -158,7 +145,7 @@ class BaseController:
 
         self.holding = None
 
-        self.current_block = []
+        self.current_block = None
 
         if len(self.blocks) % 3 == 0:
             self.blocks = []
@@ -183,28 +170,19 @@ class BaseController:
 
     def stop_wrong_guess_state(self):
         if self.holding is not None:
-            if self.holding not in self.blocks:
-                self.go_to(f"above_{self.holding}1")
-                self.go_to(f"{self.holding}1")
-                self.arm_gripper_comm.gripper_open_fast()
-                self.go_to(f"above_{self.holding}1")
-            
-            else:
-                self.go_to(f"above_{self.holding}2")
-                self.go_to(f"{self.holding}2")
-                self.arm_gripper_comm.gripper_open_fast()
-                self.go_to(f"above_{self.holding}2")
+            block_name = self.holding + "1" if self.holding not in self.blocks else "2"
+
+            self.go_to(f"above_{block_name}")
+            self.go_to(f"{block_name}")
+            self.arm_gripper_comm.gripper_open_fast()
+            self.go_to(f"above_{block_name}")
 
             self.holding = None
 
-        self.current_block = self.current_block[1:]
+        self.current_block = None
         
         if self.state == "stop_wrong_guess":
-            if len(self.current_block) == 0:
-                self.state = "idle"
-                self.current_block = []
-            else:
-                self.state = "picking_up"
+            self.state = "idle"
 
     def go_to(self, pos):
         pos = self.positions[pos]
