@@ -3,33 +3,20 @@
 
 \textcolor{red}{(Where to explain the problem in detail?)}
 
-\textcolor{red}{(Should the first solution be my first demo or just the interactive one)}
-
 \section{Predictive Models}
 
 \subsection{LSTM}
 
 \subsection{Transformer}
 
-\section{Robot Controller}
+{\color{red} \rule{\linewidth}{0.5mm}}
 
-\subsection{First Solution}
+{\color{gray}
+\section{First Work (possibly to remove)}
 
 The first version developed comprised simple actions that were triggered by sensor data based on a set of rules with the end goal of building a tower of blocks with 3 possible orders. Additionally, the system was able to recover from mistakes.
 
 \textcolor{red}{maybe an image with the different orders to better visualize the solution?}
-
-\subsubsection{ROS Architecture}
-
-The communication between the robot, the sensors, and the programming logic is established using Robot Operating System (ROS) with the following 5 main nodes:
-
-\begin{itemize}
-    \item \textbf{orbbec\_camera}: node responsible for receiving the color and depth images from the camera and publishing them on ROS;
-    \item \textbf{human\_locator}: node responsible for analyzing the depth images and returning the position of the highest point in a certain region of interest which is then considered as the position of the human in the workspace;
-    \item \textbf{object\_color\_segmenter}: node responsible for analyzing the color images and returning the position and orientation of the objects in the workspace using color segmentation;
-    \item \textbf{decision\_making\_block}: node responsible for receiving the information resulting from the sensor data and keeping an internal state machine to decide what actions should be taken and when they should be taken;
-    \item \textbf{move\_it!}: a group of nodes responsible for planning the robot trajectory in each action.
-\end{itemize}
 
 \subsubsection{State Machine Logic}
 
@@ -52,30 +39,53 @@ This version was developed as a state machine with 7 different states, as shown 
     \item \textbf{stop wrong guess}: State corresponding to the action of stopping the robot because the first block was rotated indicating a different sequence. If the robot was already holding a block then that block is put back where it was while in this state. After the robot is stopped and it is not holding a block the state changes to $picking$ $up$.
 \end{itemize}
 
-\if{0}
+\subsubsection{Workflow}
 Initially, the robot would wait until it detected a red or green object using color segmentation. This information would help him determine not only the first block but possibly the entire sequence since if started with a red block there would only be one option. If it started with a green block then the orientation of the block would give the system information about which sequence should be used.
 
 Before the robot gives a block to the user, it waits for the user to stop taking care of the previous one. This is implemented by tracking when one block reappears in the color image indicating that the user has stopped working on it.
 
 So that the robot avoids being too close to the user, the position of the user is detected using the depth images and the robots puts down a block in the opposite side of the table. Furthermore, if the user switches to the other side the robot will also switch the put down location.
-\fi
 
 This solution intrinsically consisted of a set of rules where the movements resulted from the direct communication between the robot and the human. Therefore, it was not yet considered an anticipatory system.
+}
+{\color{red} \rule{\linewidth}{0.5mm}}
 
-\subsection{Second Solution - Probability Based}
+\section{Robot Controller}
 
-The second version developed consisted in having a database of probabilities that the robot would check to anticipate the block that the user would need next. These probabilities were established according to the possible country flags \textcolor{red}{(missing example)}. However, the first block is still requested by the user and, if the robot exhausts all possibilities that it knows of, the user is able to request the following block.
+\subsection{System ROS Architecture}
 
-\subsubsection{State Machine Logic}
+The communication between the robot, the sensors, and the programming logic is established using Robot Operating System (ROS) with the following 5 main nodes.
 
-This version was developed as a state machine with 7 different states, as shown in \if {0} Fig.~\ref{fig:demo1_state_machine}.
+\subsubsection{orbbec\_camera}
+
+This node is responsible for receiving the color and depth images from the Orbbec camera and publishing them on ROS. In order to control to have better control over the lightness in the environment, the back-light compensation was raised to the maximum.
+
+\subsubsection{human\_locator}
+
+This node is responsible for analyzing the depth images and returning the position of the highest point in a certain region of interest which is then considered as the position of the human in the workspace.
+
+\subsubsection{object\_color\_segmenter}
+
+This node is responsible for analyzing the color images and returning the position of the objects in the workspace using color segmentation.
+
+\subsubsection{decision\_making\_block}
+
+This node is responsible for receiving the information resulting from the sensor data and keeping an internal state machine to decide what actions should be taken and when they should be taken.
+
+\subsubsection{move\_it!}
+
+This is a group of nodes responsible for planning the robot's trajectory in each action.
+
+\subsection{State Machine Logic}
+
+As said before, the decision\_making\_block node contains an internal state machine. Although the logic of some states changes depending on the solution, all implementations follow the same general design represented in the state machine diagram shown in Fig.~\ref{fig:state_machine}.
 
 \begin{figure}[H]%[!ht]
     \centering
-    \input{figs/demo1_state_machine.tikz}
-    \caption{First Version - State Machine}
-    \label{fig:demo1_state_machine}
-\end{figure}\fi
+    \input{figs/general_state_machine.tikz}
+    \caption{State Machine}
+    \label{fig:state_machine}
+\end{figure}
 
 \begin{itemize}
     \item \textbf{idle}: State corresponding to when the robot does not know which is the next block. If the sequence has not started yet then it waits for the user to choose the first block and then the state changes to $picking$ $up$. If the sequence has already started then the database is fetched for the possible next blocks and then if at least one block is returned the state changes to $picking$ $up$ or if none is returned the system waits for the user to choose the next block.
@@ -83,7 +93,21 @@ This version was developed as a state machine with 7 different states, as shown 
     \item \textbf{moving closer}: State corresponding to the movement until the put-down position opposite to the user so that the robot does not constrain him. After the robot reaches the put-down position the state changes to $putting$ $down$. If the robot is holding the wrong object then the state changes to $stop$ $wrong$ $guess$ instead and if the user changes side the state changes to $stop$ $side$ $switch$.
     \item \textbf{putting down}: State corresponding to the movement necessary to put down the block in the table and the retreat of the robot outside the user's workspace. After that, the state changes to $idle$.
     \item \textbf{stop side switch}: State corresponding to the action of stopping the robot because the user changed sides. After the robot is stopped the state changes back to $moving$ $closer$.
-    \item \textbf{stop wrong guess}: State corresponding to the action of stopping the robot because the user indicated that it was the wrong block. If the robot was already holding a block then that block is put back where it was while in this state. After the robot is stopped and it is not holding a block the state changes to $picking$ $up$ if there are still more possible blocks in the database. Otherwise the state changes to $idle$ so that it waits for an user request.
+    \item \textbf{stop wrong guess}: State corresponding to the action of stopping the robot because the user indicated that it was the wrong block. If the robot was already holding a block then that block is put back where it was while in this state. After the robot is stopped and it is not holding a block the state changes to $picking$ $up$ if there are still more possible blocks in the database. Otherwise, the state changes to $idle$ so that it waits for a user request.
 \end{itemize}
 
-\subsection{Third Solution - Learning Based}
+\subsection{Robot Controller Solutions}
+
+This subsection covers the workflow of the different solutions implemented.
+
+\subsubsection{First Solution - Interaction Based}
+
+The first version developed relied on interactions between the robot and the user. When the user puts his hand above a small block, if the state of the robot is $idle$ then it proceeds to fetch a block of the same color. Additionally, when the user hovers his hand over the violet block while the state of the robot is $picking$ $up$ or $moving$ $closer$, it means that the robot fetched the wrong block so it must stop and put the block back where it was before if it was already picked up.
+
+The interactions in this solution are also the fallback behavior if the methods in the following solutions fail to anticipate the block that the user desires.
+
+\subsubsection{Second Solution - Probability Based}
+
+The second version implemented consisted in having a database of probabilities that the robot would check to anticipate the block that the user would need next. These probabilities were established according to the possible country flags \textcolor{red}{(missing example)}. However, the first block is still requested by the user and, if the robot exhausts all possibilities that it knows of, the user is able to request the following block.
+
+\subsubsection{Third Solution - Rule Based}

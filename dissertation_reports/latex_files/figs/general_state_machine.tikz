@@ -1,0 +1,56 @@
+\begin{tikzpicture}[
+        > = stealth, % arrow head style
+        shorten > = 1pt, % don't touch arrow head to node
+        auto,
+        node distance = 3.8cm, % distance between nodes
+        thick % line style
+    ]
+    
+    \tikzstyle{every state}=[
+        draw = black,
+        thick,
+        fill = white,
+        minimum size = 4mm,
+        text width = 1.5cm,
+        align = center
+    ]
+    
+    \node[state] (idle) at (0,0) {idle};
+    \node[state] (picking_up) [right of=idle] {picking up};
+    \node[state] (moving_closer) [right of=picking_up] {moving closer};
+    \node[state] (putting_down) [below of=picking_up] {putting down};
+    \node[state] (stop_side_switch) [right of=moving_closer] {stop side switch};
+    \node[state] (stop_wrong_guess) [above of=picking_up] {stop wrong guess};
+    
+    % \path[->] (idle) edge node[align=center] {received new\\sequence} (picking_up);
+    % \path[->] (picking_up) edge node[align=center] {object\\picked up} (waiting);
+    % \path[->] (waiting) edge node[align=center] {user\\finished} (moving_closer);
+    % \path[->] (moving_closer) edge node[align=center] {robot in put\\down position} (putting_down);
+    % \path[->] (putting_down) edge node[align=center] {object\\put down} (picking_up);
+    % \path[->] (putting_down) edge[bend left] node[align=center] {sequence\\finished} (idle);
+    % \path[->] (moving_closer) edge[bend left] node[align=center] {user changed\\side} (stop_side_switch);
+    % \path[->] (stop_side_switch) edge[bend left] node[align=center] {robot\\stopped} (moving_closer);
+    % \path[->] (picking_up) edge[bend right] node[align=center] {} (stop_wrong_guess);
+    % \path[->] (waiting) edge node[align=center] {} (stop_wrong_guess);
+    % \path[->] (moving_closer) edge[bend right] node[align=center] {wrong assembly\\sequence} (stop_wrong_guess);
+    % \path[->] (stop_wrong_guess) edge[bend right] node[align=center] {reverted\\previous guess} (picking_up);
+
+%Alternative lay-out for easier global configuration (vsantos)
+\path[every edge,
+	->,
+	text width=1.8cm,
+	align=center,
+%	pos=0.4,
+	]
+(idle)             edge             node {knows which block is the next}   (picking_up)
+(picking_up)       edge             node {object picked up}        (moving_closer)
+(moving_closer)    edge[bend left]  node {robot in put down position} (putting_down)
+(putting_down)     edge[bend left]  node {robot retreated}         (idle)
+(moving_closer)    edge[bend left]  node {user changed side}       (stop_side_switch)
+(stop_side_switch) edge[bend left]  node {robot stopped}           (moving_closer)
+(picking_up)       edge             node[right] {wrong assembly sequence}                         (stop_wrong_guess)
+(moving_closer)    edge[bend right]  node[above right] {wrong assembly sequence} (stop_wrong_guess)
+(stop_wrong_guess) edge[bend right]  node[above left] {reverted previous guess} (idle)
+; 
+    
+\end{tikzpicture}

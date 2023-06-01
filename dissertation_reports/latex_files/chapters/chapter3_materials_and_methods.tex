@@ -7,7 +7,11 @@ This chapter covers a review of the experimental infrastructure including releva
 
 The experimental part of this thesis was developed using the setup available at the Laboratory for Automation and Robotics (LAR) located in the Department of Mechanical Engineering at the University of Aveiro. This setup was designed to meet the requirements of the AUGMANITY mobilizing project\footnote{AUGMANITY website: \url{https://www.augmanity.pt}} and it contains an UR10e collaborative robot and multiple cameras, including the Orbbec Astra Pro RGBD camera which was utilized.
 
-\textcolor{red}{Image of the setup}
+\begin{figure}[h]
+\centerline{\includegraphics[height=3.2in]{figs/setup2.jpg}}
+\caption[setup]{LAR hardware setup}
+\label{fig:ur10e}
+\end{figure}
 
 \subsection{UR10e Robot}
 
@@ -65,6 +69,42 @@ Tensorflow\footnote{Tensorflow documentation: \url{https://www.tensorflow.org/ap
 \end{itemize}
 
 In this work, Tensorflow is used to design and train the machine learning models.
+
+\subsection{Key Point Detection Frameworks}
+\label{section:keypointdetection}
+
+This section reviews OpenPose and OpenPifPaf which are two projects containing models to detect key points in images, such as the human skeleton joints.
+
+\subsubsection{OpenPose}
+
+OpenPose\cite{Cao2021,Simon2017,Cao2018,Wei2016}\footnote{OpenPose documentation: \url{https://cmu-perceptual-computing-lab.github.io/openpose}} is an open-source project that aims to detect key points in the human body, face, hands, and feet from images. Its main features are:
+
+\begin{itemize}
+    \item 2D real-time key point detection based on the body/foot, the hand, or the face of multiple people;
+    \item 3D real-time key point detection based on images from multiple cameras of one person;
+    \item estimation of camera calibration parameters;
+    \item single-person tracking.
+\end{itemize}
+
+OpenPose can be used through the command-line or using an API for Python or C++.
+
+\begin{figure}[h]
+\centerline{\includegraphics[height=1.55in]{figs/openpose.jpeg}\includegraphics[height=1.55in]{figs/openpose2.PNG}}
+\caption[OpenPose Examples]{OpenPose Examples \cite{Cao2021,Simon2017}}
+\label{openpose}
+\end{figure}
+
+\subsubsection{OpenPifPaf}
+
+OpenPifPaf\cite{Kreiss2021,Kreiss2019}\footnote{OpenPifPaf documentation: \url{https://openpifpaf.github.io}} is an open-source project that aims to detect, associate and track semantic key points. Detecting human joints is an example of its usage but it is also able to generalize this detection to other classes such as cars and animals. It can be installed as a python package which can then be imported.
+
+\begin{figure}[h]
+\centerline{\includegraphics[height=1.8in]{figs/openpifpaf.jpeg}}
+\caption[OpenPifPaf Example]{OpenPifPaf Example \cite{Kreiss2021}}
+\label{openpifpaf}
+\end{figure}
+
+\subsubsection{MediaPipe}
 
 \section{Methods}
 
