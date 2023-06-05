@@ -1,0 +1,9 @@
+<launch>
+    <arg name="input_image_topic" default="camera/color/image_raw"/>
+    <arg name="output_image_folder" default="$(find data)/images_dataset/"/>
+
+    <node name="image_recorder" pkg="pamaral_utils" type="image_recorder.py" output="screen">
+        <param name="input_image_topic" value="$(arg input_image_topic)"/>
+        <param name="output_image_folder" value="$(arg output_image_folder)"/>
+    </node>
+</launch>
