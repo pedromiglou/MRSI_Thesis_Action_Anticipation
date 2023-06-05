@@ -5,6 +5,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
 import os
+from datetime import datetime
 
 class ImageRecorder:
     def __init__(self, input_topic, output_folder):
@@ -38,7 +39,8 @@ def main():
     output_folder = rospy.get_param(rospy.search_param('output_image_folder'))
 
     # Create a new folder
-    output_folder += input("What should the name of the new folder be? ")
+    now = datetime.now()
+    output_folder += now.strftime("%d_%m_%Y_%H:%M:%S")
     os.makedirs(output_folder)
 
     ImageRecorder(input_topic=input_topic, output_folder=output_folder)

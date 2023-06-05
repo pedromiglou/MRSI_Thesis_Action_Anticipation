@@ -5,11 +5,14 @@ import cv2
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from std_srvs.srv import Empty, EmptyResponse
+from datetime import datetime
 
-class ImageToVideoNode:
-    def __init__(self):
+
+class VideoRecorder:
+    def __init__(self, input_topic, filename):
         self.bridge = CvBridge()
-        self.image_sub = rospy.Subscriber("/camera/color/image_raw", Image, self.image_callback)
+        self.image_sub = rospy.Subscriber(input_topic, Image, self.image_callback)
+        self.filename = filename
         self.video_writer = None
         self.is_recording = False
 
@@ -20,10 +23,9 @@ class ImageToVideoNode:
     def image_callback(self, msg):
         try:
             # Convert ROS image message to OpenCV image
-            cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
-            cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+            cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
         except Exception as e:
-            rospy.logerr("Failed to convert image: %s" % str(e))
+            rospy.logerr(e)
             return
 
         if self.is_recording:
@@ -37,7 +39,7 @@ class ImageToVideoNode:
         if not self.is_recording:
             # Create video writer object
             fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-            self.video_writer = cv2.VideoWriter('output.mp4', fourcc, 30.0, (640, 480))
+            self.video_writer = cv2.VideoWriter(self.filename, fourcc, 10.0, (640, 480))
 
             # Set flag to start recording
             self.is_recording = True
@@ -57,8 +59,25 @@ class ImageToVideoNode:
 
         return EmptyResponse()
 
-if __name__ == '__main__':
-    rospy.init_node('image_to_video_node')
-    image_to_video = ImageToVideoNode()
+
+def main():
+    # ---------------------------------------------------
+    # INITIALIZATION
+    # ---------------------------------------------------
+    default_node_name = 'video_recorder'
+    rospy.init_node(default_node_name, anonymous=False)
+
+    input_topic = rospy.get_param(rospy.search_param('input_image_topic'))
+    output_folder = rospy.get_param(rospy.search_param('output_video_folder'))
+
+    # Create a new folder
+    now = datetime.now()
+    filename = output_folder + now.strftime("%d_%m_%Y_%H:%M:%S")+ ".mp4"
+
+    VideoRecorder(input_topic=input_topic, filename=filename)
 
     rospy.spin()
+
+
+if __name__ == '__main__':
+    main()
