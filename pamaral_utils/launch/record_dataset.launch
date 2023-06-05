@@ -1,0 +1,11 @@
+<launch>
+    <include file="$(find pamaral_perception_block)/launch/hand_usb_cam.launch"/>
+
+    <include file="$(find pamaral_utils)/launch/image_recorder.launch">
+        <arg name="input_image_topic" value="hand_usb_cam/image_raw"/>
+    </include>
+
+    <include file="$(find pamaral_utils)/launch/video_recorder.launch">
+        <arg name="input_image_topic" value="hand_usb_cam/image_raw"/>
+    </include>
+</launch>
