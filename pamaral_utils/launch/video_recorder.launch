@@ -1,9 +1,11 @@
 <launch>
     <arg name="input_image_topic" default="camera/color/image_raw"/>
     <arg name="output_video_folder" default="$(find data)/videos_dataset/"/>
+    <arg name="fps" default="10"/>
 
     <node name="video_recorder" pkg="pamaral_utils" type="video_recorder.py" output="screen">
         <param name="input_image_topic" value="$(arg input_image_topic)"/>
         <param name="output_video_folder" value="$(arg output_video_folder)"/>
+        <param name="fps" value="$(arg fps)"/>
     </node>
 </launch>
