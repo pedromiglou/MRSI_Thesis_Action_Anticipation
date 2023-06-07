@@ -25,6 +25,7 @@ with mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_conf
         # Draw hand landmarks on the frame
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
+                print(hand_landmarks)
                 mp_drawing.draw_landmarks(
                     frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
