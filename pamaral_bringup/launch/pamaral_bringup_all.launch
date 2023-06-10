@@ -2,15 +2,15 @@
     <!--launch files for robot drivers, controllers and planner-->
     <include file="$(find larcc_launches)/ur10e_control/script_control_ur10e.launch"/>
 
-    <!--launch file for communicating with an orbbec pro camera-->
-    <include file="$(find pamaral_perception_block)/launch/orbbec_camera.launch"/>
+    <!--launch file for communicating with the cameras-->
+    <include file="$(find pamaral_perception_block)/launch/camera_setup.launch"/>
 
     <!--launch file to locate human using the depth images-->
     <!-- <include file="$(find pamaral_depth_image_processing)/launch/human_locater.launch"/> -->
 
     <!--launch files to locate objects in the table images-->
     <include file="$(find pamaral_color_image_processing)/launch/simple_cropper.launch">
-        <arg name="input_image_topic" value="camera/color/image_raw"/>
+        <arg name="input_image_topic" value="top_camera/color/image_raw"/>
         <arg name="output_image_topic" value="table_image"/>
     </include>
     
