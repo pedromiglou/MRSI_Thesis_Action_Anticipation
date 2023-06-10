@@ -25,7 +25,7 @@ for item in os.listdir(folder_path):
         image_files = sorted(os.listdir(item_path))
 
         # Initialize MediaPipe hand model
-        hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.05)
+        hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.05)
 
         data = []
 
