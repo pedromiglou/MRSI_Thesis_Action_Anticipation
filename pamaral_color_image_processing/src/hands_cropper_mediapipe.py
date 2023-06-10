@@ -23,7 +23,7 @@ class HandsCropperMediapipe:
         self.bridge = CvBridge()
         self.hand_image_publisher = rospy.Publisher("hand_image", Image, queue_size=1)
         self.mp_drawing_publisher = rospy.Publisher("mp_drawing", Image, queue_size=1)
-        self.subscriber = rospy.Subscriber("hand_usb_cam/image_raw", Image, self.image_callback)
+        self.subscriber = rospy.Subscriber("front_camera/color/image_raw", Image, self.image_callback)
 
     def image_callback(self, msg):
         try:
