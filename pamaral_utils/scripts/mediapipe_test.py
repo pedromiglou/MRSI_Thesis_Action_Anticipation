@@ -8,7 +8,7 @@ mp_hands = mp.solutions.hands
 # Initialize OpenCV video capture
 cap = cv2.VideoCapture(0)
 
-with mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5) as hands:
+with mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.5) as hands:
     while cap.isOpened():
         # Read frames from the video capture
         ret, frame = cap.read()
