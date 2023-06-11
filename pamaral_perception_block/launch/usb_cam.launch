@@ -1,13 +1,18 @@
 <launch>
-    <arg name="image_view" default="true" />
+    <arg name="camera_name" default="usb_cam"/>
+    <arg name="create_suspended" default="false"/>
+    <arg name="image_view" default="true"/>
+    <arg name="video_device" default="/dev/video0"/>
 
-    <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <node name="$(arg camera_name)" pkg="usb_cam" type="usb_cam_node" output="screen">
+        <param name="create_suspended" value="$(arg create_suspended)"/>
+        <param name="video_device" value="$(arg video_device)"/>
         <rosparam command="load" file="$(find pamaral_perception_block)/config/usb_cam.yml"/>
     </node>
 
-    <node if="$(arg image_view)" name="image_view" pkg="image_view" type="image_view"
+    <node if="$(arg image_view)" name="$(arg camera_name)_image_view" pkg="image_view" type="image_view"
         respawn="false" output="screen">
-        <remap from="image" to="/usb_cam/image_raw"/>
-        <param name="autosize" value="true" />
+        <remap from="image" to="/$(arg camera_name)/color/image_raw"/>
+        <param name="autosize" value="true"/>
     </node>
 </launch>
