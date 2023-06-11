@@ -21,7 +21,7 @@ class SavePointsCSV:
         points = np.array(points)
 
         # Open the CSV file in append mode
-        with open(self.file_path, 'a', newline='') as file:
+        with open(self.file_path, 'a+', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(points)
 
@@ -31,7 +31,7 @@ def main():
     rospy.init_node(default_node_name, anonymous=False)
 
     output_folder = rospy.get_param(rospy.search_param('output_folder'))
-    os.makedirs(output_folder)
+    # os.makedirs(output_folder)
 
     SavePointsCSV(output_folder=output_folder)
 

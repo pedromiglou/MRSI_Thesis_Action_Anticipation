@@ -1,0 +1,14 @@
+<launch>
+    <include file="$(find pamaral_perception_block)/launch/camera_setup.launch">
+        <arg name="enable_top_camera" value="false"/>
+        <arg name="front_camera_create_suspended" value="true"/>
+    </include>
+
+    <include file="$(find pamaral_models)/launch/hands_detection_mediapipe.launch">
+        <arg name="input_image_topic" value="front_camera/color/image_raw"/>
+    </include>
+
+    <include file="$(find pamaral_models)/launch/points_preprocessing.launch"/>
+
+    <include file="$(find pamaral_models)/launch/save_points_csv.launch"/>
+</launch>
