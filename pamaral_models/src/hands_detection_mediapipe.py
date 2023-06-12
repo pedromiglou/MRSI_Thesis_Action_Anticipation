@@ -41,16 +41,13 @@ class HandsDetectionMediapipe:
         # Process image with MediaPipe hand model
         results = self.hands.process(image_rgb)
 
+        drawing = image.copy()
         # If at least one hand was detected
         if results.multi_hand_landmarks:
-            # Draw right hand landmarks on the frame and publish it
-            drawing = image.copy()
-
+            # Draw right hand landmarks on the frame
             for hand_landmarks in results.multi_hand_landmarks:
                 self.mp_drawing.draw_landmarks(drawing, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
                 break
-        
-            self.mp_drawing_publisher.publish(self.bridge.cv2_to_imgmsg(drawing, "bgr8"))
 
             # Publish the points of the right hand
             for hand_landmarks in results.multi_hand_landmarks:
@@ -68,6 +65,8 @@ class HandsDetectionMediapipe:
                 self.mp_points_publisher.publish(msg)
 
                 break
+        
+        self.mp_drawing_publisher.publish(self.bridge.cv2_to_imgmsg(drawing, "bgr8"))
 
 
 def main():
