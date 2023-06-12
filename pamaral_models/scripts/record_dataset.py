@@ -19,7 +19,7 @@ service_proxy = rospy.ServiceProxy('/front_camera/start_capture', Empty)
 
 service_proxy()
 
-for i in range(10,0,-1):
+for i in range(30,0,-1):
     print(f"Stopping in {i}")
 
     time.sleep(1)
