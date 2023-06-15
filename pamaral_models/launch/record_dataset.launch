@@ -12,7 +12,9 @@
 
     <include file="$(find pamaral_models)/launch/save_points_csv.launch"/>
 
-    <node name="record_dataset" pkg="pamaral_models" type="record_dataset.py" output="screen"/>
+    <node name="record_dataset" pkg="pamaral_models" type="record_dataset.py" output="screen">
+        <param name="output_folder" value="$(find data)/bag_files"/>
+    </node>
 
     <node name="rviz" pkg="rviz" type="rviz"
           args="--display-config $(find pamaral_models)/config/rviz.rviz" required="false"/>
