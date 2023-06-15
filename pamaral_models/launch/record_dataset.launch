@@ -11,4 +11,9 @@
     <include file="$(find pamaral_models)/launch/points_preprocessing.launch"/>
 
     <include file="$(find pamaral_models)/launch/save_points_csv.launch"/>
+
+    <node name="record_dataset" pkg="pamaral_models" type="record_dataset.py" output="screen"/>
+
+    <node name="rviz" pkg="rviz" type="rviz"
+          args="--display-config $(find pamaral_models)/config/rviz.rviz" required="false"/>
 </launch>
