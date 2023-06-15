@@ -35,7 +35,7 @@ filename = f"{output_folder}/{objects[object]}_{people[person]}_{t}.bag"
 rosbag_cmd = ['rosbag', 'record', '-j', '-O', filename, 'front_camera/color/image_raw']
 rosbag_process = subprocess.Popen(rosbag_cmd)
 
-for i in range(3,0,-1):
+for i in range(2,0,-1):
     print(f"Starting in {i}")
 
     time.sleep(1)
@@ -44,7 +44,7 @@ service_proxy = rospy.ServiceProxy('/front_camera/start_capture', Empty)
 
 service_proxy()
 
-for i in range(30,0,-1):
+for i in range(25,0,-1):
     print(f"Stopping in {i}")
 
     time.sleep(1)
