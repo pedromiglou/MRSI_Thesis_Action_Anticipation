@@ -6,6 +6,7 @@ import os
 import rospy
 
 from datetime import datetime
+from std_msgs.msg import String
 
 from pamaral_models.msg import PointList
 
@@ -13,8 +14,13 @@ from pamaral_models.msg import PointList
 class SavePointsCSV:
 
     def __init__(self, output_folder):
+        self.output_folder = output_folder
         self.file_path = output_folder + datetime.now().strftime("%d_%m_%Y_%H_%M_%S") + ".csv"
         self.preprocessed_points_sub = rospy.Subscriber("preprocessed_points", PointList, self.preprocessed_points_callback)
+        self.filename_sub = rospy.Subscriber("csv_filename", String, self.csv_filename_callback)
+
+    def csv_filename_callback(self, msg):
+        self.file_path = self.output_folder + msg.data + ".csv"
 
     def preprocessed_points_callback(self, msg):
         points = [[p.x, p.y, p.z] for p in msg.points]
