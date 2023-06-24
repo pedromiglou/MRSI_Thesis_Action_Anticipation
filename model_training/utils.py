@@ -12,7 +12,7 @@ def read_data(folder_path):
     x = []
     y = []
 
-    objects = {"ball":0, "cube":1, "bottle":2, "phone":3, "plier":4, "screwdriver":5, "wood":6}
+    objects = {"bottle":0, "cube":1, "phone":2, "screwdriver":3}
 
     # Iterate over all files in the folder
     for filename in os.listdir(folder_path):
@@ -27,6 +27,98 @@ def read_data(folder_path):
             for line in f.readlines():
                 ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
                 x.append([[float(p[0]), float(p[1]), float(p[2])] for p in ps])
+                y.append(objects[filename.split("_")[0]])
+
+            f.close()
+    
+    x = np.array(x)
+    #x = x[:,:,0:2]
+    y = np.array(y)
+
+    return x, y
+
+
+def read_data_1_person(folder_path):
+    x = []
+    y = []
+
+    objects = {"bottle":0, "cube":1, "phone":2, "screwdriver":3}
+
+    # Iterate over all files in the folder
+    for filename in os.listdir(folder_path):
+        # Create the absolute path to the file
+        file_path = os.path.join(folder_path, filename)
+
+        # Check if the file path is a file (not a directory)
+        if os.path.isfile(file_path) and filename.split("_")[1]=="joel":
+            
+            f = open(file_path, "r")
+
+            for line in f.readlines():
+                ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
+                x.append([[float(p[0]), float(p[1]), float(p[2])] for p in ps])
+                y.append(objects[filename.split("_")[0]])
+
+            f.close()
+    
+    x = np.array(x)
+    #x = x[:,:,0:2]
+    y = np.array(y)
+
+    return x, y
+
+
+def read_data_2_person(folder_path):
+    x = []
+    y = []
+
+    objects = {"bottle":0, "cube":1, "phone":2, "screwdriver":3}
+
+    # Iterate over all files in the folder
+    for filename in os.listdir(folder_path):
+        # Create the absolute path to the file
+        file_path = os.path.join(folder_path, filename)
+
+        # Check if the file path is a file (not a directory)
+        if os.path.isfile(file_path) and filename.split("_")[1]!="joel":
+            
+            f = open(file_path, "r")
+
+            for line in f.readlines():
+                ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
+                x.append([[float(p[0]), float(p[1]), float(p[2])] for p in ps])
+                y.append(objects[filename.split("_")[0]])
+
+            f.close()
+    
+    x = np.array(x)
+    #x = x[:,:,0:2]
+    y = np.array(y)
+
+    return x, y
+
+
+def read_data2(folder_path):
+    x = []
+    y = []
+
+    objects = {"bottle":0, "cube":1, "phone":2, "screwdriver":3}
+
+    # Iterate over all files in the folder
+    for filename in os.listdir(folder_path):
+        # Create the absolute path to the file
+        file_path = os.path.join(folder_path, filename)
+
+        # Check if the file path is a file (not a directory)
+        if os.path.isfile(file_path):
+            
+            f = open(file_path, "r")
+
+            for line in f.readlines():
+                ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
+                ps = [[float(p[0]), float(p[1]), float(p[2])] for p in ps]
+
+                x.append([ps[0:5], [ps[0]]+ps[5:9], [ps[0]] + ps[9:13], [ps[0]] + ps[13:17], [ps[0]] + ps[17:]])
                 y.append(objects[filename.split("_")[0]])
 
             f.close()
@@ -82,12 +174,11 @@ def split_and_shuffle(x, y, balanced=False):
 #################################### Plots ####################################
 
 def plot_accuracy_comparison(accs, title, legend, show=True, save_path=False):
-    epochs = len(accs[0])
     plt.figure(figsize = (10,5))
     for acc in accs:
-        plt.plot(range(1, epochs+1), acc)
+        plt.plot(range(1, len(acc)+1), acc)
 
-    plt.xticks(range(1, epochs+1))
+    #plt.xticks(range(1, epochs+1))
     plt.title(title)
     plt.legend(legend)
     plt.xlabel("Epoch")
@@ -135,12 +226,11 @@ def plot_confusion_matrix(y_test, y_pred, target_names=None, show=True, save_pat
 
 
 def plot_loss_comparison(losses, title, legend, show=True, save_path=False):
-    epochs = len(losses[0])
     plt.figure(figsize = (10,5))
     for loss in losses:
-        plt.plot(range(1, epochs+1), loss)
+        plt.plot(range(1, len(loss)+1), loss)
 
-    plt.xticks(range(1, epochs+1))
+    #plt.xticks(range(1, epochs+1))
     plt.title(title)
     plt.legend(legend)
     plt.xlabel("Epochs")

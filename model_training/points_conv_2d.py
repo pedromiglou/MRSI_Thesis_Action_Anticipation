@@ -5,7 +5,7 @@ from utils import *
 
 folder_path = './points'
 
-x, y = read_data(folder_path)
+x, y = read_data2(folder_path)
 
 n_classes = len(np.unique(y))
 
@@ -14,9 +14,9 @@ x_train, y_train, x_val, y_val, x_test, y_test = split_and_shuffle(x, y, balance
 def fc_model(dropout=0.2):
    # Create a `Sequential` model and add a Dense layer as the first layer.
    model = tf.keras.models.Sequential()
-   model.add(tf.keras.Input(shape=(21,3)))
-   model.add(tf.keras.layers.Conv1D(32, 2, activation='relu'))
-   model.add(tf.keras.layers.MaxPooling1D(2,1))
+   model.add(tf.keras.Input(shape=(5,5,3)))
+   model.add(tf.keras.layers.Conv2D(32, 2, activation='relu'))
+   model.add(tf.keras.layers.MaxPooling2D(2,1))
    model.add(tf.keras.layers.Flatten())
    model.add(tf.keras.layers.Dropout(dropout))
    model.add(tf.keras.layers.Dense(16, activation='relu'))
