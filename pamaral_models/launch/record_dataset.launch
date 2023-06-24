@@ -8,10 +8,6 @@
         <arg name="input_image_topic" value="front_camera/color/image_raw"/>
     </include>
 
-    <include file="$(find pamaral_models)/launch/points_preprocessing.launch"/>
-
-    <include file="$(find pamaral_models)/launch/save_points_csv.launch"/>
-
     <node name="record_dataset" pkg="pamaral_models" type="record_dataset.py" output="screen">
         <param name="output_folder" value="$(find data)/bag_files"/>
     </node>
