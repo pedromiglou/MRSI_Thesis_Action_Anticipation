@@ -9,9 +9,9 @@ x, y = read_data(folder_path)
 
 n_classes = len(np.unique(y))
 
-x_train, y_train, x_val, y_val, x_test, y_test = split_and_shuffle(x, y, balanced=False)
+x_train, y_train, x_val, y_val, x_test, y_test = split_and_shuffle(x, y, balanced=True)
 
-def fc_model(dropout=0.4, learning_rate=0.0001, kernel_size=2, num_conv_layers=2):
+def fc_model(dropout=0.5, learning_rate=0.0001, kernel_size=2, num_conv_layers=3):
    # Create a `Sequential` model and add a Dense layer as the first layer.
    model = tf.keras.models.Sequential()
    model.add(tf.keras.Input(shape=(21,3)))
@@ -34,7 +34,7 @@ def fc_model(dropout=0.4, learning_rate=0.0001, kernel_size=2, num_conv_layers=2
 
 hyperparameters = {
     'learning_rate': [0.01, 0.001, 0.0001],
-    'dropout': [0, 0.1, 0.2, 0.3, 0.4],
+    'dropout': [0, 0.1, 0.2, 0.3, 0.4, 0.5],
     'kernel_size': [2, 3],
     'num_conv_layers': [1,2,3]
 }
@@ -47,7 +47,7 @@ for lr in hyperparameters['learning_rate']:
             for ncv in hyperparameters['num_conv_layers']:
                 model = fc_model(dropout=dr, learning_rate=lr, kernel_size=ks, num_conv_layers=ncv)
 
-                callbacks = [keras.callbacks.EarlyStopping(patience=100, restore_best_weights=True)]
+                callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True)]
 
                 results = model.fit(
                     x_train,
@@ -74,7 +74,7 @@ for lr in hyperparameters['learning_rate']:
                 losses[(lr, dr, ks, ncv)] = l
 
 
-best_hyperparameters = max(losses, key=losses.get)
+best_hyperparameters = min(losses, key=losses.get)
 best_loss = losses[best_hyperparameters]
 best_accuracy = accs[best_hyperparameters]
 

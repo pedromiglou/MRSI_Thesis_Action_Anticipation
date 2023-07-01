@@ -14,44 +14,46 @@ from pamaral_models.msg import PointList
 class DatasetProcessing:
 
     def __init__(self, input_folder, output_folder):
-        self.input_folder = input_folder
         self.output_folder = output_folder
-        self.file_paths = []
-        self.image_publisher = rospy.Publisher("front_camera/color/image_raw", Image, queue_size=21000)
+
+        # Iterate over all files in the folder
+        self.bag_paths = []
+        self.csv_paths = []
+        for filename in os.listdir(input_folder):
+            # Create the absolute path to the file
+            bag_path = os.path.join(input_folder, filename)
+
+            # Check if the file path is a file (not a directory)
+            if os.path.isfile(bag_path) and bag_path.endswith(".bag") and not bag_path.endswith("orig.bag"):
+                self.bag_paths.append(bag_path)
+                self.csv_paths.append(os.path.join(self.output_folder, filename[:-4]+".csv"))
+        
+        self.image_publisher = rospy.Publisher("front_camera/color/image_raw", Image, queue_size=300)
         self.preprocessed_points_sub = rospy.Subscriber("preprocessed_points", PointList, self.preprocessed_points_callback)
 
     def preprocessed_points_callback(self, msg):
-        points = [[p.x, p.y, p.z] for p in msg.points]
-        points = np.array(points)
+        if len(msg.points)>0:
+            points = [[p.x, p.y, p.z] for p in msg.points]
+            points = np.array(points)
 
-        # Open the CSV file in append mode
-        assert len(self.file_paths) > 0
-        file_path = self.file_paths[0][0]
-
-        if self.file_paths[0][1] > 1:
-            self.file_paths[0][1] -= 1
-        else:
-            self.file_paths = self.file_paths[1:]
-
-        with open(file_path, 'a+', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(points)
+            # Open the CSV file in append mode
+            with open(self.csv_paths[0], 'a+', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(points)
+        
+        self.num_messages -= 1
+        if self.num_messages == 0:
+            self.bag_paths = self.bag_paths[1:]
+            self.csv_paths = self.csv_paths[1:]
+            self.play_next_bag_file()
     
-    def play_bag_files(self):
-        # Iterate over all files in the folder
-        for filename in os.listdir(self.input_folder):
-            # Create the absolute path to the file
-            bag_path = os.path.join(self.input_folder, filename)
+    def play_next_bag_file(self):
+        bag = rosbag.Bag(self.bag_paths[0])
 
-            # Check if the file path is a file (not a directory)
-            if os.path.isfile(bag_path) and bag_path.endswith(".bag"):
-                # Open the bag file
-                bag = rosbag.Bag(bag_path)
+        self.num_messages = bag.get_message_count()
 
-                self.file_paths.append([os.path.join(self.output_folder, filename[:-4]+".csv"), bag.get_message_count()])
-
-                for topic, msg, t in bag.read_messages():
-                    self.image_publisher.publish(msg)
+        for topic, msg, t in bag.read_messages():
+            self.image_publisher.publish(msg)
 
 
 def main():
@@ -64,7 +66,9 @@ def main():
 
     dataset_processing = DatasetProcessing(input_folder=input_folder, output_folder=output_folder)
 
-    dataset_processing.play_bag_files()
+    input()
+
+    dataset_processing.play_next_bag_file()
 
     rospy.spin()
 

@@ -152,7 +152,7 @@ def split_and_shuffle(x, y, balanced=False):
 
         counts = list(label_counts.values())
 
-        if max(counts) - min(counts)<2 and len(counts)==num_labels:
+        if max(counts) - min(counts)<20 and len(counts)==num_labels:
             break
     
     while True:
@@ -165,7 +165,7 @@ def split_and_shuffle(x, y, balanced=False):
 
         counts = list(label_counts.values())
 
-        if max(counts) - min(counts)<2 and len(counts)==num_labels:
+        if max(counts) - min(counts)<20 and len(counts)==num_labels:
             break
     
     return x_train, y_train, x_val, y_val, x_test, y_test
