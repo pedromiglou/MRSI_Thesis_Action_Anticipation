@@ -32,7 +32,7 @@ model.compile(
 )
 
 callbacks = [keras.callbacks.EarlyStopping(patience=100, restore_best_weights=True),
-             keras.callbacks.ModelCheckpoint(
+            keras.callbacks.ModelCheckpoint(
     "results/cnn_model",
     monitor='val_loss',  # Optional: Monitor a specific metric to save the best weights
     save_weights_only=True,  # Only save the model's weights, not the entire model

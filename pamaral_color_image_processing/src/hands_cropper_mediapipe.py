@@ -13,6 +13,21 @@ BBOX_SIZE = [15, 15]
 
 
 class HandsCropperMediapipe:
+    """
+    This class is responsible for cropping the hands from the image
+
+    Attributes:
+        mp_drawing: mediapipe drawing utils
+        mp_hands: mediapipe hands
+        hands: mediapipe hands object
+        bridge: cv_bridge
+        hand_image_publisher: ROS publisher for the hand image
+        mp_drawing_publisher: ROS publisher for the mediapipe drawing
+        subscriber: ROS subscriber for the color image
+    
+    Methods:
+        image_callback: callback for the color image subscriber
+    """
 
     def __init__(self):
         # Initialize MediaPipe Hands

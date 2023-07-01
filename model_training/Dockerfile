@@ -13,7 +13,7 @@ COPY utils.py /model_training/utils.py
 COPY points_conv_1d_testing.py /model_training/model_training.py
 #COPY points_conv_2d.py /model_training/model_training.py
 #COPY points_transformers.py /model_training/model_training.py
-
+#COPY points_transformer_testing_batch_size.py /model_training/model_training.py
 
 RUN mkdir /model_training/results
 

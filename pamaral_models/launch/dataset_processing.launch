@@ -3,6 +3,10 @@
         <arg name="input_image_topic" value="front_camera/color/image_raw"/>
     </include>
 
+    <include file="$(find pamaral_models)/launch/pose_detection_mediapipe.launch">
+        <arg name="input_image_topic" value="front_camera/color/image_raw"/>
+    </include>
+
     <include file="$(find pamaral_models)/launch/points_preprocessing.launch"/>
 
     <node name="dataset_processing" pkg="pamaral_models" type="dataset_processing.py" output="screen">
