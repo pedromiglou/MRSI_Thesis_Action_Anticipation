@@ -9,6 +9,8 @@
 
 \subsection{Transformer}
 
+\if{0}
+
 {\color{red} \rule{\linewidth}{0.5mm}}
 
 {\color{gray}
@@ -50,11 +52,35 @@ This solution intrinsically consisted of a set of rules where the movements resu
 }
 {\color{red} \rule{\linewidth}{0.5mm}}
 
+\fi
+
 \section{Robot Controller}
+
+This section covers the implementation of the robot controller including the workflow of the different solutions, the general ROS architecture, and the details of the state machine.
+
+\subsection{Controller Solutions Workflow}
+
+This subsection covers the workflow of the different solutions implemented.
+
+\subsubsection{First Solution - Interaction Based}
+
+The first version developed relied on interactions between the robot and the user. When the user puts his hand above a small block, if the state of the robot is $idle$ then it proceeds to fetch a block of the same color. Additionally, when the user hovers his hand over the violet block while the state of the robot is $picking$ $up$ or $moving$ $closer$, it means that the robot fetched the wrong block so it must stop and put the block back where it was before if it was already picked up.
+
+The interactions in this solution are also the fallback behavior if the methods in the following solutions fail to anticipate the block that the user desires.
+
+\subsubsection{Second Solution - Probability Based}
+
+The second version implemented consisted in having a database of probabilities that the robot would check to anticipate the block that the user would need next. These probabilities were established according to the possible country flags \textcolor{red}{(missing example)}. However, the first block is still requested by the user and, if the robot exhausts all possibilities that it knows of, the user is able to request the following block using the interactions described in the first solution.
+
+\subsubsection{Third Solution - Rule Based}
+
+\textcolor{red}{still need to explain this one}
 
 \subsection{System ROS Architecture}
 
 The communication between the robot, the sensors, and the programming logic is established using Robot Operating System (ROS) with the following 5 main nodes.
+
+\textcolor{red}{a diagram might be a good idea to better visualize the solution}
 
 \subsubsection{orbbec\_camera}
 
@@ -96,18 +122,3 @@ As said before, the decision\_making\_block node contains an internal state mach
     \item \textbf{stop wrong guess}: State corresponding to the action of stopping the robot because the user indicated that it was the wrong block. If the robot was already holding a block then that block is put back where it was while in this state. After the robot is stopped and it is not holding a block the state changes to $picking$ $up$ if there are still more possible blocks in the database. Otherwise, the state changes to $idle$ so that it waits for a user request.
 \end{itemize}
 
-\subsection{Robot Controller Solutions}
-
-This subsection covers the workflow of the different solutions implemented.
-
-\subsubsection{First Solution - Interaction Based}
-
-The first version developed relied on interactions between the robot and the user. When the user puts his hand above a small block, if the state of the robot is $idle$ then it proceeds to fetch a block of the same color. Additionally, when the user hovers his hand over the violet block while the state of the robot is $picking$ $up$ or $moving$ $closer$, it means that the robot fetched the wrong block so it must stop and put the block back where it was before if it was already picked up.
-
-The interactions in this solution are also the fallback behavior if the methods in the following solutions fail to anticipate the block that the user desires.
-
-\subsubsection{Second Solution - Probability Based}
-
-The second version implemented consisted in having a database of probabilities that the robot would check to anticipate the block that the user would need next. These probabilities were established according to the possible country flags \textcolor{red}{(missing example)}. However, the first block is still requested by the user and, if the robot exhausts all possibilities that it knows of, the user is able to request the following block.
-
-\subsubsection{Third Solution - Rule Based}
