@@ -4,73 +4,39 @@ import numpy as np
 
 from collections import Counter
 from sklearn.metrics import confusion_matrix
-from sklearn.model_selection import train_test_split
 
 
-def split_and_shuffle(x, y, balanced=False):
-    # shuffle
-    num = len(y)
-
-    idx = np.random.permutation(num)
-
-    x = x[idx]
-    y = y[idx]
-
-    # split
-    num_labels = len(np.unique(y))
-
-    while True:
-        x_temp, x_test, y_temp, y_test = train_test_split(x, y, test_size=1/5)
-
-        if not balanced:
-            break
-        
-        label_counts = Counter(y_test)
-
-        counts = list(label_counts.values())
-
-        if max(counts) - min(counts)<2 and len(counts)==num_labels:
-            break
-    
-    while True:
-        x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4)
-
-        if not balanced:
-            break
-
-        label_counts = Counter(y_val)
-
-        counts = list(label_counts.values())
-
-        if max(counts) - min(counts)<2 and len(counts)==num_labels:
-            break
-    
-    return x_train, y_train, x_val, y_val, x_test, y_test
+# Set the font type to be used for plotting
+plt.rcParams['svg.fonttype'] = 'none'
 
 
-#################################### Plots ####################################
-
-def plot_accuracy_comparison(accs, title, legend):
-    epochs = len(accs[0])
+def plot_accuracy_comparison(accs, title, legend, show=True, save_path=False):
     plt.figure(figsize = (10,5))
     for acc in accs:
-        plt.plot(range(1, epochs+1), acc)
+        plt.plot(range(1, len(acc)+1), acc)
 
-    plt.xticks(range(1, epochs+1))
+    #plt.xticks(range(1, epochs+1))
     plt.title(title)
     plt.legend(legend)
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy")
-    plt.show()
+
+    if save_path:
+        plt.tight_layout()
+        plt.savefig(save_path)
+    
+    if show:
+        plt.show()
 
 
-def plot_confusion_matrix(y_test, y_pred, target_names=None):
+def plot_confusion_matrix(y_test, y_pred, target_names=None, show=True, save_path=False):
     cm = confusion_matrix(y_test, y_pred)
 
-    fig = plt.figure(figsize=(10, 5))
+    fig = plt.figure()
     plt.imshow(cm, interpolation='nearest', cmap=plt.get_cmap('Blues'))
 
-    plt.colorbar()
+    cbar = plt.colorbar()
+    cbar.ax.tick_params(labelsize=13)
 
     ax = fig.gca()
 
@@ -79,8 +45,8 @@ def plot_confusion_matrix(y_test, y_pred, target_names=None):
 
     if target_names is not None:
         tick_marks = np.arange(len(target_names))
-        plt.xticks(tick_marks, target_names, rotation=45)
-        plt.yticks(tick_marks, target_names)
+        plt.xticks(tick_marks, target_names, fontsize=13)
+        plt.yticks(tick_marks, target_names, fontsize=13, rotation="vertical", va="center")
 
     cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
@@ -88,28 +54,39 @@ def plot_confusion_matrix(y_test, y_pred, target_names=None):
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         plt.text(j, i, "{:0.4f}".format(cm[i, j]),
                     horizontalalignment="center",
-                    color="white" if cm[i, j] > thresh else "black")
+                    color="white" if cm[i, j] > thresh else "black", fontsize=13)
 
-    plt.ylabel('True Label', fontsize=14)
-    plt.title('Predicted Label', fontsize=14)
-    plt.show()
+    plt.ylabel('True Label', fontsize=16)
+    plt.title('Predicted Label', fontsize=16)
+
+    if save_path:
+        plt.tight_layout()
+        plt.savefig(save_path) # , format="svg")
+    
+    if show:
+        plt.show()
 
 
-def plot_loss_comparison(losses, title, legend):
-    epochs = len(losses[0])
+def plot_loss_comparison(losses, title, legend, show=True, save_path=False):
     plt.figure(figsize = (10,5))
     for loss in losses:
-        plt.plot(range(1, epochs+1), loss)
+        plt.plot(range(1, len(loss)+1), loss)
 
-    plt.xticks(range(1, epochs+1))
+    #plt.xticks(range(1, epochs+1))
     plt.title(title)
     plt.legend(legend)
     plt.xlabel("Epochs")
     plt.ylabel("Loss")
-    plt.show()
+    
+    if save_path:
+        plt.tight_layout()
+        plt.savefig(save_path)
+    
+    if show:
+        plt.show()
 
 
-def draw_bar_chart(labels):
+def draw_bar_chart(labels, show=True, save_path=False):
     fig, ax = plt.subplots(figsize=(10, 5))
     # Count the frequency of each label
     label_counts = Counter(labels)
@@ -126,4 +103,9 @@ def draw_bar_chart(labels):
     plt.title('Quantity of Labels from Each Class')
 
     # Display the chart
-    plt.show()
+    if save_path:
+        plt.tight_layout()
+        plt.savefig(save_path)
+    
+    if show:
+        plt.show()
