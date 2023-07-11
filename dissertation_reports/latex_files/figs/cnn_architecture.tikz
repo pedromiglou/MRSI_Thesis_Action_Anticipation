@@ -1,0 +1,37 @@
+\begin{tikzpicture}[>=latex']
+    \tikzset{block/.style= {draw, rectangle, align=center,minimum height=2.5cm, scale=1.2},
+    rblock/.style={draw, shape=rectangle,rounded corners=1.5em,align=center,minimum width=2cm,minimum height=1cm},
+    input/.style={ % requires library shapes.geometric
+    draw,
+    trapezium,
+    trapezium left angle=60,
+    trapezium right angle=120,
+    minimum width=2cm,
+    align=center,
+    minimum height=1cm
+    },
+    }
+    
+    \node [block] (inputlayer) {\rotatebox{90}{InputLayer}};
+    \node [block, right=0.5cm of inputlayer] (conv1d_1) {\rotatebox{90}{Conv1D}};
+    \node [block, right=0.5cm of conv1d_1] (conv1d_2) {\rotatebox{90}{Conv1D}};
+    \node [block, right=0.5cm of conv1d_2] (flatten) {\rotatebox{90}{Flatten}};
+    \node [block, right=0.5cm of flatten] (dropout_1) {\rotatebox{90}{Dropout}};
+    \node [block, right=0.5cm of dropout_1] (dense_1) {\rotatebox{90}{Dense}};
+    \node [block, right=0.5cm of dense_1] (dropout_2) {\rotatebox{90}{Dropout}};
+    \node [block, right=0.5cm of dropout_2] (dense_2) {\rotatebox{90}{Dense}};
+    \node [block, right=0.5cm of dense_2] (dense_3) {\rotatebox{90}{Dense}};
+
+    %% paths
+    \path[draw,->, text width=3cm, align=center]
+                (inputlayer) edge (conv1d_1)
+                (conv1d_1) edge (conv1d_2)
+                (conv1d_2) edge (flatten)
+                (flatten) edge (dropout_1)
+                (dropout_1) edge (dense_1)
+                (dense_1) edge (dropout_2)
+                (dropout_2) edge (dense_2)
+                (dense_2) edge (dense_3)
+                ;
+    
+\end{tikzpicture}
