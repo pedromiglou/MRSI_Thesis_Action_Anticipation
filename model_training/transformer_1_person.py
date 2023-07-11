@@ -27,8 +27,6 @@ if __name__ == "__main__":
 
     x, y = read_data(folder_path, people=PEOPLE)
 
-    n_classes = len(np.unique(y))
-
     input_shape = x.shape[1:]
 
     # data shuffling
