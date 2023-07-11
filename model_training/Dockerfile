@@ -8,7 +8,7 @@ COPY ./requirements.txt /model_training/requirements.txt
 
 RUN pip3 install -r /model_training/requirements.txt
 
-COPY *.py /model_training
+COPY *.py /model_training/
 
 RUN mkdir /model_training/results
 
