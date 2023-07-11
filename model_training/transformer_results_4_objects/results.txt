@@ -1,0 +1,16 @@
+Training loss: 0.16749219596385956
+Training accuracy: 0.9413988590240479
+Validation loss: 0.2830415964126587
+Validation accuracy: 0.9262759685516357
+Test loss: 0.2404015064239502
+Test accuracy: 0.9243856072425842
+              precision    recall  f1-score   support
+
+           0     0.9167    0.9035    0.9100       487
+           1     0.9137    0.9312    0.9223       523
+           2     0.9280    0.9063    0.9170       555
+           3     0.9376    0.9546    0.9460       551
+
+    accuracy                         0.9244      2116
+   macro avg     0.9240    0.9239    0.9239      2116
+weighted avg     0.9244    0.9244    0.9243      2116
