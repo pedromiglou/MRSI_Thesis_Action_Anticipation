@@ -1,0 +1,94 @@
+%% Creator: Inkscape 1.2.2 (1:1.2.2+202305151915+b0a8486541), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'figs/cnn_dataset1_conf_matrix.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{460.8bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.75)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.29422343,0.6627438){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}bottle\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.49457699,0.6627438){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}cube\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.69493055,0.66352845){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}long block\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.17298851,0.50026454){\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}bottle\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.17298851,0.30682509){\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}cube\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.17220387,0.06587519){\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}long block\end{tabular}}}}}%
+    \put(0.13486562,0.34115533){\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}True Label\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.29422343,0.54150888){\color[rgb]{1,1,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.9667\end{tabular}}}}%
+    \put(0.49457699,0.54150888){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.0167\end{tabular}}}}%
+    \put(0.69493055,0.54150888){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.0167\end{tabular}}}}%
+    \put(0.29422343,0.34115532){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.0000\end{tabular}}}}%
+    \put(0.49457699,0.34115532){\color[rgb]{1,1,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.0000\end{tabular}}}}%
+    \put(0.69493055,0.34115532){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.0000\end{tabular}}}}%
+    \put(0.29422343,0.14080179){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.0000\end{tabular}}}}%
+    \put(0.49457699,0.14080179){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.1017\end{tabular}}}}%
+    \put(0.69493055,0.14080179){\color[rgb]{1,1,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.8983\end{tabular}}}}%
+    \put(0.49457699,0.69798584){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Predicted Label\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.88571509,0.02990675){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.88571509,0.13178142){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}10\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.88571509,0.23365609){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}20\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.88571509,0.33553079){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}30\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.88571509,0.43740546){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}40\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{figs/cnn_dataset1_conf_matrix.pdf}}%
+    \put(0.88571509,0.53928015){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}50\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{figs/cnn_dataset1_conf_matrix.pdf}}%
+  \end{picture}%
+\endgroup%
