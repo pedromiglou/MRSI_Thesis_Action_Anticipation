@@ -20,7 +20,7 @@ tf.random.set_seed(1234)
 
 
 if __name__ == "__main__":
-    PEOPLE = ["joel"]
+    PEOPLE = ["manuel"]
 
     # read data
     folder_path = './points'
