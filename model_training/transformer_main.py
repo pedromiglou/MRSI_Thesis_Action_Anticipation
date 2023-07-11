@@ -17,6 +17,8 @@ random.seed(1234)
 np.random.seed(1234)
 tf.random.set_seed(1234)
 
+N_CLASSES = 4
+
 
 # model creation functions
 def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
@@ -56,7 +58,7 @@ def build_model(
     for dim in mlp_units:
         x = layers.Dense(dim, activation="relu")(x)
         x = layers.Dropout(mlp_dropout)(x)
-    outputs = layers.Dense(n_classes, activation="softmax")(x)
+    outputs = layers.Dense(N_CLASSES, activation="softmax")(x)
     return keras.Model(inputs, outputs)
 
 
