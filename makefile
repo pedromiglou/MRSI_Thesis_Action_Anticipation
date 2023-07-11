@@ -15,3 +15,12 @@ take_photos:
 
 create_postgres:
 	docker run -d --name postgres -e POSTGRES_PASSWORD=password -e PGDATA=/var/lib/postgresql/data/pgdata -v /home/miglou/postgres_data:/var/lib/postgresql/data -p 5432:5432 postgres
+
+docker_build:
+	docker build -t pedroamaral/model_training ./model_training
+
+docker_run:
+	docker run -v /home/pedroamaral/container_results:/model_training/results --gpus '"device=3"' -d pedroamaral/model_training
+
+docker_run_bash:
+	docker run -v /home/pedroamaral/container_results:/model_training/results --gpus '"device=3"' -it pedroamaral/model_training bash

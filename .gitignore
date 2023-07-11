@@ -1,4 +1,5 @@
 **/.vscode/
 **/__pycache__/
-*.bag
+data/bag_files
+data/points
 model_training/**/*.csv

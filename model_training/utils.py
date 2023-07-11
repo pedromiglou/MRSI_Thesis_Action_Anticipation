@@ -41,96 +41,15 @@ def read_data(folder_path, people=["joel", "manuel", "pedro"]):
     return x, y
 
 
-def read_data_1_person(folder_path):
-    x = []
-    y = []
-
-    objects = {"bottle":0, "cube":1, "phone":2, "screwdriver":3}
-
-    # Iterate over all files in the folder
-    for filename in os.listdir(folder_path):
-        # Create the absolute path to the file
-        file_path = os.path.join(folder_path, filename)
-
-        # Check if the file path is a file (not a directory)
-        if os.path.isfile(file_path) and filename.split("_")[1]=="joel":
-            
-            f = open(file_path, "r")
-
-            for line in f.readlines():
-                ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
-                x.append([[float(p[0]), float(p[1]), float(p[2])] for p in ps])
-                y.append(objects[filename.split("_")[0]])
-
-            f.close()
+def write_results(train_acc, val_acc, test_acc, train_loss, val_loss, test_loss,
+        report, save_path="./results/results.txt"):
     
-    x = np.array(x)
-    #x = x[:,:,0:2]
-    y = np.array(y)
-
-    return x, y
-
-
-def read_data_2_person(folder_path):
-    x = []
-    y = []
-
-    objects = {"bottle":0, "cube":1, "phone":2, "screwdriver":3}
-
-    # Iterate over all files in the folder
-    for filename in os.listdir(folder_path):
-        # Create the absolute path to the file
-        file_path = os.path.join(folder_path, filename)
-
-        # Check if the file path is a file (not a directory)
-        if os.path.isfile(file_path) and filename.split("_")[1]!="joel":
-            
-            f = open(file_path, "r")
-
-            for line in f.readlines():
-                ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
-                x.append([[float(p[0]), float(p[1]), float(p[2])] for p in ps])
-                y.append(objects[filename.split("_")[0]])
-
-            f.close()
-    
-    x = np.array(x)
-    #x = x[:,:,0:2]
-    y = np.array(y)
-
-    return x, y
-
-
-def read_data2(folder_path):
-    x = []
-    y = []
-
-    objects = {"bottle":0, "cube":1, "phone":2, "screwdriver":3}
-
-    # Iterate over all files in the folder
-    for filename in os.listdir(folder_path):
-        # Create the absolute path to the file
-        file_path = os.path.join(folder_path, filename)
-
-        # Check if the file path is a file (not a directory)
-        if os.path.isfile(file_path):
-            
-            f = open(file_path, "r")
-
-            for line in f.readlines():
-                ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
-                ps = [[float(p[0]), float(p[1]), float(p[2])] for p in ps]
-
-                x.append([ps[0:5], [ps[0]]+ps[5:9], [ps[0]] + ps[9:13], [ps[0]] + ps[13:17], [ps[0]] + ps[17:]])
-                y.append(objects[filename.split("_")[0]])
-
-            f.close()
-    
-    x = np.array(x)
-    #x = x[:,:,0:2]
-    y = np.array(y)
-
-    return x, y
+    f = open(save_path, "w")
+    f.write(f"Training loss: {train_loss}\nTraining accuracy: {train_acc}\n")
+    f.write(f"Validation loss: {val_loss}\nValidation accuracy: {val_acc}\n")
+    f.write(f"Test loss: {test_loss}\nTest accuracy: {test_acc}\n")
+    f.write(report)
+    f.close()
 
 
 #################################### Plots ####################################
