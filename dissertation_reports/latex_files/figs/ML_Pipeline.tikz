@@ -1,0 +1,52 @@
+\begin{tikzpicture}[>=latex']
+    \tikzset{block/.style= {draw, rectangle, align=center,minimum width=3cm,minimum height=1cm},
+    rblock/.style={draw, shape=rectangle,rounded corners=1.5em,align=center,minimum width=2cm,minimum height=1cm},
+    input/.style={ % requires library shapes.geometric
+    draw,
+    trapezium,
+    trapezium left angle=60,
+    trapezium right angle=120,
+    minimum width=2cm,
+    align=center,
+    minimum height=1cm
+    },
+    }
+    
+    
+    \node [rblock] (camera) {Camera\\Image};
+    \node [block, right =3cm of camera] (hands_keypoints) {Mediapipe\\Hands\\Model};
+    \node [block, right =3cm of hands_keypoints] (body_keypoints) {Mediapipe\\Full Body\\Model};
+    \node [block, below =2cm of body_keypoints] (normalization) {Points\\Normalization};
+    \node [block, left =3cm of normalization] (model) {Model\\Prediction};
+    \node [rblock, left =3cm of model] (output) {Predicted\\Object};
+
+    %% paths
+    \path[draw,->, text width=3cm, align=center]
+                (camera) edge (hands_keypoints)
+                (camera) edge[bend right] (body_keypoints)
+                (hands_keypoints) edge node[above] {{\includegraphics[width=.9\textwidth]{figs/dataset_preprocessing2_1.png}}} (body_keypoints)
+                (body_keypoints) edge node[right] {right hand keypoints} (normalization) 
+                (normalization) edge node[above] {normalized right hand keypoints} (model)
+                (model) edge (output)
+                ;
+
+    \if{0}
+    \node [rblock] (camera) {Camera\\Image};
+    \node [block, right =0.5cm of camera] (hands_keypoints) {Mediapipe\\Hands\\Model};
+    \node [block, right =0.5cm of hands_keypoints] (body_keypoints) {Mediapipe\\Full Body\\Model};
+    \node [block, right =0.5cm of body_keypoints] (normalization) {Points\\Normalization};
+    \node [block, right =0.5cm of normalization] (model) {Model\\Prediction};
+    \node [rblock, right =0.5cm of model] (output) {Predicted\\Object};
+
+    %% paths
+    \path[draw,->, text width=1.7cm, align=center]
+                (camera) edge (hands_keypoints)
+                (camera) edge[bend right] (body_keypoints)
+                (hands_keypoints) edge (body_keypoints)
+                (body_keypoints) edge (normalization) 
+                (normalization) edge (model)
+                (model) edge (output)
+                ;
+    \fi
+    
+\end{tikzpicture}
