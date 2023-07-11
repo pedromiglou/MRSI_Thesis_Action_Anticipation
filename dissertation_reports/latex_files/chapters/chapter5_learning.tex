@@ -37,16 +37,16 @@ After having a dataset, the data had to be processed so that it would have a fit
 
 \begin{figure}[H]
 \centerline{\includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing2_1.png} \includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing2_2.png}}
-\caption[Dataset Examples]{Dataset Examples}
-\label{fig:dataset_examples}
+\caption[Points detected on the Pictures in Fig.~\ref{fig:dataset_examples} by Mediapipe Hands Model]{Points detected on the Pictures in Fig.~\ref{fig:dataset_examples} by Mediapipe Hands Model}
+\label{fig:dataset_examples2}
 \end{figure}
 
 These points are then subject to further processing and normalization so that the location of the hand in the image and the distance between the hand and the camera have a lesser impact. The centroid is calculated and the points are translated so that they are centered in the (0.5, 0.5, 0.5) point, the points are then scaled up as much as possible while keeping every coordinate of every point between 0 and 1.
 
 \begin{figure}[H]
 \centerline{\includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing3_1.png} \includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing3_2.png}}
-\caption[Dataset Examples]{Dataset Examples}
-\label{fig:dataset_examples}
+\caption[Points from the Pictures in Fig.~\ref{fig:dataset_examples2} after Normalization]{Points from the Pictures in Fig.~\ref{fig:dataset_examples2} after Normalization}
+\label{fig:dataset_examples3}
 \end{figure}
 
 \section{Data Splitting}
@@ -64,10 +64,11 @@ After all the processing, each sample provided to the model is made of the 21 po
 Initially, a simple CNN was tested and manually optimized with the first dataset resulting in the following results:
 
 \begin{minipage}{0.35\textwidth}
-    \captionof{table}{CNN Results in the First Dataset}
-    \label{table:cnn_dataset1_results}
     \centering
-    \begin{tabular}{ |p{3.4cm}|p{1.1cm}| }
+    \captionsetup{justification=centering}
+    \captionof{table}{Metrics obtained with the First Dataset (CNN)}
+    \label{table:cnn_dataset1_results}
+    \begin{tabular}{ |l|l| }
     \hline
     Metric & Value \\
     \hline
@@ -93,11 +94,12 @@ Initially, a simple CNN was tested and manually optimized with the first dataset
 \end{minipage}%
 \begin{minipage}{0.65\textwidth}
     \centering
+    \captionsetup{justification=centering}
     \includesvg[width=\textwidth]{figs/cnn_dataset1_conf_matrix.svg}
     %\def\svgwidth{\columnwidth}
     %\input{figs/cnn_dataset1_conf_matrix.pdf_tex}
-    \captionof{figure}[CNN Confusion Matrix in the First Dataset]{CNN Confusion Matrix in the First Dataset}
-    \label{fig:cnn_confusion_matrix}
+    \captionof{figure}[Confusion Matrix obtained with the First Dataset (CNN)]{Confusion Matrix obtained with the First\\Dataset (CNN)}
+    \label{fig:cnn_dataset1_confusion_matrix}
 \end{minipage}
 
 \kern 0.1cm
@@ -185,10 +187,11 @@ With the final architecture defined as well as the model hyperparameters, the fi
 With training completed, the metrics in the Table \ref{table:cnn_dataset2_results} were obtained. Given that the validation and test accuracies are close to each other we can conclude that the model managed to generalize its knowledge from the training data to classify data it has never seen before. Additionally, the confusion matrix in the Fig.~\ref{fig:cnn_confusion_matrix} shows that the screwdriver was the object that the model managed to predict more accurately. This can be due to the fact that the hand geometry that allows a person to grasp a screwdriver intuitively is more restrict.
 
 \begin{minipage}{0.35\textwidth}
-    \captionof{table}{CNN Results in the Second Dataset}
-    \label{table:cnn_dataset2_results}
     \centering
-    \begin{tabular}{ |p{3.4cm}|p{1.1cm}| }
+    \captionsetup{justification=centering}
+    \captionof{table}{Metrics obtained with the Second Dataset (CNN)}
+    \label{table:cnn_dataset2_results}
+    \begin{tabular}{ |l|l| }
     \hline
     Metric & Value \\
     \hline
@@ -214,9 +217,12 @@ With training completed, the metrics in the Table \ref{table:cnn_dataset2_result
 \end{minipage}%
 \begin{minipage}{0.65\textwidth}
     \centering
+    \captionsetup{justification=centering}
     \includesvg[width=\textwidth]{figs/cnn_conf_matrix.svg}
-    \captionof{figure}[CNN confusion matrix]{CNN confusion matrix}
-    \label{fig:cnn_confusion_matrix}
+    %\def\svgwidth{\columnwidth}
+    %\input{figs/cnn_dataset1_conf_matrix.pdf_tex}
+    \captionof{figure}[Confusion Matrix obtained with the Second Dataset (CNN)]{Confusion Matrix obtained with the Second\\Dataset (CNN)}
+    \label{fig:cnn_dataset2_confusion_matrix}
 \end{minipage}
 
 \subsection{Transformer Neural Network}
@@ -228,10 +234,11 @@ As said in Subsection \ref{subsection:transformer_neural_networks}, Transformer 
 Initially, a Transformer architecture from \textcolor{red}{link} was tested and manually optimized with the first dataset resulting in the following results:
 
 \begin{minipage}{0.35\textwidth}
-    \captionof{table}{Tranformer Results in the First Dataset}
-    \label{table:transformer_dataset1_results}
     \centering
-    \begin{tabular}{ |p{3.4cm}|p{1.1cm}| }
+    \captionsetup{justification=centering}
+    \captionof{table}{Metrics obtained with the First Dataset (Transformer)}
+    \label{table:transformer_dataset1_results}
+    \begin{tabular}{ |l|l| }
     \hline
     Metric & Value \\
     \hline
@@ -257,11 +264,10 @@ Initially, a Transformer architecture from \textcolor{red}{link} was tested and 
 \end{minipage}%
 \begin{minipage}{0.65\textwidth}
     \centering
+    \captionsetup{justification=centering}
     \includesvg[width=\textwidth]{figs/transformer_dataset1_conf_matrix.svg}
-    %\def\svgwidth{\columnwidth}
-    %\input{figs/cnn_dataset1_conf_matrix.pdf_tex}
-    \captionof{figure}[Transformer Confusion Matrix in the First Dataset]{Transformer Confusion Matrix in the First Dataset}
-    \label{fig:transformer_confusion_matrix}
+    \captionof{figure}[Confusion Matrix obtained with the First Dataset (Transformer)]{Confusion Matrix obtained with the First\\Dataset (Transformer)}
+    \label{fig:transformer_dataset1_confusion_matrix}
 \end{minipage}
 
 \kern 0.1cm
@@ -326,10 +332,11 @@ MLP Dropout Rate & 0.1 \\
 \end{figure}
 
 \begin{minipage}{0.35\textwidth}
-    \captionof{table}{Transformer Results in the Second Dataset}
-    \label{table:transformer_dataset2_results}
     \centering
-    \begin{tabular}{ |p{3.4cm}|p{1.1cm}| }
+    \captionsetup{justification=centering}
+    \captionof{table}{Metrics obtained with the Second Dataset (Transformer)}
+    \label{table:transformer_dataset2_results}
+    \begin{tabular}{ |l|l| }
     \hline
     Metric & Value\\
     \hline
@@ -355,9 +362,10 @@ MLP Dropout Rate & 0.1 \\
 \end{minipage}%
 \begin{minipage}{0.65\textwidth}
     \centering
+    \captionsetup{justification=centering}
     \includesvg[width=\textwidth]{figs/transformer_conf_matrix.svg}
-    \captionof{figure}[Transformer confusion matrix]{Transformer confusion matrix}
-    \label{fig:transformer_confusion_matrix}
+    \captionof{figure}[Confusion Matrix obtained with the Second Dataset (Transformer)]{Confusion Matrix obtained with the Second\\Dataset (Transformer)}
+    \label{fig:transformer_dataset2_confusion_matrix}
 \end{minipage}
 
 \section{Models Comparison}
