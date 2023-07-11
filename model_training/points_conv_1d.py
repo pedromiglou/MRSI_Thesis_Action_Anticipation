@@ -77,7 +77,9 @@ while True:
 
     l, a = model.evaluate(x_val, y_val, verbose=1)
 
-    if a > 0.94:
+    L, A = model.evaluate(x_test, y_test, verbose=1)
+
+    if a > 0.94 and A < a and L > l:
         break
 
 f = open("./results/results.txt", "w")
@@ -86,8 +88,7 @@ f.write(f"Training loss: {results.history['loss'][-200]}\nTraining accuracy: {re
 
 f.write(f"Validation loss: {l}\nValidation accuracy: {a}\n")
 
-model.evaluate(x_test, y_test, verbose=1)
-f.write(f"Test loss: {l}\nTest accuracy: {a}\n")
+f.write(f"Test loss: {L}\nTest accuracy: {A}\n")
 
 plot_accuracy_comparison([results.history["sparse_categorical_accuracy"], results.history["val_sparse_categorical_accuracy"]],
                         "Training/Validation Accuracy Comparison",

@@ -11,7 +11,7 @@ from sklearn.metrics import confusion_matrix
 plt.rcParams['svg.fonttype'] = 'none'
 
 
-def read_data(folder_path):
+def read_data(folder_path, people=["joel", "manuel", "pedro"]):
     x = []
     y = []
 
@@ -23,7 +23,7 @@ def read_data(folder_path):
         file_path = os.path.join(folder_path, filename)
 
         # Check if the file path is a file (not a directory)
-        if os.path.isfile(file_path):
+        if os.path.isfile(file_path) and filename.split("_")[1] in people:
             
             f = open(file_path, "r")
 

@@ -1,16 +1,37 @@
 import numpy as np
+import os
+import random
 import tensorflow as tf
+
+from sklearn.metrics import classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.utils import shuffle
 from tensorflow import keras
 from tensorflow.keras import layers
 from utils import *
 
+# make more reproducible results, GPU does not allow full reproducibility
+os.environ["PYTHONHASHSEED"] = "0"
+random.seed(1234)
+np.random.seed(1234)
+tf.random.set_seed(1234)
+
+# read data
 folder_path = './points'
 
 x, y = read_data(folder_path)
 
 n_classes = len(np.unique(y))
 
-x_train, y_train, x_val, y_val, x_test, y_test = split_and_shuffle(x, y, balanced=False)
+input_shape = x.shape[1:]
+
+# shuffle
+x, y = shuffle(x, y, random_state=0)
+
+# split
+x_temp, x_test, y_temp, y_test = train_test_split(x, y, test_size=1/5, random_state=0, stratify=y)
+
+x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4, random_state=0, stratify=y_temp, shuffle=True)
 
 def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
     # Normalization and Attention
@@ -43,21 +64,22 @@ def build_model(
     for _ in range(num_transformer_blocks):
         x = transformer_encoder(x, head_size, num_heads, ff_dim, dropout)
 
-    x = layers.GlobalAveragePooling1D(data_format="channels_first")(x)
+    x = layers.Flatten()(x)
+    #x = layers.GlobalAveragePooling1D(data_format="channels_first")(x)
     for dim in mlp_units:
         x = layers.Dense(dim, activation="relu")(x)
         x = layers.Dropout(mlp_dropout)(x)
     outputs = layers.Dense(n_classes, activation="softmax")(x)
     return keras.Model(inputs, outputs)
 
-input_shape = x.shape[1:]
-
 batch_sizes = [16, 32, 64, 128, 256]
 acc = []
 loss = []
-times = []
 
+print("starting")
 for b_size in batch_sizes:
+    print(f"testing {b_size} batch size")
+
     model = build_model(
         input_shape,
         head_size=256,
@@ -75,15 +97,16 @@ for b_size in batch_sizes:
         metrics=["sparse_categorical_accuracy"]
     )
 
-    callbacks = [keras.callbacks.EarlyStopping(patience=250, restore_best_weights=True)]
+    callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True)]
 
     results = model.fit(
         x_train,
         y_train,
         validation_data=(x_val,y_val),
-        epochs=2000,
+        epochs=10000,
         batch_size=b_size,
         callbacks=callbacks,
+        verbose=0
     )
 
     acc.append(results.history["val_sparse_categorical_accuracy"])
