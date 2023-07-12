@@ -20,8 +20,8 @@ tf.random.set_seed(1234)
 
 
 if __name__ == "__main__":
-    PEOPLE_TRAIN = ["manuel", "pedro"]
-    PEOPLE_TEST = ["joel"]
+    PEOPLE_TRAIN = ["joel", "manuel"]
+    PEOPLE_TEST = ["pedro"]
 
     # read data
     folder_path = './points'
@@ -60,19 +60,19 @@ if __name__ == "__main__":
                             results.history["val_sparse_categorical_accuracy"]],
                             "Training/Validation Accuracy Comparison",
                             ["Training Accuracy", "Validation Accuracy"],
-                            show=False, save_path = f"./results/transformer_{PEOPLE_TEST[0]}_acc_comparison.svg")
+                            show=False, save_path = f"./results/transformer_2vs1_{PEOPLE_TEST[0]}_acc_comparison.svg")
 
     plot_loss_comparison([results.history["loss"], results.history["val_loss"]],
                         "Training/Validation Loss Comparison",
                         ["Training Loss", "Validation Loss"],
-                        show=False, save_path = f"./results/transformer_{PEOPLE_TEST[0]}_loss_comparison.svg")
+                        show=False, save_path = f"./results/transformer_2vs1_{PEOPLE_TEST[0]}_loss_comparison.svg")
 
     y_pred=np.argmax(model.predict(x_test), axis=-1)
 
     plot_confusion_matrix(y_test, y_pred, ["bottle", "cube", "phone", "screwdriver"],
-                        show=False, save_path = f"./results/transformer_{PEOPLE_TEST[0]}_conf_matrix.svg")
+                        show=False, save_path = f"./results/transformer_2vs1_{PEOPLE_TEST[0]}_conf_matrix.svg")
 
     write_results(results.history['sparse_categorical_accuracy'][-200], a, A,
                 results.history['loss'][-200], l, L,
                 classification_report(y_pred,y_test, digits=4),
-                save_path = f"./results/transformer_{PEOPLE_TEST[0]}_results.txt")
+                save_path = f"./results/transformer_2vs1_{PEOPLE_TEST[0]}_results.txt")
