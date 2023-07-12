@@ -104,7 +104,7 @@ if __name__ == "__main__":
     # model training and evaluation
     model = create_model(input_shape)
 
-    callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True),
+    callbacks = [keras.callbacks.EarlyStopping(patience=1000, restore_best_weights=True),
                 keras.callbacks.ModelCheckpoint(
         "results/transformer_model",
         monitor='val_loss',  # Optional: Monitor a specific metric to save the best weights
