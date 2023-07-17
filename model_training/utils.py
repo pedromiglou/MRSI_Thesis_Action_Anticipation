@@ -9,9 +9,49 @@ from sklearn.metrics import confusion_matrix
 
 # Set the font type to be used for plotting
 plt.rcParams['svg.fonttype'] = 'none'
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.size'] = 15
 
 
-def read_data(folder_path, people=["joel", "manuel", "pedro"]):
+def read_dataset1(folder_path):
+    x = []
+    y = []
+
+    
+    f = open(os.path.join(folder_path, "12_06_2023_14_27_16.csv"), "r")
+
+    for line in f.readlines():
+        ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
+        x.append([[float(p[0]), float(p[1]), float(p[2])] for p in ps])
+        y.append(0)
+
+    f.close()
+
+    f = open(os.path.join(folder_path, "12_06_2023_14_30_18.csv"), "r")
+
+    for line in f.readlines():
+        ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
+        x.append([[float(p[0]), float(p[1]), float(p[2])] for p in ps])
+        y.append(1)
+
+    f.close()
+
+    f = open(os.path.join(folder_path, "12_06_2023_15_14_35.csv"), "r")
+
+    for line in f.readlines():
+        ps = [[aux for aux in p[1:-2].split(" ") if len(aux)>0] for p in line.split(",")]
+        x.append([[float(p[0]), float(p[1]), float(p[2])] for p in ps])
+        y.append(2)
+
+    f.close()
+
+    x = np.array(x)
+    y = np.array(y)
+
+    return x, y
+
+
+def read_dataset2(folder_path, people=["joel", "manuel", "pedro"]):
     x = []
     y = []
 
@@ -35,7 +75,6 @@ def read_data(folder_path, people=["joel", "manuel", "pedro"]):
             f.close()
     
     x = np.array(x)
-    #x = x[:,:,0:2]
     y = np.array(y)
 
     return x, y
@@ -80,7 +119,7 @@ def plot_confusion_matrix(y_test, y_pred, target_names=None, show=True, save_pat
     plt.imshow(cm, interpolation='nearest', cmap=plt.get_cmap('Blues'))
 
     cbar = plt.colorbar()
-    cbar.ax.tick_params(labelsize=13)
+    cbar.ax.tick_params()
 
     ax = fig.gca()
 
@@ -89,8 +128,8 @@ def plot_confusion_matrix(y_test, y_pred, target_names=None, show=True, save_pat
 
     if target_names is not None:
         tick_marks = np.arange(len(target_names))
-        plt.xticks(tick_marks, target_names, fontsize=13)
-        plt.yticks(tick_marks, target_names, fontsize=13, rotation="vertical", va="center")
+        plt.xticks(tick_marks, target_names)
+        plt.yticks(tick_marks, target_names, rotation="vertical", va="center")
 
     cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
@@ -98,10 +137,10 @@ def plot_confusion_matrix(y_test, y_pred, target_names=None, show=True, save_pat
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         plt.text(j, i, "{:0.4f}".format(cm[i, j]),
                     horizontalalignment="center",
-                    color="white" if cm[i, j] > thresh else "black", fontsize=13)
+                    color="white" if cm[i, j] > thresh else "black")
 
-    plt.ylabel('True Label', fontsize=16)
-    plt.title('Predicted Label', fontsize=16)
+    plt.ylabel('True Label')
+    plt.title('Predicted Label')
 
     if save_path:
         plt.tight_layout()
