@@ -9,26 +9,15 @@ from sklearn.utils import shuffle
 from tensorflow import keras
 from utils import *
 
+
 # make more reproducible results, GPU does not allow full reproducibility
 os.environ["PYTHONHASHSEED"] = "0"
 random.seed(1234)
 np.random.seed(1234)
 tf.random.set_seed(1234)
 
-# read data
-folder_path = './points'
+N_CLASSES = 4
 
-x, y = read_data(folder_path)
-
-n_classes = len(np.unique(y))
-
-input_shape = x.shape[1:]
-
-# shuffle
-x, y = shuffle(x, y, random_state=0)
-
-# split
-x_temp, x_test, y_temp, y_test = train_test_split(x, y, test_size=1/5, random_state=0, stratify=y)
 
 # create new model function 
 def create_model(input_shape, dropout=0.5, learning_rate=0.001, kernel_size=3, num_conv_layers=2):
@@ -52,9 +41,26 @@ def create_model(input_shape, dropout=0.5, learning_rate=0.001, kernel_size=3, n
     )
     return model
 
-while True:
+
+if __name__ == "__main__":
+    # read data
+    folder_path = './dataset2_4objects'
+
+    x, y = read_dataset2(folder_path)
+
+    n_classes = len(np.unique(y))
+
+    input_shape = x.shape[1:]
+
+    # data shuffling
+    x, y = shuffle(x, y, random_state=0)
+
+    # data splitting
+    x_temp, x_test, y_temp, y_test = train_test_split(x, y, test_size=1/5, random_state=0, stratify=y)
+
     x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4, random_state=0, stratify=y_temp, shuffle=True)
 
+    # model training and evaluation
     model = create_model(input_shape)
 
     callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True),
@@ -79,31 +85,23 @@ while True:
 
     L, A = model.evaluate(x_test, y_test, verbose=1)
 
-    if a > 0.94 and A < a and L > l:
-        break
+    # plots and save results
+    plot_accuracy_comparison([results.history["sparse_categorical_accuracy"], results.history["val_sparse_categorical_accuracy"]],
+                            "Training/Validation Accuracy Comparison",
+                            ["Training Accuracy", "Validation Accuracy"],
+                            show=False, save_path = "./results/cnn_acc_comparison.svg")
 
-f = open("./results/results.txt", "w")
+    plot_loss_comparison([results.history["loss"], results.history["val_loss"]],
+                        "Training/Validation Loss Comparison",
+                        ["Training Loss", "Validation Loss"],
+                        show=False, save_path = "./results/cnn_loss_comparison.svg")
 
-f.write(f"Training loss: {results.history['loss'][-200]}\nTraining accuracy: {results.history['sparse_categorical_accuracy'][-200]}\n")
+    y_pred=np.argmax(model.predict(x_test), axis=-1)
 
-f.write(f"Validation loss: {l}\nValidation accuracy: {a}\n")
-
-f.write(f"Test loss: {L}\nTest accuracy: {A}\n")
-
-plot_accuracy_comparison([results.history["sparse_categorical_accuracy"], results.history["val_sparse_categorical_accuracy"]],
-                        "Training/Validation Accuracy Comparison",
-                        ["Training Accuracy", "Validation Accuracy"],
-                        show=False, save_path = "./results/acc_comparison.svg")
-
-plot_loss_comparison([results.history["loss"], results.history["val_loss"]],
-                     "Training/Validation Loss Comparison",
-                     ["Training Loss", "Validation Loss"],
-                     show=False, save_path = "./results/loss_comparison.svg")
-
-y_pred=np.argmax(model.predict(x_test), axis=-1)
-
-f.write(classification_report(y_pred,y_test, digits=4))
-f.close()
-
-plot_confusion_matrix(y_test, y_pred, ["bottle", "cube", "phone", "screwdriver"],
-                      show=False, save_path = "./results/conf_matrix.svg")
+    plot_confusion_matrix(y_test, y_pred, ["bottle", "cube", "phone", "screwdriver"],
+                        show=False, save_path = "./results/cnn_conf_matrix.svg")
+    
+    write_results(results.history['sparse_categorical_accuracy'][-200], a, A,
+                results.history['loss'][-200], l, L,
+                classification_report(y_pred,y_test, digits=4),
+                save_path = "./results/cnn_results.txt")
