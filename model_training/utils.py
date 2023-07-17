@@ -99,7 +99,7 @@ def plot_accuracy_comparison(accs, title, legend, show=True, save_path=False):
         plt.plot(range(1, len(acc)+1), acc)
 
     #plt.xticks(range(1, epochs+1))
-    plt.title(title)
+    #plt.title(title)
     plt.legend(legend)
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy")
@@ -156,7 +156,7 @@ def plot_loss_comparison(losses, title, legend, show=True, save_path=False):
         plt.plot(range(1, len(loss)+1), loss)
 
     #plt.xticks(range(1, epochs+1))
-    plt.title(title)
+    #plt.title(title)
     plt.legend(legend)
     plt.xlabel("Epochs")
     plt.ylabel("Loss")
