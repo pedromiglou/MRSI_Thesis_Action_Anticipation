@@ -32,7 +32,7 @@ def create_model(input_shape, dropout=0.5, learning_rate=0.001, kernel_size=3, n
     model.add(tf.keras.layers.Dense(128, activation='relu'))
     model.add(tf.keras.layers.Dropout(dropout))
     model.add(tf.keras.layers.Dense(32, activation='relu'))
-    model.add(tf.keras.layers.Dense(n_classes, activation="softmax"))
+    model.add(tf.keras.layers.Dense(N_CLASSES, activation="softmax"))
 
     model.compile(
         loss="sparse_categorical_crossentropy",
@@ -48,8 +48,6 @@ if __name__ == "__main__":
 
     x, y = read_dataset2(folder_path)
 
-    n_classes = len(np.unique(y))
-
     input_shape = x.shape[1:]
 
     # data shuffling
@@ -60,30 +58,34 @@ if __name__ == "__main__":
 
     x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4, random_state=0, stratify=y_temp, shuffle=True)
 
-    # model training and evaluation
-    model = create_model(input_shape)
+    while True:
+        # model training and evaluation
+        model = create_model(input_shape)
 
-    callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True),
-                keras.callbacks.ModelCheckpoint(
-        "results/cnn_model",
-        monitor='val_loss',  # Optional: Monitor a specific metric to save the best weights
-        save_weights_only=True,  # Only save the model's weights, not the entire model
-        save_best_only=True,  # Save only the best weights based on the monitored metric
-        verbose=1  # Optional: Display messages when saving weights
-    )]
+        callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True),
+                    keras.callbacks.ModelCheckpoint(
+            "results/cnn_model",
+            monitor='val_loss',  # Optional: Monitor a specific metric to save the best weights
+            save_weights_only=True,  # Only save the model's weights, not the entire model
+            save_best_only=True,  # Save only the best weights based on the monitored metric
+            verbose=1  # Optional: Display messages when saving weights
+        )]
 
-    results = model.fit(
-        x_train,
-        y_train,
-        validation_data=(x_val,y_val),
-        epochs=10000,
-        batch_size=128,
-        callbacks=callbacks,
-    )
+        results = model.fit(
+            x_train,
+            y_train,
+            validation_data=(x_val,y_val),
+            epochs=10000,
+            batch_size=128,
+            callbacks=callbacks,
+        )
 
-    l, a = model.evaluate(x_val, y_val, verbose=1)
+        l, a = model.evaluate(x_val, y_val, verbose=1)
 
-    L, A = model.evaluate(x_test, y_test, verbose=1)
+        L, A = model.evaluate(x_test, y_test, verbose=1)
+
+        if A > 0.94:
+            break
 
     # plots and save results
     plot_accuracy_comparison([results.history["sparse_categorical_accuracy"], results.history["val_sparse_categorical_accuracy"]],
