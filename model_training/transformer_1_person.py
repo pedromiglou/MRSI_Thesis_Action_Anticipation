@@ -20,6 +20,7 @@ tf.random.set_seed(1234)
 
 PEOPLE = ["joel", "manuel", "pedro"]
 
+
 if __name__ == "__main__":
     for person in PEOPLE:
         # read data
