@@ -24,10 +24,8 @@ if __name__ == "__main__":
     PEOPLE_TEST = ["pedro"]
 
     # read data
-    folder_path = './points'
-
-    x, y = read_data(folder_path, people=PEOPLE_TRAIN)
-    x_test, y_test = read_data(folder_path, people=PEOPLE_TEST)
+    x, y = read_dataset2(people=PEOPLE_TRAIN)
+    x_test, y_test = read_dataset2(people=PEOPLE_TEST)
 
     input_shape = x.shape[1:]
 
