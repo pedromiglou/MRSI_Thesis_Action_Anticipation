@@ -56,36 +56,32 @@ if __name__ == "__main__":
     # data splitting
     x_temp, x_test, y_temp, y_test = train_test_split(x, y, test_size=1/5, random_state=0, stratify=y)
 
-    while True:
-        x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4, random_state=0, stratify=y_temp, shuffle=True)
-        
-        # model training and evaluation
-        model = create_model(input_shape)
+    x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4, random_state=0, stratify=y_temp, shuffle=True)
 
-        callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True),
-                    keras.callbacks.ModelCheckpoint(
-            "results/cnn_model",
-            monitor='val_loss',  # Optional: Monitor a specific metric to save the best weights
-            save_weights_only=True,  # Only save the model's weights, not the entire model
-            save_best_only=True,  # Save only the best weights based on the monitored metric
-            verbose=1  # Optional: Display messages when saving weights
-        )]
+    # model training and evaluation
+    model = create_model(input_shape)
 
-        results = model.fit(
-            x_train,
-            y_train,
-            validation_data=(x_val,y_val),
-            epochs=10000,
-            batch_size=128,
-            callbacks=callbacks,
-        )
+    callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True),
+                keras.callbacks.ModelCheckpoint(
+        "results/cnn_model",
+        monitor='val_loss',  # Optional: Monitor a specific metric to save the best weights
+        save_weights_only=True,  # Only save the model's weights, not the entire model
+        save_best_only=True,  # Save only the best weights based on the monitored metric
+        verbose=1  # Optional: Display messages when saving weights
+    )]
 
-        l, a = model.evaluate(x_val, y_val, verbose=1)
+    results = model.fit(
+        x_train,
+        y_train,
+        validation_data=(x_val,y_val),
+        epochs=10000,
+        batch_size=128,
+        callbacks=callbacks,
+    )
 
-        L, A = model.evaluate(x_test, y_test, verbose=1)
+    l, a = model.evaluate(x_val, y_val, verbose=1)
 
-        if A > 0.93:
-            break
+    L, A = model.evaluate(x_test, y_test, verbose=1)
 
     # plots and save results
     plot_accuracy_comparison([results.history["sparse_categorical_accuracy"], results.history["val_sparse_categorical_accuracy"]],
