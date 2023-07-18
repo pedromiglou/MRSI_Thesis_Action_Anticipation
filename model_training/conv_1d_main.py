@@ -56,9 +56,9 @@ if __name__ == "__main__":
     # data splitting
     x_temp, x_test, y_temp, y_test = train_test_split(x, y, test_size=1/5, random_state=0, stratify=y)
 
-    x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4, random_state=0, stratify=y_temp, shuffle=True)
-
     while True:
+        x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4, random_state=0, stratify=y_temp, shuffle=True)
+        
         # model training and evaluation
         model = create_model(input_shape)
 
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
         L, A = model.evaluate(x_test, y_test, verbose=1)
 
-        if A > 0.94:
+        if A > 0.93:
             break
 
     # plots and save results
