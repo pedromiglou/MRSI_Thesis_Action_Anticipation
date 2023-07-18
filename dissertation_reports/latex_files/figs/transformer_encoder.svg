@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="export"
+   class="canvas"
+   preserveAspectRatio="xMidYMid"
+   width="463"
+   height="138.23578"
+   version="1.1"
+   sodipodi:docname="transformer_encoder.svg"
+   inkscape:version="1.2.2 (1:1.2.2+202305151915+b0a8486541)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs445" />
+  <sodipodi:namedview
+     id="namedview443"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.0621977"
+     inkscape:cx="346.71749"
+     inkscape:cy="99.893429"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="export" />
+  <g
+     id="origin"
+     transform="rotate(-90,62.86719,62.36719)">
+    <g
+       id="clusters"
+       class="clusters" />
+    <g
+       id="edge-paths"
+       class="edge-paths">
+      <defs
+         id="defs13">
+        <marker
+           id="arrowhead"
+           viewBox="0 0 10 10"
+           refX="9"
+           refY="5"
+           markerUnits="strokeWidth"
+           markerWidth="8"
+           markerHeight="6"
+           orient="auto"
+           style="fill:#000000">
+          <path
+             d="M 0,0 10,5 0,10 4,5 Z"
+             style="stroke-width:1"
+             id="path4" />
+        </marker>
+        <marker
+           id="arrowhead-select"
+           viewBox="0 0 10 10"
+           refX="9"
+           refY="5"
+           markerUnits="strokeWidth"
+           markerWidth="8"
+           markerHeight="6"
+           orient="auto"
+           style="fill:#ee0000">
+          <path
+             d="M 0,0 10,5 0,10 4,5 Z"
+             style="stroke-width:1"
+             id="path7" />
+        </marker>
+        <marker
+           id="arrowhead-hover"
+           viewBox="0 0 10 10"
+           refX="9"
+           refY="5"
+           markerUnits="strokeWidth"
+           markerWidth="8"
+           markerHeight="6"
+           orient="auto">
+          <path
+             d="M 0,0 10,5 0,10 4,5 Z"
+             style="stroke-width:1"
+             id="path10" />
+        </marker>
+      </defs>
+      <path
+         id="edge-input_1"
+         class="edge-path"
+         d="m 48.025391,20 3.223632,1.666667 c 3.223633,1.666666 9.670899,5 12.894532,10.083333 3.223632,5.083333 3.223632,11.916667 3.223632,18.75 0,6.833333 0,13.666667 0,18.75 0,5.083333 0,8.416667 0,10.083333 V 81"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 48.025391,20 3.223632,1.666667 c 3.223633,1.666666 9.670899,5 12.894532,10.083333 3.223632,5.083333 3.223632,11.916667 3.223632,18.75 0,6.833333 0,13.666667 0,18.75 0,5.083333 0,8.416667 0,10.083333 V 81"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path16" />
+      <path
+         id="path18"
+         class="edge-path"
+         d="m 9.3417969,20 -3.2236328,1.666667 c -3.2236328,1.666666 -9.6708985,5 -12.8945313,10.083333 C -10,36.833333 -10,43.666667 -10,50.5 c 0,6.833333 0,13.666667 0,20.416667 0,6.75 0,13.416666 0,21.833333 0,8.41667 0,18.58333 0,28.75 0,10.16667 0,20.33333 0,28.75 0,8.41667 0,15.08333 0,21.75 0,6.66667 0,13.33333 0,20 0,6.66667 0,13.33333 3.7220052,18.591 3.7220052,5.25767 11.1660156,9.10633 14.8880208,11.03066 l 3.722005,1.92434"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 9.3417969,20 -3.2236328,1.666667 c -3.2236328,1.666666 -9.6708985,5 -12.8945313,10.083333 C -10,36.833333 -10,43.666667 -10,50.5 c 0,6.833333 0,13.666667 0,20.416667 0,6.75 0,13.416666 0,21.833333 0,8.41667 0,18.58333 0,28.75 0,10.16667 0,20.33333 0,28.75 0,8.41667 0,15.08333 0,21.75 0,6.66667 0,13.33333 0,20 0,6.66667 0,13.33333 3.7220052,18.591 3.7220052,5.25767 11.1660156,9.10633 14.8880208,11.03066 l 3.722005,1.92434"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path20" />
+      <path
+         id="edge-layer_normalization"
+         class="edge-path"
+         d="m 67.367187,101 v 3.41667 c 0,3.41666 0,10.25 0,17.08333 0,6.83333 0,13.66667 0,17.08333 V 142"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 67.367187,101 v 3.41667 c 0,3.41666 0,10.25 0,17.08333 0,6.83333 0,13.66667 0,17.08333 V 142"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path23" />
+      <path
+         id="edge-multi_head_attention"
+         class="edge-path"
+         d="m 67.367187,162 v 1.66667 c 0,1.66666 0,5 0,8.33333 0,3.33333 0,6.66667 0,8.33333 V 182"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 67.367187,162 v 1.66667 c 0,1.66666 0,5 0,8.33333 0,3.33333 0,6.66667 0,8.33333 V 182"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path26" />
+      <path
+         id="edge-dropout"
+         class="edge-path"
+         d="m 67.367187,202 v 1.66667 c 0,1.66666 0,5 -3.722005,8.591 -3.722005,3.591 -11.166015,7.43966 -14.888021,9.36399 l -3.722005,1.92434"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 67.367187,202 v 1.66667 c 0,1.66666 0,5 -3.722005,8.591 -3.722005,3.591 -11.166015,7.43966 -14.888021,9.36399 l -3.722005,1.92434"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path29" />
+      <path
+         id="edge-tf.__operators__.add"
+         class="edge-path"
+         d="m 45.035156,240.61583 3.600912,1.89736 c 3.600911,1.89736 10.802734,5.69209 14.403646,9.25611 3.600911,3.56403 3.600911,6.89737 3.600911,8.56403 V 262"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 45.035156,240.61583 3.600912,1.89736 c 3.600911,1.89736 10.802734,5.69209 14.403646,9.25611 3.600911,3.56403 3.600911,6.89737 3.600911,8.56403 V 262"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path32" />
+      <path
+         id="path34"
+         class="edge-path"
+         d="m 12.332031,240.61583 -3.6009112,1.89736 c -3.6009115,1.89736 -10.8027344,5.69209 -14.4036458,10.92278 -3.6009115,5.2307 -3.6009115,11.89736 -3.6009115,18.56403 0,6.66667 0,13.33333 0,21.66667 0,8.33333 0,18.33333 0,28.33333 0,10 0,20 0,28.33333 0,8.33334 0,15 0,21.66667 0,6.66667 0,13.33333 0,20 0,6.66667 0,13.33333 0,20 0,6.66667 0,13.33333 3.6009115,18.56403 3.6009114,5.23069 10.8027343,9.02542 14.4036458,10.92278 l 3.6009112,1.89736"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 12.332031,240.61583 -3.6009112,1.89736 c -3.6009115,1.89736 -10.8027344,5.69209 -14.4036458,10.92278 -3.6009115,5.2307 -3.6009115,11.89736 -3.6009115,18.56403 0,6.66667 0,13.33333 0,21.66667 0,8.33333 0,18.33333 0,28.33333 0,10 0,20 0,28.33333 0,8.33334 0,15 0,21.66667 0,6.66667 0,13.33333 0,20 0,6.66667 0,13.33333 0,20 0,6.66667 0,13.33333 3.6009115,18.56403 3.6009114,5.23069 10.8027343,9.02542 14.4036458,10.92278 l 3.6009112,1.89736"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path36" />
+      <path
+         id="edge-layer_normalization_1"
+         class="edge-path"
+         d="m 66.640625,282 v 1.66667 c 0,1.66666 0,5 0,8.33333 0,3.33333 0,6.66667 0,8.33333 V 302"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 66.640625,282 v 1.66667 c 0,1.66666 0,5 0,8.33333 0,3.33333 0,6.66667 0,8.33333 V 302"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path39" />
+      <path
+         id="edge-conv1d"
+         class="edge-path"
+         d="m 66.640625,342 v 1.66667 c 0,1.66666 0,5 0,8.33333 0,3.33333 0,6.66667 0,8.33333 V 362"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 66.640625,342 v 1.66667 c 0,1.66666 0,5 0,8.33333 0,3.33333 0,6.66667 0,8.33333 V 362"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path42" />
+      <path
+         id="edge-dropout_1"
+         class="edge-path"
+         d="m 66.640625,382 v 1.66667 c 0,1.66666 0,5 0,8.33333 0,3.33333 0,6.66667 0,8.33333 V 402"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 66.640625,382 v 1.66667 c 0,1.66666 0,5 0,8.33333 0,3.33333 0,6.66667 0,8.33333 V 402"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path45" />
+      <path
+         id="edge-conv1d_1"
+         class="edge-path"
+         d="m 66.640625,422 v 1.66667 c 0,1.66666 0,5 -3.600911,8.56403 -3.600912,3.56402 -10.802735,7.35875 -14.403646,9.25611 l -3.600912,1.89736"
+         style="fill:none;stroke:#000000;stroke-width:1px;marker-end:url(#arrowhead)" />
+      <path
+         class="edge-path-hit-test"
+         d="m 66.640625,422 v 1.66667 c 0,1.66666 0,5 -3.600911,8.56403 -3.600912,3.56402 -10.802735,7.35875 -14.403646,9.25611 l -3.600912,1.89736"
+         style="fill:none;stroke:#000000;stroke-width:0.5em;stroke-opacity:0.00100002"
+         id="path48" />
+    </g>
+    <g
+       id="edge-labels"
+       class="edge-labels">
+      <text
+         class="edge-label"
+         id="edge-label-edge-input_1"
+         style="font-size:10px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';opacity:1"
+         transform="translate(72.367187,45)"><tspan
+           xml:space="preserve"
+           dy="1em"
+           x="1"
+           id="tspan107">?×21×3</tspan></text>
+      <text
+         class="edge-label"
+         id="text112"
+         style="font-size:10px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';opacity:1"
+         transform="translate(-5,116)"><tspan
+           xml:space="preserve"
+           dy="1em"
+           x="1"
+           id="tspan110">?×21×3</tspan></text>
+    </g>
+    <g
+       id="nodes"
+       class="nodes">
+      <g
+         id="input-name-input_1"
+         class="node graph-input"
+         style="opacity:1"
+         transform="translate(2.7148438)">
+        <g
+           class="node-item graph-item-input"
+           id="g121">
+          <path
+             d="m 5,0 h 41.9375 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#eeeeee;stroke:#000000;stroke-width:0"
+             id="path115" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC'"
+             id="text117">input_1</text>
+          <title
+             id="title119">float32[?,21,3]</title>
+        </g>
+        <path
+           class="node border"
+           d="m 5,0 h 41.9375 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path123" />
+      </g>
+      <g
+         id="node-name-layer_normalization"
+         class="node graph-node"
+         style="opacity:1"
+         transform="translate(11.453125,81)">
+        <g
+           class="node-item node-item-type"
+           id="g132">
+          <path
+             d="m 5,0 h 101.82813 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#000000;stroke:#000000;stroke-width:0"
+             id="path126" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text128">LayerNormalization</text>
+          <title
+             id="title130">layer_normalization</title>
+        </g>
+        <path
+           class="node border"
+           d="m 5,0 h 101.82813 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path134" />
+      </g>
+      <g
+         id="node-name-multi_head_attention"
+         class="node graph-node"
+         style="opacity:1"
+         transform="translate(10,142)">
+        <g
+           class="node-item node-item-type"
+           id="g143">
+          <path
+             d="m 5,0 h 104.73438 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#000000;stroke:#000000;stroke-width:0"
+             id="path137" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text139">MultiHeadAttention</text>
+          <title
+             id="title141">multi_head_attention</title>
+        </g>
+        <path
+           class="node border"
+           d="m 5,0 h 104.73438 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path145" />
+      </g>
+      <g
+         id="node-name-dropout"
+         class="node graph-node"
+         style="opacity:1"
+         transform="translate(38.936333,182)">
+        <g
+           class="node-item node-item-type node-item-type-dropout"
+           id="g154">
+          <path
+             d="m 5,0 h 46.86171 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#454770;stroke:#000000;stroke-width:0"
+             id="path148" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text150">Dropout</text>
+          <title
+             id="title152">dropout</title>
+        </g>
+        <path
+           class="node border"
+           d="m 5,0 h 46.86171 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path156" />
+      </g>
+      <g
+         id="node-name-tf.__operators__.add"
+         class="node graph-node"
+         style="opacity:1"
+         transform="translate(12.332031,222)">
+        <g
+           class="node-item node-item-type"
+           id="g165">
+          <path
+             d="m 5,0 h 22.703125 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#000000;stroke:#000000;stroke-width:0"
+             id="path159" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text161">add</text>
+          <title
+             id="title163">tf.__operators__.add</title>
+        </g>
+        <path
+           class="node border"
+           d="m 5,0 h 22.703125 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path167" />
+      </g>
+      <g
+         id="node-name-layer_normalization_1"
+         class="node graph-node"
+         style="opacity:1"
+         transform="translate(10.726563,262)">
+        <g
+           class="node-item node-item-type"
+           id="g176">
+          <path
+             d="m 5,0 h 101.82813 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#000000;stroke:#000000;stroke-width:0"
+             id="path170" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text172">LayerNormalization</text>
+          <title
+             id="title174">layer_normalization_1</title>
+        </g>
+        <path
+           class="node border"
+           d="m 5,0 h 101.82813 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path178" />
+      </g>
+      <g
+         id="node-name-conv1d"
+         class="node graph-node"
+         style="opacity:1"
+         transform="translate(40.136246,302)">
+        <g
+           class="node-item node-item-type node-item-type-layer"
+           id="g187">
+          <path
+             d="m 5,0 h 43.008759 a 5,5 0 0 1 5,5 V 20 H 0 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#335588;stroke:#000000;stroke-width:0"
+             id="path181" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text183">Conv1D</text>
+          <title
+             id="title185">conv1d</title>
+        </g>
+        <g
+           class="node-item node-item-type node-item-type-activation"
+           transform="translate(0,20)"
+           id="g193">
+          <path
+             d="m 0,0 h 53.008759 v 15 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 Z"
+             style="fill:#702921;stroke:#000000;stroke-width:0"
+             id="path189" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text191">ReLU</text>
+        </g>
+        <line
+           class="node"
+           x1="0"
+           x2="53.008759"
+           y1="20"
+           y2="20"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="line195" />
+        <path
+           class="node border"
+           d="m 5,0 h 43.008759 a 5,5 0 0 1 5,5 v 30 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,35 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path197" />
+      </g>
+      <g
+         id="node-name-dropout_1"
+         class="node graph-node"
+         style="opacity:1"
+         transform="translate(38.20977,362)">
+        <g
+           class="node-item node-item-type node-item-type-dropout"
+           id="g206">
+          <path
+             d="m 5,0 h 46.86171 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#454770;stroke:#000000;stroke-width:0"
+             id="path200" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text202">Dropout</text>
+          <title
+             id="title204">dropout_1</title>
+        </g>
+        <path
+           class="node border"
+           d="m 5,0 h 46.86171 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path208" />
+      </g>
+      <g
+         id="node-name-conv1d_1"
+         class="node graph-node"
+         style="opacity:1"
+         transform="translate(40.136246,402)">
+        <g
+           class="node-item node-item-type node-item-type-layer"
+           id="g217">
+          <path
+             d="m 5,0 h 43.008759 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#335588;stroke:#000000;stroke-width:0"
+             id="path211" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text213">Conv1D</text>
+          <title
+             id="title215">conv1d_1</title>
+        </g>
+        <path
+           class="node border"
+           d="m 5,0 h 43.008759 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path219" />
+      </g>
+      <g
+         id="node-name-tf.__operators__.add_1"
+         class="node graph-node"
+         style="opacity:1"
+         transform="translate(12.332031,442)">
+        <g
+           class="node-item node-item-type"
+           id="g228">
+          <path
+             d="m 5,0 h 22.703125 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+             style="fill:#000000;stroke:#000000;stroke-width:0"
+             id="path222" />
+          <text
+             x="6"
+             y="13"
+             style="font-size:11px;font-family:'-apple-system', BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', Ubuntu, 'Droid Sans', sans-serif, 'PingFang SC';fill:#ffffff"
+             id="text224">add</text>
+          <title
+             id="title226">tf.__operators__.add_1</title>
+        </g>
+        <path
+           class="node border"
+           d="m 5,0 h 22.703125 a 5,5 0 0 1 5,5 v 10 a 5,5 0 0 1 -5,5 H 5 A 5,5 0 0 1 0,15 V 5 A 5,5 0 0 1 5,0 Z"
+           style="fill:none;stroke:#333333;stroke-width:1px"
+           id="path230" />
+      </g>
+    </g>
+  </g>
+</svg>
