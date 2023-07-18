@@ -44,9 +44,7 @@ def create_model(input_shape, dropout=0.5, learning_rate=0.001, kernel_size=3, n
 
 if __name__ == "__main__":
     # read data
-    folder_path = './dataset2_4objects'
-
-    x, y = read_dataset2(folder_path)
+    x, y = read_dataset2()
 
     input_shape = x.shape[1:]
 
