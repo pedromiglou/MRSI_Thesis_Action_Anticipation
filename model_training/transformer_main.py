@@ -87,8 +87,6 @@ if __name__ == "__main__":
     # read data
     x, y = read_dataset2()
 
-    n_classes = len(np.unique(y))
-
     input_shape = x.shape[1:]
 
     # data shuffling
@@ -102,7 +100,7 @@ if __name__ == "__main__":
     # model training and evaluation
     model = create_model(input_shape)
 
-    callbacks = [keras.callbacks.EarlyStopping(patience=1000, restore_best_weights=True),
+    callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True),
                 keras.callbacks.ModelCheckpoint(
         "results/transformer_model",
         monitor='val_loss',  # Optional: Monitor a specific metric to save the best weights
