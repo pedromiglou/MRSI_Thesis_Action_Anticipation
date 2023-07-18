@@ -85,9 +85,7 @@ def create_model(input_shape, mlp_dropout=0.1, dropout=0.5, learning_rate=0.0001
 
 if __name__ == "__main__":
     # read data
-    folder_path = './dataset2_4objects'
-
-    x, y = read_dataset2(folder_path)
+    x, y = read_dataset2()
 
     n_classes = len(np.unique(y))
 

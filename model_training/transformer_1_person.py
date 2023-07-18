@@ -18,61 +18,59 @@ random.seed(1234)
 np.random.seed(1234)
 tf.random.set_seed(1234)
 
+PEOPLE = ["joel", "manuel", "pedro"]
 
 if __name__ == "__main__":
-    PEOPLE = ["pedro"]
+    for person in PEOPLE:
+        # read data
+        x, y = read_dataset2(people=[person])
 
-    # read data
-    folder_path = './points'
+        input_shape = x.shape[1:]
 
-    x, y = read_data(folder_path, people=PEOPLE)
+        # data shuffling
+        x, y = shuffle(x, y, random_state=0)
 
-    input_shape = x.shape[1:]
+        # data splitting
+        x_temp, x_test, y_temp, y_test = train_test_split(x, y, test_size=1/5, random_state=0, stratify=y)
 
-    # data shuffling
-    x, y = shuffle(x, y, random_state=0)
+        x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4, random_state=0, stratify=y_temp, shuffle=True)
 
-    # data splitting
-    x_temp, x_test, y_temp, y_test = train_test_split(x, y, test_size=1/5, random_state=0, stratify=y)
+        # model training and evaluation
+        model = create_model(input_shape)
 
-    x_train, x_val, y_train, y_val = train_test_split(x_temp, y_temp, test_size=1/4, random_state=0, stratify=y_temp, shuffle=True)
+        callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True)]
 
-    # model training and evaluation
-    model = create_model(input_shape)
+        results = model.fit(
+            x_train,
+            y_train,
+            validation_data=(x_val,y_val),
+            epochs=10000,
+            batch_size=256,
+            callbacks=callbacks,
+        )
 
-    callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True)]
+        l, a = model.evaluate(x_val, y_val, verbose=1)
 
-    results = model.fit(
-        x_train,
-        y_train,
-        validation_data=(x_val,y_val),
-        epochs=10000,
-        batch_size=256,
-        callbacks=callbacks,
-    )
+        L, A = model.evaluate(x_test, y_test, verbose=1)
 
-    l, a = model.evaluate(x_val, y_val, verbose=1)
+        # plots and save results
+        plot_accuracy_comparison([results.history["sparse_categorical_accuracy"],
+                                results.history["val_sparse_categorical_accuracy"]],
+                                "Training/Validation Accuracy Comparison",
+                                ["Training Accuracy", "Validation Accuracy"],
+                                show=False, save_path = f"./results/transformer_{person}_acc_comparison.svg")
 
-    L, A = model.evaluate(x_test, y_test, verbose=1)
+        plot_loss_comparison([results.history["loss"], results.history["val_loss"]],
+                            "Training/Validation Loss Comparison",
+                            ["Training Loss", "Validation Loss"],
+                            show=False, save_path = f"./results/transformer_{person}_loss_comparison.svg")
 
-    # plots and save results
-    plot_accuracy_comparison([results.history["sparse_categorical_accuracy"],
-                            results.history["val_sparse_categorical_accuracy"]],
-                            "Training/Validation Accuracy Comparison",
-                            ["Training Accuracy", "Validation Accuracy"],
-                            show=False, save_path = f"./results/transformer_{PEOPLE[0]}_acc_comparison.svg")
+        y_pred=np.argmax(model.predict(x_test), axis=-1)
 
-    plot_loss_comparison([results.history["loss"], results.history["val_loss"]],
-                        "Training/Validation Loss Comparison",
-                        ["Training Loss", "Validation Loss"],
-                        show=False, save_path = f"./results/transformer_{PEOPLE[0]}_loss_comparison.svg")
+        plot_confusion_matrix(y_test, y_pred, ["bottle", "cube", "phone", "screwdriver"],
+                            show=False, save_path = f"./results/transformer_{person}_conf_matrix.svg")
 
-    y_pred=np.argmax(model.predict(x_test), axis=-1)
-
-    plot_confusion_matrix(y_test, y_pred, ["bottle", "cube", "phone", "screwdriver"],
-                        show=False, save_path = f"./results/transformer_{PEOPLE[0]}_conf_matrix.svg")
-
-    write_results(results.history['sparse_categorical_accuracy'][-200], a, A,
-                results.history['loss'][-200], l, L,
-                classification_report(y_pred,y_test, digits=4),
-                save_path = f"./results/transformer_{PEOPLE[0]}_results.txt")
+        write_results(results.history['sparse_categorical_accuracy'][-200], a, A,
+                    results.history['loss'][-200], l, L,
+                    classification_report(y_pred,y_test, digits=4),
+                    save_path = f"./results/transformer_{person}_results.txt")
