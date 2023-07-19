@@ -18,9 +18,9 @@ random.seed(1234)
 np.random.seed(1234)
 tf.random.set_seed(1234)
 
-PEOPLE = [["joel"], ["manuel", "pedro"],
-          ["manuel"], ["joel", "pedro"],
-          ["pedro"], ["joel", "manuel"]]
+PEOPLE = [[["joel"], ["manuel", "pedro"]],
+          [["manuel"], ["joel", "pedro"]],
+          [["pedro"], ["joel", "manuel"]]]
 
 
 if __name__ == "__main__":
