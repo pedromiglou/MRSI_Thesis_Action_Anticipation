@@ -22,13 +22,7 @@ output_folder = rospy.get_param(rospy.search_param('output_folder')) + "/mp_metr
 
 # person = int(input("?"))
 
-status = ["visible", "partially visible", "obstructed"]
-for i, p in enumerate(status):
-    print(f"{i} - {p}")
-
-s = int(input("?"))
-
-objects = ["cube", "bottle", "phone", "screwdriver"]
+objects = ["nonehv", "cube", "bottle", "phone", "screwdriver", "noneho"]
 for i, o in enumerate(objects):
     print(f"{i} - {o}")
 
@@ -36,12 +30,12 @@ object = int(input("?"))
 
 t = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
 
-filename = f"{output_folder}/{objects[object]}_{status[s]}_{t}.bag"
+filename = f"{output_folder}/{objects[object]}_{t}.bag"
 
 rosbag_cmd = ['rosbag', 'record', '-j', '-O', filename, 'front_camera/color/image_raw']
 rosbag_process = subprocess.Popen(rosbag_cmd)
 
-for i in range(2,0,-1):
+for i in range(3,0,-1):
     print(f"Starting in {i}")
 
     time.sleep(1)
