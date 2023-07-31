@@ -5,7 +5,7 @@
 % fs
 
 
-This chapter covers the learning part of this dissertation including data collecting, dataset preprocessing, and the models' structures and optimizations.
+This chapter covers this dissertation's learning part, including data collecting, dataset preprocessing, and the models' structures and optimizations.
 
 %fs
 \section{Problem Description and Formulation}
@@ -24,11 +24,10 @@ To obtain a model that would be able to achieve the previous objective two exper
 
 %fs
 \section{Data Representation}
-%\section{Data}
 
 \subsection{Data Collecting}
 
-The first step to train a supervised machine learning model is to find a dataset. However, given that this problem is very specific the datasets had to be manually collected. For this purpose, 2 datasets were collected with both consisting of a set of videos where one person would be moving and rotating a certain object. These videos were recorded at 10 frames per second to avoid consecutive frames having similar hand poses.
+The first step to train a supervised machine learning model is to find a dataset. However, given that this problem is particular, the datasets had to be manually collected. For this purpose, two datasets were collected, consisting of videos where one person would move and rotate a particular object. These videos were recorded using the Orbbec Astra Pro, positioned in front of the user at ten frames per second to avoid consecutive frames with similar hand poses. Fig.~\ref{fig:dataset_examples} shows some examples in the second dataset.
 
 \begin{figure}[H]
     \centerline{\includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing1_1.png} \includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing1_2.png}}
@@ -36,13 +35,17 @@ The first step to train a supervised machine learning model is to find a dataset
     \label{fig:dataset_examples}
 \end{figure}
 
-In the first dataset, 3 different objects were used (see Fig: x), and for each one, 1 person was recorded for 30 seconds resulting in 300 images per object. In the second dataset, 4 objects were used (see Fig: x), and 3 people were recorded in 4 different 25-second videos for each object resulting in 1000 frames for each person and object making it 3000 frames for each object. Recording more than one video for each combination of person and object allowed each person to grasp the object slightly differently each time in order to obtain a more diverse dataset.
+The datasets were captured using the usb\_cam package for ROS, and the videos were saved as bag files. In the first dataset, three different objects were used (see Fig: x), and for each one, one person was recorded for 30 seconds resulting in 300 images per object. In the second dataset, four objects were used (see Fig: x), and three people were recorded in 4 different 25-second videos for each object resulting in 1000 frames for each person and object, making it 3000 frames for each object. Recording more than one video for each combination of person and object allowed each person to grasp the object slightly differently each time in order to obtain a more diverse dataset.
 
-\textcolor{red}{image with objects, detalhar software, metricas da aquisição mediapipe (situações com a mão visivel, manuseando o objeto, forçando a oclusão natural)}
+\begin{figure}[H]
+    \centerline{\includegraphics[width=0.49\textwidth]{figs/objects_dataset1.jpg} \includegraphics[width=0.49\textwidth]{figs/objects_dataset2.jpg}}
+    \caption[Dataset Objects]{Dataset Objects}
+    \label{fig:dataset_objects}
+\end{figure}
 
 \subsection{Dataset Preprocessing}
 
-After having a dataset, the data had to be processed so that it would have a fitting structure to be used in the model training and testing. The images from the videos were processed using the Mediapipe hands model resulting in 21 points for each hand detected. The images were also processed by the full-body model also provided by Mediapipe so that it is possible to identify the right hand.
+After having a dataset, the data had to be processed to have a fitting structure to be used in the model training. The images from the videos were processed using the Mediapipe hands model resulting in 21 points for each hand detected, as shown in Fig.~\ref{fig:dataset_examples2}.
 
 \begin{figure}[H]
     \centerline{\includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing2_1.png} \includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing2_2.png}}
@@ -50,7 +53,34 @@ After having a dataset, the data had to be processed so that it would have a fit
     \label{fig:dataset_examples2}
 \end{figure}
 
-These points are then subject to further processing and normalization so that the location of the hand in the image and the distance between the hand and the camera have a lesser impact. The centroid is calculated and the points are translated so that they are centered in the (0.5, 0.5, 0.5) point, the points are then scaled up as much as possible while keeping every coordinate of every point between 0 and 1.
+The Mediapipe Hands Model can detect a variable number of hands in an image, and it was set up so that it would only detect up to two hands, meaning that its output can consist of no hands detected, of a set of 21 points hand detected, which can be either the left or the right hand, or two sets of 21 points if both hands were detected. To better understand the Mediapipe results in this particular context, six videos with 250 frames each were recorded in different scenarios. Then, for each scenario, the full-body model provided by MediaPipe was used to register whether the model detected the left hand, right hand, both hands, or none, resulting in the metrics in Table \ref{table:mediapipe_metrics}. These results show that there is a significant number of frames where the right hand, which is the one holding the object, is not detected. This means that the results of the Hands Model must be filtered to avoid wrong predictions.
+
+\begin{table}[H]
+    \centering
+    \caption{Mediapipe Hand Model Output Percentage in Different Scenarios}
+    \label{table:mediapipe_metrics}
+    \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        & No Hands & Left Hand & Right Hand & Both Hands \\
+        \hline
+        Hands Visible & 1.6\% & 2\% & 8.8\% & 87.6\% \\
+        \hline
+        Hand Holding Bottle & 0.4\% & 44.4\% & 22.8\% & 32.4\% \\
+        \hline
+        Hand Holding Cube & 1.2\% & 22\% & 36.8\% & 40\% \\
+        \hline
+        Hand Holding Phone & 1.2\% & 28.4\% & 33.6\% & 36.8\% \\
+        \hline
+        Hand Holding Screwdriver & 1.2\% & 9.2\% & 44.4\% & 48.4\% \\
+        \hline
+        Hands Obstructed & 38.8\% & 21.6\% & 26.4\% & 13.2\% \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Given that the scope of this work is restricted to scenarios where the user grasps the objects with his right hand, the instances where the right hand is not detected need to be ignored and, as a result, the images are also processed by the full-body model provided by Mediapipe so that it is possible to identify the right hand.
+
+The points corresponding to the right hand are then subject to further processing and normalization so that the location of the hand in the image and the distance between the hand and the camera have a lesser impact on the model training. Firstly, the centroid is calculated, and the points are translated to be centred in the (0.5, 0.5, 0.5) point. Then the points are scaled up as much as possible while keeping every coordinate of every point between 0 and 1, as shown in Fig.~\ref{fig:dataset_examples3}. It is important to note that throughout the point processing, the order of the points is never changed, and therefore the models can take advantage of this structure.
 
 \begin{figure}[H]
     \centerline{\includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing3_1.png} \includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing3_2.png}}
@@ -60,15 +90,17 @@ These points are then subject to further processing and normalization so that th
 
 \subsection{Data Splitting}
 
-In order to train the model, the dataset was split into 3 sets: the train set (60\%), the validation set (20\%), and the test set (20\%). The random variables in the data shuffling and splitting were also fixed so that the test set is always the same, and therefore, its data is never used to train or validate the model, even in different trains. During hyperparameter optimization, the different combinations are tested using 4-fold cross-validation, which means that the model is trained 4 times, and therefore every sample of data in the initial training and validation set was used both for training and validation. Additionally, early stopping was set up so that the model would stop after 200 epochs without a better validation loss.
+In order to train the model, the dataset was split into three sets: the train set (60\%), the validation set (20\%), and the test set (20\%). The random variables in the data shuffling and splitting were also fixed so that the test set is always the same, and therefore, its data is never used to train or validate the model, even in different trains. During hyperparameter optimization, the different combinations are tested using 4-fold cross-validation, which means that the model is trained four times, and therefore every sample of data in the initial training and validation set was used both for training and validation. Additionally, early stopping was set up so that the model would stop training after 200 epochs without a better validation loss and restore the best weights.
 
 \section{Convolutional Neural Network}
 
-After all the processing, each sample provided to the model is made of the 21 points that represent the right hand. Given that points are related to each other, a one-dimensional convolutional neural network was used to take advantage of this characteristic. Therefore, the CNN is responsible for taking the 21 3D points and classifying the object that is being grasped.
+Convolutional Neural Networks excel at detecting local relations. Given that each sample provided to the model is made of the 21 points that always follow the same structure representing the right hand, a one-dimensional convolutional neural network was used to take advantage of this characteristic.
 
-\subsection{Model Architecture}
+\subsection{Model Selection}
 
-When training a model with the initial architecture in the second dataset, the results were considerably lower than those achieved with the first dataset. Given that not only the dataset was bigger, but there was also one more class, it was decided that the model should have a more complex architecture, and with manual optimizations a new architecture was created which had better results. The new model can be seen on Fig.~\ref{fig:cnn_architecture} and it is made of 2 convolutional layers followed by 3 dense layers, with the third being the output layer. Between the convolutional and the dense layers and between both dense layers there is also a dropout layer so as to help with overfitting.
+\textcolor{red}{join this subsection with the next}
+
+A simple CNN was initially tested and manually optimized with the first dataset. When training a model with the initial architecture in the second dataset, the results were considerably lower than those achieved with the first dataset. Given that not only was the dataset more extensive, but there was also one more class, it was decided that the model should have a more complex architecture, and with manual optimizations, a new architecture was created, which had better results. The new model can be seen in Fig.~\ref{fig:cnn_architecture}, and it is made of 2 convolutional layers followed by three dense layers, with the third being the output layer. Between the convolutional and the dense layers and between both dense layers, there is also a dropout layer to help with overfitting.
 
 \begin{figure}[H]
     \centering
@@ -79,7 +111,7 @@ When training a model with the initial architecture in the second dataset, the r
 
 \subsection{Hyperparameter Optimization}
 
-In this model, 3 common hyperparameters in CNNs were optimized to obtain better results. These were the initial learning rate for the model training, the kernel size used by the convolutional layers and the dropout rate. Additionally, the number of convolutional layers was also tested given that, according to manual testing, it also affected the model results without changing the number of trainable parameters. The values tested for each hyperparameter can be seen on Table \ref{table:cnn_hyperparameters}.
+Three common hyperparameters in CNNs were optimized to obtain better results with the previous architecture. These were the initial learning rate for the model training, the kernel size used by the convolutional layers, and the dropout rate. The number of convolutional layers was also tested, given that, according to manual testing, it also affected the model results without changing the number of trainable parameters. Table \ref{table:cnn_hyperparameters} shows the values tested for each hyperparameter.
 
 \begin{table}[H]
     \centering
@@ -100,7 +132,7 @@ In this model, 3 common hyperparameters in CNNs were optimized to obtain better 
     \end{tabular}
 \end{table}
 
-In order to choose the best combination of these hyperparameters, all combinations were tested using 4-fold cross validation, which means that the model was trained 4 times, and every sample of data was used both for training and validation. It is important to note that the process to obtain these hyperparameters did not include the data from the test set. Then the average result of each combination was obtained with the combination in Table \ref{table:cnn_best_hyperparameters} having the lowest average loss with 0.2100 and an average accuracy of 94.20\%.
+In order to choose the best combination of these hyperparameters, all combinations were tested using 4-fold cross-validation, and the average result of each combination was obtained. The combination in Table \ref{table:cnn_best_hyperparameters} resulted in the lowest average loss with 0.2100 and an average accuracy of 94.20\%.
 
 \begin{table}[H]
     \centering
@@ -125,7 +157,7 @@ In order to choose the best combination of these hyperparameters, all combinatio
 
 \subsubsection{First Dataset}
 
-Initially, a simple CNN was tested and manually optimized with the first dataset resulting in the following results:
+After the initial architecture was tested and manually optimized with the first dataset, it resulted in the learning curves shown in Fig.~\ref{fig:cnn_dataset1_loss} and Fig.~\ref{fig:cnn_dataset1_acc}. According to the figures, the best validation loss occurred close to the 1800th epoch, with the training stopping 200 epochs later.
 
 \begin{figure}[H]
     \centering
@@ -141,13 +173,15 @@ Initially, a simple CNN was tested and manually optimized with the first dataset
     \label{fig:cnn_dataset1_acc}
 \end{figure}
 
+After the model finished training, the metrics in Table \ref{table:cnn_dataset1_results} were obtained. Given that the test accuracy was over 95\%, we can conclude that the model generalized its knowledge from the training data. Additionally, the confusion matrix in Fig.~\ref{fig:cnn_dataset1_conf_matrix} shows that the model managed to predict more accurately the bottle and the cube, whose shapes are more distinct. Even with a relatively small dataset, this CNN showed positive results, so it was decided that this model should be tested in the second dataset.
+
 \begin{table}[H]
     \centering
     \caption{Metrics obtained with the First Dataset (CNN)}
     \label{table:cnn_dataset1_results}
     \begin{tabular}{|l|l|l|l|l|}
         \hline
-        Metric & Test Accuracy & Precision & Recall & F1-Score \\
+        Metric & Accuracy & Precision & Recall & F1-Score \\
         \hline
         Value & 0.9551 & 0.9583 & 0.9551 & 0.9549 \\
         \hline
@@ -161,11 +195,9 @@ Initially, a simple CNN was tested and manually optimized with the first dataset
     \label{fig:cnn_dataset1_conf_matrix}
 \end{figure}
 
-Even with a relatively small dataset, this CNN shows positive results with accuracies over 95\%, so it was decided that this model should be tested in the second dataset.
-
 \subsubsection{Second Dataset}
 
-With the final architecture defined as well as the model hyperparameters, the final model was trained with the data of the second dataset. The Fig.~\ref{fig:cnn_loss} and Fig.~\ref{fig:cnn_acc} show the evolution of the training and validation loss and accuracy respectively during the training. According to the figures, the best validation loss occurred slightly after the 400th epoch with training stopping 200 epochs later.
+The final CNN architecture was trained in the second dataset resulting in the training curves in Fig.~\ref{fig:cnn_loss} and Fig.~\ref{fig:cnn_acc}. According to the figures, the best validation loss occurred around the 275th epoch, with the training stopping 200 epochs later.
 
 \begin{figure}[H]
     \centering
@@ -181,7 +213,7 @@ With the final architecture defined as well as the model hyperparameters, the fi
     \label{fig:cnn_acc}
 \end{figure}
 
-With training completed, the metrics in the Table \ref{table:cnn_dataset2_results} were obtained. Given that the validation and test accuracies are close to each other we can conclude that the model managed to generalize its knowledge from the training data to classify data it has never seen before. Additionally, the confusion matrix in the Fig.~\ref{fig:cnn_dataset2_confusion_matrix} shows that the screwdriver was the object that the model managed to predict more accurately. This can be due to the fact that the hand geometry that allows a person to grasp a screwdriver intuitively is more restrict.
+After the model finished training, the metrics in Table \ref{table:cnn_dataset2_results} were obtained. Given that the test accuracy was over 92\%, we can conclude that the model managed to generalize its knowledge from the training data to classify data it has never seen before. Additionally, the confusion matrix in Fig.~\ref{fig:cnn_dataset2_confusion_matrix} shows that the screwdriver was the object the model managed to predict more accurately. This can be because the hand geometry that allows a person to intuitively grasp a screwdriver is more restricted.
 
 \begin{table}[H]
     \centering
@@ -189,9 +221,9 @@ With training completed, the metrics in the Table \ref{table:cnn_dataset2_result
     \label{table:cnn_dataset2_results}
     \begin{tabular}{|l|l|l|l|l|}
         \hline
-        Metric & Test Accuracy & Precision & Recall & F1-Score \\
+        Metric & Accuracy & Precision & Recall & F1-Score \\
         \hline
-        Value & 0.9400 & 0.9403 & 0.9400 & 0.9400 \\
+        Value & 0.9236 & 0.9243 & 0.9236 & 0.9237 \\
         \hline
     \end{tabular}
 \end{table}
@@ -205,11 +237,11 @@ With training completed, the metrics in the Table \ref{table:cnn_dataset2_result
 
 \section{Transformer Neural Network}
 
-As said in Subsection \ref{subsection:transformer_neural_networks}, Transformer Neural Networks shine at capturing long-range dependencies and relationships. Therefore, considering the fact that the points obtained from Mediapipe have a specific order, we can take advantage of this ability to process structured data and effectively capture dependencies and patterns.
+As said in Subsection \ref{subsection:transformer_neural_networks}, Transformer Neural Networks shine at capturing long-range dependencies and relationships. Therefore, because the points obtained from Mediapipe have a specific order, we can use this ability to process structured data and effectively capture dependencies and patterns.
 
 \subsection{Model Architecture}
 
-The previous architecture achieved results significantly lower in the second dataset. After some manual testing, an initial layer was replaced in order to achieve better results and the number of trainable parameters was reduced when possible to allow for faster model training. The new model can be seen on Fig.~\ref{fig:transformer_architecture2} and it is made of 2 Transformer Encoder Blocks comprised of the layers shown in Fig.~\ref{fig:transformer_architecture1} followed by two sets of a Dense and a Dropout Layer and a final Dense output layer.
+Initially, a Transformer architecture from \textcolor{red}{link} was tested and manually optimized with the first dataset. However, that architecture achieved results significantly lower in the second dataset. After some manual testing, an initial layer was replaced to achieve better results, and the number of trainable parameters was reduced when possible to allow for faster model training. The new model can be seen in Fig.~\ref{fig:transformer_architecture2}, and it is made of 2 Transformer Encoder Blocks comprised of the layers shown in Fig.~\ref{fig:transformer_architecture1} followed by two sets of a Dense and a Dropout Layer and a final Dense output layer.
 
 \begin{figure}[H]
     \centering
@@ -227,7 +259,7 @@ The previous architecture achieved results significantly lower in the second dat
 
 \subsection{Hyperparameter Optimization}
 
-In this model, 3 hyperparameters were optimized to obtain better results. These were the initial learning rate for the model training, the dropout rate inside each transformer block, and the dropout rate of the multilayer perception at the end of the model. The values tested for each hyperparameter can be seen in Table \ref{table:transformer_hyperparameters}.
+Three hyperparameters were optimized to improve the performance of the CNN model. These were the initial learning rate for the model training, the dropout rate inside each transformer block, and the dropout rate of the multilayer perception at the end of the model. Table \ref{table:transformer_hyperparameters} shows the values tested for each hyperparameter.
 
 \begin{table}[H]
     \centering
@@ -271,7 +303,7 @@ having an average loss of 0.2594 and an average accuracy of 92.24\%.
 
 \subsubsection{First Dataset}
 
-Initially, a Transformer architecture from \textcolor{red}{link} was tested and manually optimized with the first dataset resulting in the following results:
+After the initial architecture was tested and manually optimized with the first dataset, it resulted in the learning curves shown in Fig.~\ref{fig:transformer_dataset1_loss} and Fig.~\ref{fig:fig:transformer_dataset1_acc}. According to the figures, the best validation loss occurred close to the 300th epoch, with the training stopping 200 epochs later.
 
 \begin{figure}[H]
     \centering
@@ -287,13 +319,15 @@ Initially, a Transformer architecture from \textcolor{red}{link} was tested and 
     \label{fig:transformer_dataset1_acc}
 \end{figure}
 
+After the model finished training, the metrics in Table \ref{table:transformer_dataset1_results} were obtained. Given that the test accuracy was around 90\%, we can conclude that the model generalized its knowledge from the training data. However, the confusion matrix in Fig.~\ref{fig:transformer_dataset1_confusion_matrix} shows that the model managed to predict the bottle and the cube significantly more accurately, whose shapes are more distinct, in comparison with the long block that was mistaken several times for the cube. Even with a relatively small dataset, this Transformer showed positive results even if it showed greater difficulty in distinguishing between two similar objects, so it was decided that this model should be tested in the second dataset.
+
 \begin{table}[H]
     \centering
     \caption{Metrics obtained with the First Dataset (Transformer)}
     \label{table:transformer_dataset1_results}
     \begin{tabular}{|l|l|l|l|l|}
         \hline
-        Metric & Test Accuracy & Precision & Recall & F1-Score \\
+        Metric & Accuracy & Precision & Recall & F1-Score \\
         \hline
         Value & 0.8989 & 0.9163 & 0.8989 & 0.9001 \\
         \hline
@@ -307,11 +341,9 @@ Initially, a Transformer architecture from \textcolor{red}{link} was tested and 
     \label{fig:transformer_dataset1_confusion_matrix}
 \end{figure}
 
-Even with a relatively small dataset, this Transformer shows positive results with accuracies over 88\%. However, when considering the accuracies in each class, we can see that it has greater difficulty in distinguishing between two similar objects. Despite this, it was decided that this model should be tested in the second dataset.
-
 \subsubsection{Second Dataset}
 
-With the final architecture defined as well as the model hyperparameters, the final model was trained with the data of the second dataset. The Fig.~\ref{fig:transformer_loss} and Fig.~\ref{fig:transformer_acc} show the evolution of the training and validation loss and accuracy respectively during the training. According to the figures, the best validation loss occurred slightly after the 2500th epoch, with training stopping 200 epochs later.
+The final architecture was trained in the second dataset resulting in the training curves in Fig.~\ref{fig:transformer_loss} and Fig.~\ref{fig:transformer_acc}. According to the figures, the best validation loss occurred around the 2700th epoch, with the training stopping 200 epochs later.
 
 \begin{figure}[H]
     \centering
@@ -327,7 +359,7 @@ With the final architecture defined as well as the model hyperparameters, the fi
     \label{fig:transformer_acc}
 \end{figure}
 
-With training completed, the metrics in the Table \ref{table:transformer_dataset2_results} were obtained. Given that the validation and test accuracies are close to each other we can conclude that the model managed to generalize its knowledge from the training data to classify data it has never seen before. Additionally, the confusion matrix in the Fig.~\ref{fig:transformer_dataset2_confusion_matrix} shows that the screwdriver was the object that the model managed to predict more accurately. This can be due to the fact that the hand geometry that allows a person to grasp a screwdriver intuitively is more restrict.
+After the model finished training, the metrics in Table \ref{table:transformer_dataset2_results} were obtained. Given that the test accuracy was over 92\%, we can conclude that the model managed to generalize its knowledge from the training data to classify data it has never seen before. Additionally, the confusion matrix in Fig.~\ref{fig:transformer_dataset2_confusion_matrix} shows that the screwdriver was the object the model managed to predict more accurately. This can be because the hand geometry that allows a person to intuitively grasp a screwdriver is more restricted.
 
 \begin{table}[H]
     \centering
@@ -335,7 +367,7 @@ With training completed, the metrics in the Table \ref{table:transformer_dataset
     \label{table:transformer_dataset2_results}
     \begin{tabular}{|l|l|l|l|l|}
         \hline
-        Metric & Test Accuracy & Precision & Recall & F1-Score \\
+        Metric & Accuracy & Precision & Recall & F1-Score \\
         \hline
         Value & 0.9244 & 0.9244 & 0.9244 & 0.9243 \\
         \hline
@@ -351,9 +383,13 @@ With training completed, the metrics in the Table \ref{table:transformer_dataset
 
 \section{Models Comparison}
 
-In order to further test the models' ability to generalize, two additional tests were made. Taking the optimized models described in the previous section, firstly, they were tested using only data recorded with one user, and then they were tested using one user for testing and the other two for the training phase. 
+In order to compare the models, they were evaluated in three different cases using different data for model training and testing.
 
 \subsubsection{First Case}
+
+The first case corresponds to the method the models were tested in the previous sections. This means that all data was randomly split into the training and test sets resulting in the metrics shown in Table \ref{table:results_first_case}. These results show both models having similar performances of over 92\%.
+
+\textcolor{red}{best results should be in bold}
 
 \begin{table}[H]
     \centering
@@ -361,9 +397,9 @@ In order to further test the models' ability to generalize, two additional tests
     \label{table:results_first_case}
     \begin{tabular}{|l|l|l|l|l|}
         \hline
-        Model & Test Accuracy & Precision & Recall & F1-Score \\
+        Model & Accuracy & Precision & Recall & F1-Score \\
         \hline
-        CNN & 0.9244 & 0.9244 & 0.9244 & 0.9243 \\
+        CNN & 0.9236 & 0.9243 & 0.9236 & 0.9237 \\
         \hline
         Transformer & 0.9244 & 0.9244 & 0.9244 & 0.9243 \\
         \hline
@@ -372,7 +408,7 @@ In order to further test the models' ability to generalize, two additional tests
 
 \subsubsection{Second Case}
 
-Table \ref{table:results_second_case_acc} shows the results of the first test.
+In the second case, the model was trained once for each user present in the dataset and, on each training, only the data collected with one user was used for both training and testing, resulting in the metrics in the tables \ref{table:results_second_case_acc}, \ref{table:results_second_case_precision}, \ref{table:results_second_case_recall} and \ref{table:results_second_case_f1_score}. These results show that when testing with only one user, the results with the CNN are similar, but those with the Transformer are slightly lower. One justification could be that even with less variety in the data, the fact that there are fewer samples of data might counterbalance that. Given that the Transformers tend to need more training data, this also justifies the difference in the accuracy.
 
 \begin{table}[H]
     \centering
@@ -382,7 +418,7 @@ Table \ref{table:results_second_case_acc} shows the results of the first test.
         \hline
         Model & User1 & User2 & User3 & Average \\
         \hline
-        CNN & 0.9673 & 0.9243 & 0.9378 & 0.9431 \\
+        CNN & 0.9577 & 0.9068 & 0.9026 & 0.9224 \\
         \hline
         Transformer & 0.9400 & 0.8892 &  0.8660 & 0.8984 \\
         \hline
@@ -397,7 +433,7 @@ Table \ref{table:results_second_case_acc} shows the results of the first test.
         \hline
         Model & User1 & User2 & User3 & Average \\
         \hline
-        CNN & & & & \\
+        CNN & 0.9580 & 0.9069 & 0.9029 & 0.9226 \\
         \hline
         Transformer & 0.9404 & 0.8894 & 0.8675 & 0.8991 \\
         \hline
@@ -412,7 +448,7 @@ Table \ref{table:results_second_case_acc} shows the results of the first test.
         \hline
         Model & User1 & User2 & User3 & Average \\
         \hline
-        CNN & & & & \\
+        CNN & 0.9577 & 0.9068 & 0.9026 & 0.9224 \\
         \hline
         Transformer & 0.9400 & 0.8892 & 0.8660 & 0.8984 \\
         \hline
@@ -427,18 +463,16 @@ Table \ref{table:results_second_case_acc} shows the results of the first test.
         \hline
         Model & User1 & User2 & User3 & Average \\
         \hline
-        CNN & & & & \\
+        CNN & 0.9577 & 0.9068 & 0.9025 & 0.9223 \\
         \hline
         Transformer & 0.9399 & 0.8892 & 0.8663 & 0.8985 \\
         \hline
     \end{tabular}
 \end{table}
 
-These results show that when testing with only one user, the results with the CNN are similar, but those with the Transformer are slightly lower. One justification could be that even with less variety in the data, the fact that there are fewer samples of data might counterbalance that. Given that the Transformers tend to need more training data, this also justifies the difference in the accuracy.
-
 \subsubsection{Third Case}
 
-Table \ref{table:results_third_case_acc} shows the results of the second test.
+In the third case, the model was also trained once for each user in the dataset. However, this time, the model was trained with the data collected from two users, with the data from the third being used for testing resulting in the metrics in the tables \ref{table:results_third_case_acc}, \ref{table:results_third_case_precision}, \ref{table:results_third_case_recall} and \ref{table:results_third_case_f1_score}. These results show that testing with a user whose data was not used to train a model produces significantly lower results. This can be justified due to different people grasping objects in different ways. Additionally, since the dataset is made of data derived from only three people, removing one from the training data significantly reduces the variety of the training data.
 
 \begin{table}[H]
     \centering
@@ -448,7 +482,7 @@ Table \ref{table:results_third_case_acc} shows the results of the second test.
         \hline
         Model & User1 & User2 & User3 & Average \\
         \hline
-        CNN & 0.7958 & 0.5970 & 0.5417 & 0.6448 \\
+        CNN & 0.7879 & 0.5751 & 0.5444 & 0.6358 \\
         \hline
         Transformer & 0.7655 & 0.5686 & 0.5309 & 0.6217 \\
         \hline
@@ -463,7 +497,7 @@ Table \ref{table:results_third_case_acc} shows the results of the second test.
         \hline
         Model & User1 & User2 & User3 & Average \\
         \hline
-        CNN & & & & \\
+        CNN & 0.8036 & 0.5834 & 0.5567 & 0.6479 \\
         \hline
         Transformer & 0.7808 & 0.5776 & 0.5553 & 0.6371 \\
         \hline
@@ -478,7 +512,7 @@ Table \ref{table:results_third_case_acc} shows the results of the second test.
         \hline
         Model & User1 & User2 & User3 & Average \\
         \hline
-        CNN & & & & \\
+        CNN & 0.7879 & 0.5751 & 0.5444 & 0.6358 \\
         \hline
         Transformer & 0.7655 & 0.5686 & 0.5309 & 0.6217 \\
         \hline
@@ -493,13 +527,15 @@ Table \ref{table:results_third_case_acc} shows the results of the second test.
         \hline
         Model & User1 & User2 & User3 & Average \\
         \hline
-        CNN & & & & \\
+        CNN & 0.7915 & 0.5710 & 0.5417 & 0.6347 \\
         \hline
         Transformer & 0.7681 & 0.5648 & 0.5312 & 0.6214 \\
         \hline
     \end{tabular}
 \end{table}
 
-These results show that testing with a user whose data was not used to train a model produces significantly lower results. This can be justified due to different people grasping objects in different ways. Additionally, given that the dataset is made of data derived from only three people, removing one from the training data significantly reduces the variety of the training data.
+\subsubsection{Summary}
+
+From the three cases evaluated, the CNN performed better in situations requiring more generalization capability and with less data. However, in the first case, the Transformer obtained similar metrics, while in the other cases, the metrics were lower by a relatively small difference. Given that a key difference in the second and third cases is the amount of data, this may mean that with a bigger dataset, the performance of the Transformer might surpass the CNN.
 
 \section{\textcolor{red}{Integration with Previous Work}}
