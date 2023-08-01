@@ -1,15 +1,11 @@
-%fs
-\chapter{Learning-Based Human Intention Prediction}
-%\chapter{Learning}
+\chapter{Learning-Based Recognition of Human-Grasped Objects}
 \label{chapter:learning}
-% fs
-
 
 This chapter covers this dissertation's learning part, including data collecting, dataset preprocessing, and the models' structures and optimizations.
 
-%fs
-\section{Problem Description and Formulation}
-%\section{Problem Introduction}
+\section{Proposal Overview}
+
+\subsection{Problem Description and Formulation \textcolor{red}{(Must be changed)}}
 
 When anticipating the next action of the user, the object that the user is grasping can provide crucial information about the user's intention. Although an object detection algorithm may be helpful they can suffer from occlusion problems. Therefore, the following models attempt to solve this problem by taking an image of the user grasping a certain object and classifying which object is being grasped using the geometry of the hand.
 
@@ -22,10 +18,14 @@ To obtain a model that would be able to achieve the previous objective two exper
     \label{fig:ml_pipeline}
 \end{figure}
 
+\subsection{Evaluation Metrics}
+
+\textcolor{red}{definir matematicamente test accuracy, recall, precision, f1-score, confusion matrix}
+
 %fs
 \section{Data Representation}
 
-\subsection{Data Collecting}
+\subsection{Dataset Acquisition}
 
 The first step to train a supervised machine learning model is to find a dataset. However, given that this problem is particular, the datasets had to be manually collected. For this purpose, two datasets were collected, consisting of videos where one person would move and rotate a particular object. These videos were recorded using the Orbbec Astra Pro, positioned in front of the user at ten frames per second to avoid consecutive frames with similar hand poses. Fig.~\ref{fig:dataset_examples} shows some examples in the second dataset.
 
@@ -43,7 +43,7 @@ The datasets were captured using the usb\_cam package for ROS, and the videos we
     \label{fig:dataset_objects}
 \end{figure}
 
-\subsection{Dataset Preprocessing}
+\subsection{Preprocessing}
 
 After having a dataset, the data had to be processed to have a fitting structure to be used in the model training. The images from the videos were processed using the Mediapipe hands model resulting in 21 points for each hand detected, as shown in Fig.~\ref{fig:dataset_examples2}.
 
@@ -88,11 +88,11 @@ The points corresponding to the right hand are then subject to further processin
     \label{fig:dataset_examples3}
 \end{figure}
 
-\subsection{Data Splitting}
+\subsection{Train-Validation-Test Split}
 
 In order to train the model, the dataset was split into three sets: the train set (60\%), the validation set (20\%), and the test set (20\%). The random variables in the data shuffling and splitting were also fixed so that the test set is always the same, and therefore, its data is never used to train or validate the model, even in different trains. During hyperparameter optimization, the different combinations are tested using 4-fold cross-validation, which means that the model is trained four times, and therefore every sample of data in the initial training and validation set was used both for training and validation. Additionally, early stopping was set up so that the model would stop training after 200 epochs without a better validation loss and restore the best weights.
 
-\section{Convolutional Neural Network}
+\section{Convolutional Neural Network Classifier}
 
 Convolutional Neural Networks excel at detecting local relations. Given that each sample provided to the model is made of the 21 points that always follow the same structure representing the right hand, a one-dimensional convolutional neural network was used to take advantage of this characteristic.
 
@@ -153,7 +153,7 @@ In order to choose the best combination of these hyperparameters, all combinatio
     \end{tabular}
 \end{table}
 
-\subsection{Results}
+\subsection{Performance Evaluation}
 
 \subsubsection{First Dataset}
 
@@ -235,11 +235,13 @@ After the model finished training, the metrics in Table \ref{table:cnn_dataset2_
     \label{fig:cnn_dataset2_confusion_matrix}
 \end{figure}
 
-\section{Transformer Neural Network}
+\section{Transformer Neural Network Classifier}
 
 As said in Subsection \ref{subsection:transformer_neural_networks}, Transformer Neural Networks shine at capturing long-range dependencies and relationships. Therefore, because the points obtained from Mediapipe have a specific order, we can use this ability to process structured data and effectively capture dependencies and patterns.
 
-\subsection{Model Architecture}
+\subsection{Model Selection}
+
+\textcolor{red}{join this subsection with the next}
 
 Initially, a Transformer architecture from \textcolor{red}{link} was tested and manually optimized with the first dataset. However, that architecture achieved results significantly lower in the second dataset. After some manual testing, an initial layer was replaced to achieve better results, and the number of trainable parameters was reduced when possible to allow for faster model training. The new model can be seen in Fig.~\ref{fig:transformer_architecture2}, and it is made of 2 Transformer Encoder Blocks comprised of the layers shown in Fig.~\ref{fig:transformer_architecture1} followed by two sets of a Dense and a Dropout Layer and a final Dense output layer.
 
@@ -299,7 +301,7 @@ having an average loss of 0.2594 and an average accuracy of 92.24\%.
     \end{tabular}
 \end{table}
 
-\subsection{Results}
+\subsection{Performance Evaluation}
 
 \subsubsection{First Dataset}
 
@@ -381,7 +383,7 @@ After the model finished training, the metrics in Table \ref{table:transformer_d
     \label{fig:transformer_dataset2_confusion_matrix}
 \end{figure}
 
-\section{Models Comparison}
+\section{Comparative Analysis of Deep Models}
 
 In order to compare the models, they were evaluated in three different cases using different data for model training and testing.
 
@@ -409,6 +411,8 @@ The first case corresponds to the method the models were tested in the previous 
 \subsubsection{Second Case}
 
 In the second case, the model was trained once for each user present in the dataset and, on each training, only the data collected with one user was used for both training and testing, resulting in the metrics in the tables \ref{table:results_second_case_acc}, \ref{table:results_second_case_precision}, \ref{table:results_second_case_recall} and \ref{table:results_second_case_f1_score}. These results show that when testing with only one user, the results with the CNN are similar, but those with the Transformer are slightly lower. One justification could be that even with less variety in the data, the fact that there are fewer samples of data might counterbalance that. Given that the Transformers tend to need more training data, this also justifies the difference in the accuracy.
+
+\textcolor{red}{(join tables)}
 
 \begin{table}[H]
     \centering
@@ -474,6 +478,8 @@ In the second case, the model was trained once for each user present in the data
 
 In the third case, the model was also trained once for each user in the dataset. However, this time, the model was trained with the data collected from two users, with the data from the third being used for testing resulting in the metrics in the tables \ref{table:results_third_case_acc}, \ref{table:results_third_case_precision}, \ref{table:results_third_case_recall} and \ref{table:results_third_case_f1_score}. These results show that testing with a user whose data was not used to train a model produces significantly lower results. This can be justified due to different people grasping objects in different ways. Additionally, since the dataset is made of data derived from only three people, removing one from the training data significantly reduces the variety of the training data.
 
+\textcolor{red}{(join tables)}
+
 \begin{table}[H]
     \centering
     \caption{Accuracy Results in the Third Case}
@@ -538,4 +544,8 @@ In the third case, the model was also trained once for each user in the dataset.
 
 From the three cases evaluated, the CNN performed better in situations requiring more generalization capability and with less data. However, in the first case, the Transformer obtained similar metrics, while in the other cases, the metrics were lower by a relatively small difference. Given that a key difference in the second and third cases is the amount of data, this may mean that with a bigger dataset, the performance of the Transformer might surpass the CNN.
 
-\section{\textcolor{red}{Integration with Previous Work}}
+\section{Human Intention Prediction in Shared Tasks}
+
+\textcolor{red}{(What should be the content of this section? Is it the integration in the system described in the last chapter)}
+
+\section{Final Remarks}
