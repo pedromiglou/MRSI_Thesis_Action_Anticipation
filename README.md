@@ -2,6 +2,14 @@
 
 MRSI Thesis Repository
 
+## Installation Guide (In Progress)
+
+usb_cam dependency:
+
+```sudo apt-get install libv4l-dev```
+
+ros_astra_launch is no longer available
+
 ## Paper Search Keywords
 
 ### Review Paper
