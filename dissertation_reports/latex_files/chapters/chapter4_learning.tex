@@ -1,7 +1,7 @@
 \chapter{Learning-Based Recognition of Human-Grasped Objects}
 \label{chapter:learning}
 
-This chapter covers this dissertation's learning part, including data collecting, dataset preprocessing, and the models' structures and optimizations.
+\textcolor{red}{needs a better chapter introduction} This chapter covers this dissertation's learning part, including data collecting, dataset preprocessing, and the models' structures and optimizations.
 
 \section{Proposal Overview}
 
@@ -20,9 +20,42 @@ To obtain a model that would be able to achieve the previous objective two exper
 
 \subsection{Evaluation Metrics}
 
-\textcolor{red}{definir matematicamente test accuracy, recall, precision, f1-score, confusion matrix}
+To properly ascertain the performance and generalization capability of deep learning models, metrics must be employed. Accuracy is one of the most widely used metrics in the realm of deep learning, representing the percentage of correct model predictions: \begin{equation}A=\frac{Number\ of\ Correct\ Predictions}{Total\ Number\ of\ Predictions}\label{eq:acc}\end{equation}
 
-%fs
+Although accuracy clearly assesses the model's performance, it may not be recommended in some situations, like when working with an imbalanced dataset. Therefore other metrics should be used, such as:
+
+\begin{itemize}
+    \item True Positive (TP) - instances correctly classified as positive;
+    \item True Negative (TN) - instances correctly classified as negative;
+    \item False Positive (FP) - instances incorrectly classified as positive;
+    \item False Negative (FN) - instances incorrectly classified as negative.
+    \item Positive Predictive Value (PPV) or Precision, which is the percentage of instances correctly classified as positive relative to all instances classified as positive: \begin{equation}PPV=\frac{TP}{TP+FP}\label{eq:ppv}\end{equation}
+    \item True Positive Rate (TPR) or Recall, which is the percentage of positive instances that are classified as positive: \begin{equation}TPR=\frac{TP}{TP+FN}\label{eq:tpr}\end{equation}
+    \item F1-Score, which is the harmonic mean between the precision and the recall: \begin{equation}TPR=2\frac{PPV*TPR}{PPV+TPR}=\frac{2TP}{2TP+FP+FN}\label{eq:f1-score}\end{equation}
+\end{itemize}
+
+Precision is a relevant metric to use when the aim is to minimize false positives, while Recall is relevant to minimize false negatives. F1-Score includes the two of them, with both false positives and false negatives having influence over the result.
+
+In a multi-class classification problem, such as the one in this work, these metrics are obtained separately for each class and then averaged across all classes to obtain a final metric. \textcolor{red}{(it might be a good idea to define macro and micro averaging)}
+
+In addition to the previous metrics, a Confusion Matrix can be used to visually represent the model's performance in a tabular way. Each entry $i,j$ contains the number of instances from the class $i$ that are classified as belonging to the class $j$ (e.g., Fig.~\ref{fig:non-norm_conf_matrix}). A confusion matrix can also undergo normalization by dividing each entry by the sum of its row so that each entry provides ratios instead (e.g., Fig.~\ref{fig:norm_conf_matrix}).
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/conf_matrix_example2.svg}}
+        \caption{Non-normalized Confusion Matrix}
+        \label{fig:non-norm_conf_matrix}
+    \end{subfigure} \
+    \begin{subfigure}[b]{0.48\textwidth}
+        {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/conf_matrix_example.svg}}
+        \caption{Normalized Confusion Matrix}
+        \label{fig:norm_conf_matrix}
+    \end{subfigure}
+    \caption[Confusion Matrix Examples]{Confusion Matrix Examples}
+    \label{fig:conf_matrix_examples}
+\end{figure}
+
 \section{Data Representation}
 
 \subsection{Dataset Acquisition}
@@ -98,20 +131,13 @@ Convolutional Neural Networks excel at detecting local relations. Given that eac
 
 \subsection{Model Selection}
 
-\textcolor{red}{join this subsection with the next}
+For the first dataset, a simple CNN following common norms was initially tested and manually optimized resulting in the architecture in Fig.~\ref{}.
 
-A simple CNN was initially tested and manually optimized with the first dataset. When training a model with the initial architecture in the second dataset, the results were considerably lower than those achieved with the first dataset. Given that not only was the dataset more extensive, but there was also one more class, it was decided that the model should have a more complex architecture, and with manual optimizations, a new architecture was created, which had better results. The new model can be seen in Fig.~\ref{fig:cnn_architecture}, and it is made of 2 convolutional layers followed by three dense layers, with the third being the output layer. Between the convolutional and the dense layers and between both dense layers, there is also a dropout layer to help with overfitting.
+\textcolor{red}{(figure)}
 
-\begin{figure}[H]
-    \centering
-    {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/conv_1d_architecture.svg}}
-    \caption[CNN Model Architecture]{CNN Model Architecture}
-    \label{fig:cnn_architecture}
-\end{figure}
+When training a model with this architecture in the second dataset, the results were considerably lower than those achieved with the first dataset. Given that not only was the dataset more extensive, but there was also one more class, it was decided that the model should have a more complex architecture. Therefore, more layers were added resulting in a new architecture.
 
-\subsection{Hyperparameter Optimization}
-
-Three common hyperparameters in CNNs were optimized to obtain better results with the previous architecture. These were the initial learning rate for the model training, the kernel size used by the convolutional layers, and the dropout rate. The number of convolutional layers was also tested, given that, according to manual testing, it also affected the model results without changing the number of trainable parameters. Table \ref{table:cnn_hyperparameters} shows the values tested for each hyperparameter.
+In addition to the new architecture, three common hyperparameters in CNNs were optimized to obtain even better results. These were the initial learning rate for the model training, the kernel size used by the convolutional layers, and the dropout rate. The number of convolutional layers was also tested alongside them, given that, according to manual testing, it also affected the model results without changing the number of trainable parameters. Table \ref{table:cnn_hyperparameters} shows the values tested for each hyperparameter.
 
 \begin{table}[H]
     \centering
@@ -132,7 +158,7 @@ Three common hyperparameters in CNNs were optimized to obtain better results wit
     \end{tabular}
 \end{table}
 
-In order to choose the best combination of these hyperparameters, all combinations were tested using 4-fold cross-validation, and the average result of each combination was obtained. The combination in Table \ref{table:cnn_best_hyperparameters} resulted in the lowest average loss with 0.2100 and an average accuracy of 94.20\%.
+In order to choose the best combination of these hyperparameters, all combinations were tested using 4-fold cross-validation, and the average result of each combination was obtained. The combination in Table \ref{table:cnn_best_hyperparameters} resulted in the lowest average loss and an average accuracy of 94.20\%.
 
 \begin{table}[H]
     \centering
@@ -152,6 +178,15 @@ In order to choose the best combination of these hyperparameters, all combinatio
         \hline
     \end{tabular}
 \end{table}
+
+The final model can be seen in Fig.~\ref{fig:cnn_architecture}, and it is made of 2 convolutional layers followed by three dense layers, with the third being the output layer. Between the convolutional and the dense layers and between both dense layers, there is also a dropout layer to help with overfitting.
+
+\begin{figure}[H]
+    \centering
+    {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/conv_1d_architecture.svg}}
+    \caption[CNN Model Architecture]{CNN Model Architecture}
+    \label{fig:cnn_architecture}
+\end{figure}
 
 \subsection{Performance Evaluation}
 
@@ -243,25 +278,13 @@ As said in Subsection \ref{subsection:transformer_neural_networks}, Transformer 
 
 \textcolor{red}{join this subsection with the next}
 
-Initially, a Transformer architecture from \textcolor{red}{link} was tested and manually optimized with the first dataset. However, that architecture achieved results significantly lower in the second dataset. After some manual testing, an initial layer was replaced to achieve better results, and the number of trainable parameters was reduced when possible to allow for faster model training. The new model can be seen in Fig.~\ref{fig:transformer_architecture2}, and it is made of 2 Transformer Encoder Blocks comprised of the layers shown in Fig.~\ref{fig:transformer_architecture1} followed by two sets of a Dense and a Dropout Layer and a final Dense output layer.
+For the first dataset, a Transformer architecture adapted from \textcolor{red}{link} was tested and manually optimized resulting in the architecture in Fig.~\ref{}.
 
-\begin{figure}[H]
-    \centering
-    {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/transformer_model_architecture.svg}}
-    \caption[Tranformer Model Architecture]{Tranformer Model Architecture}
-    \label{fig:transformer_architecture2}
-\end{figure}
+\textcolor{red}{(figure)}
 
-\begin{figure}[H]
-    \centering
-    {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/transformer_encoder.svg}}
-    \caption[Transformer Encoder Block]{Transformer Encoder Block}
-    \label{fig:transformer_architecture1}
-\end{figure}
+However, that architecture achieved results significantly lower in the second dataset. After some manual testing, an initial layer was replaced to achieve better results, and the number of trainable parameters was reduced when possible to allow for faster model training.
 
-\subsection{Hyperparameter Optimization}
-
-Three hyperparameters were optimized to improve the performance of the CNN model. These were the initial learning rate for the model training, the dropout rate inside each transformer block, and the dropout rate of the multilayer perception at the end of the model. Table \ref{table:transformer_hyperparameters} shows the values tested for each hyperparameter.
+In addition to the changes in the architecture, three hyperparameters were optimized to improve the performance of the model. These were the initial learning rate for the model training, the dropout rate inside each transformer block, and the dropout rate of the multilayer perception at the end of the model. Table \ref{table:transformer_hyperparameters} shows the values tested for each hyperparameter.
 
 \begin{table}[H]
     \centering
@@ -282,7 +305,7 @@ Three hyperparameters were optimized to improve the performance of the CNN model
 
 In order to choose the best combination of these hyperparameters, all combinations were
 tested using 4-fold cross-validation, and the combination with the smallest average validation loss was chosen. This combination can be seen in Table \ref{table:transformer_best_hyperparameters}
-having an average loss of 0.2594 and an average accuracy of 92.24\%.
+having an average accuracy of 92.24\%.
 
 \begin{table}[H]
     \centering
@@ -301,11 +324,27 @@ having an average loss of 0.2594 and an average accuracy of 92.24\%.
     \end{tabular}
 \end{table}
 
+The final model can be seen in Fig.~\ref{fig:transformer_architecture2}, and it is made of 2 Transformer Encoder Blocks comprised of the layers shown in Fig.~\ref{fig:transformer_architecture1} followed by two sets of a Dense and a Dropout Layer and a final Dense output layer.
+
+\begin{figure}[H]
+    \centering
+    {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/transformer_model_architecture.svg}}
+    \caption[Tranformer Model Architecture]{Tranformer Model Architecture}
+    \label{fig:transformer_architecture2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/transformer_encoder.svg}}
+    \caption[Transformer Encoder Block]{Transformer Encoder Block}
+    \label{fig:transformer_architecture1}
+\end{figure}
+
 \subsection{Performance Evaluation}
 
 \subsubsection{First Dataset}
 
-After the initial architecture was tested and manually optimized with the first dataset, it resulted in the learning curves shown in Fig.~\ref{fig:transformer_dataset1_loss} and Fig.~\ref{fig:fig:transformer_dataset1_acc}. According to the figures, the best validation loss occurred close to the 300th epoch, with the training stopping 200 epochs later.
+After the initial architecture was tested and manually optimized with the first dataset, it resulted in the learning curves shown in Fig.~\ref{fig:transformer_dataset1_loss} and Fig.~\ref{fig:transformer_dataset1_acc}. According to the figures, the best validation loss occurred close to the 300th epoch, with the training stopping 200 epochs later.
 
 \begin{figure}[H]
     \centering
@@ -391,8 +430,6 @@ In order to compare the models, they were evaluated in three different cases usi
 
 The first case corresponds to the method the models were tested in the previous sections. This means that all data was randomly split into the training and test sets resulting in the metrics shown in Table \ref{table:results_first_case}. These results show both models having similar performances of over 92\%.
 
-\textcolor{red}{best results should be in bold}
-
 \begin{table}[H]
     \centering
     \caption{First Case Results}
@@ -403,144 +440,76 @@ The first case corresponds to the method the models were tested in the previous 
         \hline
         CNN & 0.9236 & 0.9243 & 0.9236 & 0.9237 \\
         \hline
-        Transformer & 0.9244 & 0.9244 & 0.9244 & 0.9243 \\
+        Transformer & \textbf{0.9244} & \textbf{0.9244} & \textbf{0.9244} & \textbf{0.9243} \\
         \hline
     \end{tabular}
 \end{table}
 
 \subsubsection{Second Case}
 
-In the second case, the model was trained once for each user present in the dataset and, on each training, only the data collected with one user was used for both training and testing, resulting in the metrics in the tables \ref{table:results_second_case_acc}, \ref{table:results_second_case_precision}, \ref{table:results_second_case_recall} and \ref{table:results_second_case_f1_score}. These results show that when testing with only one user, the results with the CNN are similar, but those with the Transformer are slightly lower. One justification could be that even with less variety in the data, the fact that there are fewer samples of data might counterbalance that. Given that the Transformers tend to need more training data, this also justifies the difference in the accuracy.
-
-\textcolor{red}{(join tables)}
+In the second case, the model was trained once for each user present in the dataset and, on each training, only the data collected with one user was used for both training and testing, resulting in the metrics in the tables \ref{table:results_second_case}. These results show that when testing with only one user, the results with the CNN are similar, but those with the Transformer are slightly lower. One justification could be that even with less variety in the data, the fact that there are fewer samples of data might counterbalance that. Given that the Transformers tend to need more training data, this also justifies the difference in the accuracy.
 
 \begin{table}[H]
     \centering
-    \caption{Accuracy Results in the Second Case}
-    \label{table:results_second_case_acc}
-    \begin{tabular}{|l|l|l|l|l|}
+    \caption{Results in the Second Case}
+    \label{table:results_second_case}
+    \begin{tabular}{|l|l|l|l|l|l|}
         \hline
-        Model & User1 & User2 & User3 & Average \\
-        \hline
-        CNN & 0.9577 & 0.9068 & 0.9026 & 0.9224 \\
-        \hline
-        Transformer & 0.9400 & 0.8892 &  0.8660 & 0.8984 \\
-        \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \caption{Precision Results in the Second Case}
-    \label{table:results_second_case_precision}
-    \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        Model & User1 & User2 & User3 & Average \\
-        \hline
-        CNN & 0.9580 & 0.9069 & 0.9029 & 0.9226 \\
-        \hline
-        Transformer & 0.9404 & 0.8894 & 0.8675 & 0.8991 \\
-        \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \caption{Recall Results in the Second Case}
-    \label{table:results_second_case_recall}
-    \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        Model & User1 & User2 & User3 & Average \\
-        \hline
-        CNN & 0.9577 & 0.9068 & 0.9026 & 0.9224 \\
-        \hline
-        Transformer & 0.9400 & 0.8892 & 0.8660 & 0.8984 \\
-        \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \caption{F1-Score Results in the Second Case}
-    \label{table:results_second_case_f1_score}
-    \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        Model & User1 & User2 & User3 & Average \\
-        \hline
-        CNN & 0.9577 & 0.9068 & 0.9025 & 0.9223 \\
-        \hline
-        Transformer & 0.9399 & 0.8892 & 0.8663 & 0.8985 \\
+        Metric & Model & User1 & User2 & User3 & Average \\
+        \hline \hline
+        \multirow{2}{*}{Accuracy} & CNN & \textbf{0.9577} & \textbf{0.9068} & \textbf{0.9026} & \textbf{0.9224} \\
+        \cline{2-6}
+        & Transformer & 0.9400 & 0.8892 &  0.8660 & 0.8984 \\
+        \hline \hline
+        \multirow{2}{*}{Precision} & CNN & \textbf{0.9580} & \textbf{0.9069} & \textbf{0.9029} & \textbf{0.9226} \\
+        \cline{2-6}
+        & Transformer & 0.9404 & 0.8894 & 0.8675 & 0.8991 \\
+        \hline \hline
+        \multirow{2}{*}{Recall} & CNN & \textbf{0.9577} & \textbf{0.9068} & \textbf{0.9026} & \textbf{0.9224} \\
+        \cline{2-6}
+        & Transformer & 0.9400 & 0.8892 & 0.8660 & 0.8984 \\
+        \hline \hline
+        \multirow{2}{*}{F1-Score} & CNN & \textbf{0.9577} & \textbf{0.9068} & \textbf{0.9025} & \textbf{0.9223} \\
+        \cline{2-6}
+        & Transformer & 0.9399 & 0.8892 & 0.8663 & 0.8985 \\
         \hline
     \end{tabular}
 \end{table}
 
 \subsubsection{Third Case}
 
-In the third case, the model was also trained once for each user in the dataset. However, this time, the model was trained with the data collected from two users, with the data from the third being used for testing resulting in the metrics in the tables \ref{table:results_third_case_acc}, \ref{table:results_third_case_precision}, \ref{table:results_third_case_recall} and \ref{table:results_third_case_f1_score}. These results show that testing with a user whose data was not used to train a model produces significantly lower results. This can be justified due to different people grasping objects in different ways. Additionally, since the dataset is made of data derived from only three people, removing one from the training data significantly reduces the variety of the training data.
-
-\textcolor{red}{(join tables)}
+In the third case, the model was also trained once for each user in the dataset. However, this time, the model was trained with the data collected from two users, with the data from the third being used for testing resulting in the metrics in the tables \ref{table:results_third_case}. These results show that testing with a user whose data was not used to train a model produces significantly lower results. This can be justified due to different people grasping objects in different ways. Additionally, since the dataset is made of data derived from only three people, removing one from the training data significantly reduces the variety of the training data.
 
 \begin{table}[H]
     \centering
-    \caption{Accuracy Results in the Third Case}
-    \label{table:results_third_case_acc}
-    \begin{tabular}{|l|l|l|l|l|}
+    \caption{Results in the Third Case}
+    \label{table:results_third_case}
+    \begin{tabular}{|l|l|l|l|l|l|}
         \hline
-        Model & User1 & User2 & User3 & Average \\
-        \hline
-        CNN & 0.7879 & 0.5751 & 0.5444 & 0.6358 \\
-        \hline
-        Transformer & 0.7655 & 0.5686 & 0.5309 & 0.6217 \\
-        \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \caption{Precision Results in the Third Case}
-    \label{table:results_third_case_precision}
-    \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        Model & User1 & User2 & User3 & Average \\
-        \hline
-        CNN & 0.8036 & 0.5834 & 0.5567 & 0.6479 \\
-        \hline
-        Transformer & 0.7808 & 0.5776 & 0.5553 & 0.6371 \\
-        \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \caption{Recall Results in the Third Case}
-    \label{table:results_third_case_recall}
-    \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        Model & User1 & User2 & User3 & Average \\
-        \hline
-        CNN & 0.7879 & 0.5751 & 0.5444 & 0.6358 \\
-        \hline
-        Transformer & 0.7655 & 0.5686 & 0.5309 & 0.6217 \\
-        \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \caption{F1-Score Results in the Third Case}
-    \label{table:results_third_case_f1_score}
-    \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        Model & User1 & User2 & User3 & Average \\
-        \hline
-        CNN & 0.7915 & 0.5710 & 0.5417 & 0.6347 \\
-        \hline
-        Transformer & 0.7681 & 0.5648 & 0.5312 & 0.6214 \\
+        Metric & Model & User1 & User2 & User3 & Average \\
+        \hline \hline
+        \multirow{2}{*}{Accuracy} & CNN & \textbf{0.7879} & \textbf{0.5751} & \textbf{0.5444} & \textbf{0.6358} \\
+        \cline{2-6}
+        & Transformer & 0.7655 & 0.5686 & 0.5309 & 0.6217 \\
+        \hline \hline
+        \multirow{2}{*}{Precision} & CNN & \textbf{0.8036} & \textbf{0.5834} & \textbf{0.5567} & \textbf{0.6479} \\
+        \cline{2-6}
+        & Transformer & 0.7808 & 0.5776 & 0.5553 & 0.6371 \\
+        \hline \hline
+        \multirow{2}{*}{Recall} & CNN & \textbf{0.7879} & \textbf{0.5751} & \textbf{0.5444} & \textbf{0.6358} \\
+        \cline{2-6}
+        & Transformer & 0.7655 & 0.5686 & 0.5309 & 0.6217 \\
+        \hline \hline
+        \multirow{2}{*}{F1-Score} & CNN & \textbf{0.7915} & \textbf{0.5710} & \textbf{0.5417} & \textbf{0.6347} \\
+        \cline{2-6}
+        & Transformer & 0.7681 & 0.5648 & 0.5312 & 0.6214 \\
         \hline
     \end{tabular}
 \end{table}
 
 \subsubsection{Summary}
+
+\textcolor{red}{(missing conclusion from confusion matrixes)}
 
 From the three cases evaluated, the CNN performed better in situations requiring more generalization capability and with less data. However, in the first case, the Transformer obtained similar metrics, while in the other cases, the metrics were lower by a relatively small difference. Given that a key difference in the second and third cases is the amount of data, this may mean that with a bigger dataset, the performance of the Transformer might surpass the CNN.
 
