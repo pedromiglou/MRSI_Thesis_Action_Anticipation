@@ -17,7 +17,7 @@ class PointsPreprocessing:
         self.bridge = CvBridge()
         self.mp_points_image_publisher = rospy.Publisher("mp_points_image", Image, queue_size=1)
         self.preprocessed_points_publisher = rospy.Publisher("preprocessed_points", PointList, queue_size=300)
-        self.mp_points_sub = rospy.Subscriber("mp_points", PointList, self.mp_points_callback)
+        self.right_hand_keypoints_sub = rospy.Subscriber("right_hand_keypoints", PointList, self.mp_points_callback)
 
     def mp_points_callback(self, msg):
         if len(msg.points)>0:
@@ -51,8 +51,6 @@ class PointsPreprocessing:
             polygon_points[:,1] *= 480
 
             polygon_points = polygon_points.astype(np.int32)
-
-            print(polygon_points)
 
             # Reshape the points array into shape compatible with fillPoly
             polygon_points = polygon_points.reshape((-1, 1, 2))

@@ -19,7 +19,7 @@ class DatasetProcessing:
         # Iterate over all files in the folder
         self.bag_paths = []
         self.csv_paths = []
-        for filename in ["phone_pedro_15_06_2023_15_14_45.bag"]: #["bottle_pedro_15_06_2023_15_07_32.bag"]:
+        for filename in os.listdir(input_folder):
             # Create the absolute path to the file
             bag_path = os.path.join(input_folder, filename)
 

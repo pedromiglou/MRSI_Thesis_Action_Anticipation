@@ -8,7 +8,9 @@ usb_cam dependency:
 
 ```sudo apt-get install libv4l-dev```
 
-ros_astra_launch is no longer available
+other dependencies:
+
+```sudo apt install python3-pip```
 
 ## Paper Search Keywords
 
