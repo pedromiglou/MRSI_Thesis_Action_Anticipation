@@ -1,0 +1,7 @@
+# request message
+sensor_msgs/Image image
+---
+# response message
+geometry_msgs/Point[] points
+---
+# feedback message

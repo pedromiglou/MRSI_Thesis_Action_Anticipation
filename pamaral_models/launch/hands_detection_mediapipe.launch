@@ -1,7 +1,0 @@
-<launch>
-    <arg name="input_image_topic" default="camera/color/image_raw"/>
-
-    <node name="hands_detection_mediapipe" pkg="pamaral_models" type="hands_detection_mediapipe.py" output="screen">
-        <param name="input_image_topic" value="$(arg input_image_topic)"/>
-    </node>
-</launch>
