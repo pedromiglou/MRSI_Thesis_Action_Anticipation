@@ -68,11 +68,21 @@ The first step to train a supervised machine learning model is to find a dataset
     \label{fig:dataset_examples}
 \end{figure}
 
-The datasets were captured using the usb\_cam package for ROS, and the videos were saved as bag files. In the first dataset, three different objects were used (see Fig: x), and for each one, one person was recorded for 30 seconds resulting in 300 images per object. In the second dataset, four objects were used (see Fig: x), and three people were recorded in 4 different 25-second videos for each object resulting in 1000 frames for each person and object, making it 3000 frames for each object. Recording more than one video for each combination of person and object allowed each person to grasp the object slightly differently each time in order to obtain a more diverse dataset.
+The datasets were captured using the usb\_cam package for ROS, and the videos were saved as bag files. In the first dataset, three different objects were used (see Fig.~\ref{fig:objects_dataset1}), and for each one, one person was recorded for 30 seconds resulting in 300 images per object. In the second dataset, four objects were used (see Fig.~\ref{fig:objects_dataset2}), and three people were recorded in 4 different 25-second videos for each object resulting in 1000 frames for each person and object, making it 3000 frames for each object. Recording more than one video for each combination of person and object allowed each person to grasp the object slightly differently each time in order to obtain a more diverse dataset.
 
 \begin{figure}[H]
-    \centerline{\includegraphics[width=0.49\textwidth]{figs/objects_dataset1.jpg} \includegraphics[width=0.49\textwidth]{figs/objects_dataset2.jpg}}
-    \caption[Dataset Objects]{Dataset Objects}
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figs/objects_dataset1.jpg}
+        \caption{First Dataset Objects}
+        \label{fig:objects_dataset1}
+    \end{subfigure} \
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figs/objects_dataset2.jpg}
+        \caption{Second Dataset Objects}
+        \label{fig:objects_dataset2}
+    \end{subfigure}
+    \caption[Dataset Objects]{}
     \label{fig:dataset_objects}
 \end{figure}
 
@@ -131,9 +141,14 @@ Convolutional Neural Networks excel at detecting local relations. Given that eac
 
 \subsection{Model Selection}
 
-For the first dataset, a simple CNN following common norms was initially tested and manually optimized resulting in the architecture in Fig.~\ref{}.
+For the first dataset, a simple CNN with only one convolutional and one pooling layer was initially tested and manually optimized resulting in the architecture in Fig.~\ref{fig:cnn_architecture_dataset1}.
 
-\textcolor{red}{(figure)}
+\begin{figure}[H]
+    \centering
+    {\fontsize{10}{12}\selectfont\includesvg[width=0.65\textwidth]{figs/cnn_architecture_dataset1.svg}}
+    \caption[CNN Model Architecture]{CNN Model Architecture}
+    \label{fig:cnn_architecture_dataset1}
+\end{figure}
 
 When training a model with this architecture in the second dataset, the results were considerably lower than those achieved with the first dataset. Given that not only was the dataset more extensive, but there was also one more class, it was decided that the model should have a more complex architecture. Therefore, more layers were added resulting in a new architecture.
 
@@ -183,7 +198,7 @@ The final model can be seen in Fig.~\ref{fig:cnn_architecture}, and it is made o
 
 \begin{figure}[H]
     \centering
-    {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/conv_1d_architecture.svg}}
+    {\fontsize{10}{12}\selectfont\includesvg[width=0.85\textwidth]{figs/cnn_architecture.svg}}
     \caption[CNN Model Architecture]{CNN Model Architecture}
     \label{fig:cnn_architecture}
 \end{figure}
@@ -276,11 +291,21 @@ As said in Subsection \ref{subsection:transformer_neural_networks}, Transformer 
 
 \subsection{Model Selection}
 
-\textcolor{red}{join this subsection with the next}
+For the first dataset, a Transformer architecture adapted from an example in the Keras documentation\footnote{Transformer Keras Example: \url{https://keras.io/examples/timeseries/timeseries_transformer_classification}} was tested and manually optimized. The resulting architecture can be seen in Fig.~\ref{fig:transformer_architecture_dataset1} and it is made of four Transformer Encoder Blocks comprised of the layers shown in Fig.~\ref{fig:transformer_encoder_architecture} followed by a Global Average Pooling, a Dense and a Dropout Layer, and a final Dense output layer.
 
-For the first dataset, a Transformer architecture adapted from \textcolor{red}{link} was tested and manually optimized resulting in the architecture in Fig.~\ref{}.
+\begin{figure}[H]
+    \centering
+    {\fontsize{10}{12}\selectfont\includesvg[width=0.8\textwidth]{figs/transformer_encoder.svg}}
+    \caption[Transformer Encoder Block]{Transformer Encoder Block}
+    \label{fig:transformer_encoder_architecture}
+\end{figure}
 
-\textcolor{red}{(figure)}
+\begin{figure}[H]
+    \centering
+    {\fontsize{10}{12}\selectfont\includesvg[width=0.75\textwidth]{figs/transformer_architecture_dataset1.svg}}
+    \caption[Transformer Architecture]{Transformer Architecture}
+    \label{fig:transformer_architecture_dataset1}
+\end{figure}
 
 However, that architecture achieved results significantly lower in the second dataset. After some manual testing, an initial layer was replaced to achieve better results, and the number of trainable parameters was reduced when possible to allow for faster model training.
 
@@ -324,20 +349,13 @@ having an average accuracy of 92.24\%.
     \end{tabular}
 \end{table}
 
-The final model can be seen in Fig.~\ref{fig:transformer_architecture2}, and it is made of 2 Transformer Encoder Blocks comprised of the layers shown in Fig.~\ref{fig:transformer_architecture1} followed by two sets of a Dense and a Dropout Layer and a final Dense output layer.
+The final model can be seen in Fig.~\ref{fig:transformer_architecture}, and it is made of two Transformer Encoder Blocks (see Fig.~\ref{fig:transformer_encoder_architecture}) followed by two sets of a Dense and a Dropout Layer and a final Dense output layer.
 
 \begin{figure}[H]
     \centering
-    {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/transformer_model_architecture.svg}}
+    {\fontsize{10}{12}\selectfont\includesvg[width=0.8\textwidth]{figs/transformer_architecture.svg}}
     \caption[Tranformer Model Architecture]{Tranformer Model Architecture}
-    \label{fig:transformer_architecture2}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    {\fontsize{10}{12}\selectfont\includesvg[width=\textwidth]{figs/transformer_encoder.svg}}
-    \caption[Transformer Encoder Block]{Transformer Encoder Block}
-    \label{fig:transformer_architecture1}
+    \label{fig:transformer_architecture}
 \end{figure}
 
 \subsection{Performance Evaluation}
