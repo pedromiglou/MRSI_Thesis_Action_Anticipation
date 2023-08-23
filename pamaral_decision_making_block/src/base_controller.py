@@ -8,7 +8,7 @@ import time
 from geometry_msgs.msg import PointStamped
 
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
-from pamaral_color_image_processing.msg import CentroidList
+from pamaral_perception_system.msg import CentroidList
 
 
 class BaseController:

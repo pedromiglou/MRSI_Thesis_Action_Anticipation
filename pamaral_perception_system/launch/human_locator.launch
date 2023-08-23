@@ -1,0 +1,3 @@
+<launch>
+    <node name="human_locator" pkg="pamaral_perception_system" type="human_locator.py" output="screen"/>
+</launch>

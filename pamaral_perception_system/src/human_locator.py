@@ -8,23 +8,23 @@ from geometry_msgs.msg import Point, PointStamped
 from sensor_msgs.msg import Image
 
 
-class HumanLocater:
+class HumanLocator:
     """This node should receive depth images and detect the position of the human."""
 
     def __init__(self):
         self.bridge = CvBridge()
         self.pose_publisher = rospy.Publisher("/user_pose", PointStamped, queue_size=1)
-        self.dimage_subscriber = rospy.Subscriber("/camera/depth/image_raw", Image, self.dimage_callback)
+        self.depth_image_subscriber = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_image_callback)
 
-    def dimage_callback(self, msg):
+    def depth_image_callback(self, msg):
         try:
-            dimage = self.bridge.imgmsg_to_cv2(msg, "passthrough")
+            img = self.bridge.imgmsg_to_cv2(msg, "passthrough")
 
-            dimage = dimage.copy()[:, 350:]
+            img = img.copy()[:, 350:]
 
-            dimage[dimage == 0] = np.max(dimage)
+            img[img == 0] = np.max(img)
 
-            c = np.argmin(dimage)
+            c = np.argmin(img)
 
             msg = PointStamped()
             msg.header.stamp = rospy.Time.now()
@@ -38,13 +38,10 @@ class HumanLocater:
 
 
 def main():
-    # ---------------------------------------------------
-    # INITIALIZATION
-    # ---------------------------------------------------
     default_node_name = 'human_locater'
     rospy.init_node(default_node_name, anonymous=False)
 
-    human_locater = HumanLocater()
+    HumanLocator()
 
     rospy.spin()
 

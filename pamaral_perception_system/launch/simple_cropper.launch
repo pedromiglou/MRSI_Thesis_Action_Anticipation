@@ -2,7 +2,7 @@
     <arg name="input_image_topic" default="camera/color/image_raw"/>
     <arg name="output_image_topic" default="cropped_image"/>
 
-    <node name="simple_cropper" pkg="pamaral_color_image_processing" type="simple_cropper.py" output="screen">
+    <node name="simple_cropper" pkg="pamaral_perception_system" type="simple_cropper.py" output="screen">
         <param name="input_image_topic" value="$(arg input_image_topic)"/>
         <param name="output_image_topic" value="$(arg output_image_topic)"/>
     </node>

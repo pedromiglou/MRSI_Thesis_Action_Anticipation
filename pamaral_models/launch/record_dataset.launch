@@ -1,5 +1,5 @@
 <launch>
-    <include file="$(find pamaral_perception_block)/launch/camera_setup.launch">
+    <include file="$(find pamaral_perception_system)/launch/camera_setup.launch">
         <arg name="enable_top_camera" value="false"/>
         <arg name="front_camera_create_suspended" value="true"/>
     </include>
