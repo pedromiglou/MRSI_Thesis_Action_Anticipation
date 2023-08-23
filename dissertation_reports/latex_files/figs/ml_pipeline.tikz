@@ -1,5 +1,5 @@
 \begin{tikzpicture}[>=latex']
-    \tikzset{block/.style= {draw, rectangle, align=center,minimum width=3cm,minimum height=1cm},
+    \tikzset{block/.style= {draw, rectangle, align=center,minimum width=1.5cm,minimum height=1.5cm},
     rblock/.style={draw, shape=rectangle,rounded corners=1.5em,align=center,minimum width=2cm,minimum height=1cm},
     input/.style={ % requires library shapes.geometric
     draw,
@@ -12,15 +12,28 @@
     },
     }
     
-    
     \node [rblock] (camera) {Camera\\Image};
-    \node [block, right =3cm of camera] (hands_keypoints) {Mediapipe\\Hands\\Model};
-    \node [block, right =3cm of hands_keypoints] (body_keypoints) {Mediapipe\\Full Body\\Model};
-    \node [block, below =2cm of body_keypoints] (normalization) {Points\\Normalization};
-    \node [block, left =3cm of normalization] (model) {Model\\Prediction};
-    \node [rblock, left =3cm of model] (output) {Predicted\\Object};
+    \node [block, above =1cm of camera] (hands_keypoints) {Mediapipe\\Hands Model};
+    \node [block, below =1cm of camera] (body_keypoints) {Mediapipe\\Pose Model};
+    \node [block, right =0.5cm of camera] (right_hand_keypoints_detection) {Right Hand\\Keypoints\\Detection};
+    \node [block, right =2cm of right_hand_keypoints_detection] (normalization) {Points\\Normalization};
+    \node [block, right =2cm of normalization] (model) {Model\\Prediction};
+    \node [rblock, right =0.25cm of model] (output) {Predicted\\Object};
+    %\node [below left =0.1cm of normalization] (image1) {\includegraphics[width=.15\textwidth]{figs/dataset_preprocessing2_1.png}};
+    %\node [below left =0.1cm of model] (image2) {\includegraphics[width=.15\textwidth]{figs/dataset_preprocessing3_1.png}};
+
+    \path[draw,->, text width=2cm, align=center]
+                (camera) edge (hands_keypoints)
+                (camera) edge (body_keypoints)
+                (hands_keypoints) edge node[right, near start] {Hands\\Keypoints} (right_hand_keypoints_detection)
+                (body_keypoints) edge node[right, near start] {Pose\\Keypoints} (right_hand_keypoints_detection)
+                (right_hand_keypoints_detection) edge node[below] {\adjincludegraphics[width=.9\textwidth, trim={{.25\width} {0.25\height} {.25\width} {0.25\height}}, clip]{figs/dataset_preprocessing2_1.png}} (normalization)
+                (normalization) edge node[below] {\includegraphics[width=.9\textwidth]{figs/dataset_preprocessing3_1.png}} (model)
+                (model) edge (output)
+                ;
 
     %% paths
+    \if{0}
     \path[draw,->, text width=3cm, align=center]
                 (camera) edge (hands_keypoints)
                 (camera) edge[bend right] (body_keypoints)
@@ -29,6 +42,7 @@
                 (normalization) edge node[above] {normalized right hand keypoints} (model)
                 (model) edge (output)
                 ;
+    \fi
 
     \if{0}
     \node [rblock] (camera) {Camera\\Image};

@@ -13,7 +13,7 @@ To obtain a model that would be able to achieve the previous objective two exper
 
 \begin{figure}[H]%[!ht]
     \centering
-    \input{figs/ML_Pipeline.tikz}
+    \input{figs/ml_pipeline.tikz}
     \caption{Machine Learning Pipeline}
     \label{fig:ml_pipeline}
 \end{figure}
@@ -121,9 +121,11 @@ The Mediapipe Hands Model can detect a variable number of hands in an image, and
     \end{tabular}
 \end{table}
 
-Given that the scope of this work is restricted to scenarios where the user grasps the objects with his right hand, the instances where the right hand is not detected need to be ignored and, as a result, the images are also processed by the full-body model provided by Mediapipe so that it is possible to identify the right hand.
+Given that the scope of this work is restricted to scenarios where the user grasps the objects with his right hand, the instances where the right hand is not detected need to be ignored and, as a result, the images are also processed by the pose model provided by Mediapipe so that it is possible to identify the right hand.
 
-The points corresponding to the right hand are then subject to further processing and normalization so that the location of the hand in the image and the distance between the hand and the camera have a lesser impact on the model training. Firstly, the centroid is calculated, and the points are translated to be centred in the (0.5, 0.5, 0.5) point. Then the points are scaled up as much as possible while keeping every coordinate of every point between 0 and 1, as shown in Fig.~\ref{fig:dataset_examples3}. It is important to note that throughout the point processing, the order of the points is never changed, and therefore the models can take advantage of this structure.
+In the preprocessing implementation in ROS, each Mediapipe model has a corresponding ROS node that communicates with the others using actions. This communication method ensures that the models can run in parallel with each other and that the node that makes the requests does not need to wait for the results of the first model to make a request to the second as would be the case if services were used. Although communicating using publish/subscribe nodes would also respect the previous requirements, using actions also has the advantage of guaranteeing that the images analyzed by both models are the same.
+
+The points corresponding to the right hand are then subject to further processing and normalization so that the location of the hand in the image and the distance between the hand and the camera have a lesser impact on the model training. Firstly, the centroid is calculated, and the points are translated to be centered in the (0.5, 0.5, 0.5) point. Then the points are scaled up as much as possible while keeping every coordinate of every point between 0 and 1, as shown in Fig.~\ref{fig:dataset_examples3}. It is important to note that throughout the point processing, the order of the points is never changed, and therefore the models can take advantage of this structure.
 
 \begin{figure}[H]
     \centerline{\includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing3_1.png} \includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing3_2.png}}
@@ -527,9 +529,7 @@ In the third case, the model was also trained once for each user in the dataset.
 
 \subsubsection{Summary}
 
-\textcolor{red}{(missing conclusion from confusion matrixes)}
-
-From the three cases evaluated, the CNN performed better in situations requiring more generalization capability and with less data. However, in the first case, the Transformer obtained similar metrics, while in the other cases, the metrics were lower by a relatively small difference. Given that a key difference in the second and third cases is the amount of data, this may mean that with a bigger dataset, the performance of the Transformer might surpass the CNN.
+From the three cases evaluated, the CNN performed better in situations requiring more generalization capability and with less data, such as the second and third cases. However, in the first case, the Transformer obtained similar metrics, while in the other cases, the metrics were lower by a relatively small difference. From the confusion matrixes in Fig.~\ref{fig:cnn_dataset2_confusion_matrix} and Fig.~\ref{fig:transformer_dataset2_confusion_matrix} we can also see that the Transformer has a more consistent performance across all classes in comparison with the CNN which shows higher differences between per-class accuracies. Given that a key difference in the second and third cases is the amount of data, this may mean that, with a bigger dataset, the performance of the Transformer might surpass the CNN.
 
 \section{Human Intention Prediction in Shared Tasks}
 
