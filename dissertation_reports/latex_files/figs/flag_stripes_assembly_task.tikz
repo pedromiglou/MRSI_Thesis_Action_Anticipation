@@ -1,0 +1,13 @@
+\begin{tikzpicture}[>=latex']
+
+    \node (france_flag) {\includegraphics[width=.2\textwidth]{figs/France.png}};
+    \node[right =2cm of france_flag] (france_blocks) {\includegraphics[width=.2\textwidth]{figs/flag1.jpg}};
+    \node[below =0.3cm of france_flag] (portugal_flag) {\includegraphics[width=.2\textwidth]{figs/Portugal.png}};
+    \node[right =2cm of portugal_flag] (portugal_blocks) {\includegraphics[width=.2\textwidth]{figs/flag2.jpg}};
+
+    \path[draw, ->, text width=2cm, align=center]
+        (france_flag) edge (france_blocks)
+        (portugal_flag) edge (portugal_blocks)
+    ;
+    
+\end{tikzpicture}
