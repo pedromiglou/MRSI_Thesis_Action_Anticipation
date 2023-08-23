@@ -1,11 +1,12 @@
 <launch>
     <arg name="enable_front_camera" default="true"/>
     <arg name="enable_top_camera" default="true"/>
+    <arg name="enable_top_camera_depth" default="false"/>
     <arg name="front_camera_create_suspended" default="false"/>
     <arg name="top_camera_create_suspended" default="false"/>
 
     <!-- front camera - color -->
-    <include if="$(arg enable_front_camera)" file="$(find pamaral_perception_block)/launch/usb_cam.launch">
+    <include if="$(arg enable_front_camera)" file="$(find pamaral_perception_system)/launch/usb_cam.launch">
         <arg name="camera_name" value="front_camera"/>
         <arg name="create_suspended" value="$(arg front_camera_create_suspended)"/>
         <arg name="image_view" value="false"/>
@@ -13,7 +14,7 @@
     </include>
 
     <!-- top camera - color -->
-    <include if="$(arg enable_top_camera)" file="$(find pamaral_perception_block)/launch/usb_cam.launch">
+    <include if="$(arg enable_top_camera)" file="$(find pamaral_perception_system)/launch/usb_cam.launch">
         <arg name="camera_name" value="top_camera"/>
         <arg name="create_suspended" value="$(arg top_camera_create_suspended)"/>
         <arg name="image_view" value="false"/>
@@ -21,7 +22,7 @@
     </include>
 
     <!-- top camera - depth -->
-    <!-- <include file="$(find astra_camera)/launch/astra_pro.launch">
+    <include file="$(find astra_camera)/launch/astra_pro.launch" if="$(arg enable_top_camera_depth)">
         <arg name="camera_name" value="top_camera"/>
         <arg name="device_num" value="3"/>
         <arg name="enable_point_cloud" value="false"/>
@@ -30,5 +31,5 @@
         <arg name="enable_ir" default="false"/>
         <arg name="publish_tf" default="false"/>
         <arg name="use_uvc_camera" value="false"/>
-    </include> -->
+    </include>
 </launch>

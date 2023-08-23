@@ -29,9 +29,6 @@ class SimpleCropper:
 
 
 def main():
-    # ---------------------------------------------------
-    # INITIALIZATION
-    # ---------------------------------------------------
     default_node_name = 'simple_cropper'
     rospy.init_node(default_node_name, anonymous=False)
 

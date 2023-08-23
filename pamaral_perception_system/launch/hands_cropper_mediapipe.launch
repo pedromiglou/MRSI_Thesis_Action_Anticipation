@@ -1,0 +1,3 @@
+<launch>
+    <node name="hands_cropper_mediapipe" pkg="pamaral_perception_system" type="hands_cropper_mediapipe.py" output="screen"/>
+</launch>

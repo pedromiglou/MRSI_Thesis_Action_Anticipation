@@ -3,18 +3,18 @@
     <include file="$(find larcc_launches)/ur10e_control/script_control_ur10e.launch"/>
 
     <!--launch file for communicating with the cameras-->
-    <include file="$(find pamaral_perception_block)/launch/camera_setup.launch"/>
+    <include file="$(find pamaral_perception_system)/launch/camera_setup.launch"/>
 
     <!--launch file to locate human using the depth images-->
-    <!-- <include file="$(find pamaral_depth_image_processing)/launch/human_locater.launch"/> -->
+    <!-- <include file="$(find pamaral_perception_system)/launch/human_locator.launch"/> -->
 
     <!--launch files to locate objects in the table images-->
-    <include file="$(find pamaral_color_image_processing)/launch/simple_cropper.launch">
+    <include file="$(find pamaral_perception_system)/launch/simple_cropper.launch">
         <arg name="input_image_topic" value="top_camera/color/image_raw"/>
         <arg name="output_image_topic" value="table_image"/>
     </include>
     
-    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
+    <include file="$(find pamaral_perception_system)/launch/object_color_segmenter.launch">
         <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange;violet"/>
         <arg name="input_image_topic" value="table_image"/>
         <arg name="min_area" value="100"/>
@@ -22,9 +22,9 @@
     </include>
 
     <!--launch files to locate objects in the user's hand-->
-    <include file="$(find pamaral_color_image_processing)/launch/hands_cropper_mediapipe.launch"/>
+    <include file="$(find pamaral_perception_system)/launch/hands_cropper_mediapipe.launch"/>
 
-    <include file="$(find pamaral_color_image_processing)/launch/object_color_segmenter.launch">
+    <include file="$(find pamaral_perception_system)/launch/object_color_segmenter.launch">
         <arg name="colors" value="green;red;light_blue;dark_blue;white;yellow;orange"/>
         <arg name="input_image_topic" value="hand_image"/>
         <arg name="min_area" value="100"/>

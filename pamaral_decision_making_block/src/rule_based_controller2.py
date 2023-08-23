@@ -6,7 +6,7 @@ import rospy
 from experta import Fact, KnowledgeEngine, Rule
 
 from base_controller import BaseController
-from pamaral_color_image_processing.msg import CentroidList
+from pamaral_perception_system.msg import CentroidList
 
 
 default_node_name = 'rule_based_controller'

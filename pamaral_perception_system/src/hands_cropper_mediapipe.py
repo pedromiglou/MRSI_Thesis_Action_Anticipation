@@ -104,9 +104,6 @@ class HandsCropperMediapipe:
 
 
 def main():
-    # ---------------------------------------------------
-    # INITIALIZATION
-    # ---------------------------------------------------
     default_node_name = 'hands_cropper_mediapipe'
     rospy.init_node(default_node_name, anonymous=False)
 

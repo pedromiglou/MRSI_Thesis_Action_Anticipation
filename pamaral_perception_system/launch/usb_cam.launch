@@ -7,7 +7,7 @@
     <node name="$(arg camera_name)" pkg="usb_cam" type="usb_cam_node" output="screen">
         <param name="create_suspended" value="$(arg create_suspended)"/>
         <param name="video_device" value="$(arg video_device)"/>
-        <rosparam command="load" file="$(find pamaral_perception_block)/config/usb_cam.yml"/>
+        <rosparam command="load" file="$(find pamaral_perception_system)/config/usb_cam.yml"/>
     </node>
 
     <node if="$(arg image_view)" name="$(arg camera_name)_image_view" pkg="image_view" type="image_view"

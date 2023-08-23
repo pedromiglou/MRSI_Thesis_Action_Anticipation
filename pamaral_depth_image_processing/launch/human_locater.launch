@@ -1,3 +1,0 @@
-<launch>
-    <node name="human_locater" pkg="pamaral_depth_image_processing" type="human_locater.py" output="screen"/>
-</launch>

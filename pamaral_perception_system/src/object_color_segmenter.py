@@ -10,7 +10,7 @@ from geometry_msgs.msg import Point
 from sensor_msgs.msg import Image
 from sklearn.cluster import DBSCAN
 
-from pamaral_color_image_processing.msg import CentroidList
+from pamaral_perception_system.msg import CentroidList
 
 
 class ObjectColorSegmenter:
@@ -118,9 +118,6 @@ class ObjectColorSegmenterManager:
 
 
 def main():
-    # ---------------------------------------------------
-    # INITIALIZATION
-    # ---------------------------------------------------
     default_node_name = 'object_color_segmenter'
     rospy.init_node(default_node_name, anonymous=False)
 
