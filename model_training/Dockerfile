@@ -4,7 +4,7 @@ WORKDIR /model_training
 
 COPY ./dataset2_4objects /model_training/dataset2_4objects
 
-COPY ./requirements.txt /model_training/requirements.txt
+COPY ./docker_requirements.txt /model_training/requirements.txt
 
 RUN pip3 install -r /model_training/requirements.txt
 
