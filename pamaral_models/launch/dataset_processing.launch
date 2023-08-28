@@ -5,8 +5,6 @@
 
     <include file="$(find pamaral_models)/launch/points_preprocessing.launch"/>
 
-    <include file="$(find pamaral_models)/launch/object_classifier.launch"/>
-
     <node name="dataset_processing" pkg="pamaral_models" type="dataset_processing.py" output="screen">
         <param name="input_folder" value="$(find data)/bag_files"/>
         <param name="output_folder" value="$(find data)/points"/>

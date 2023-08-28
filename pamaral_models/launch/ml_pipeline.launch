@@ -1,0 +1,9 @@
+<launch>
+    <include file="$(find pamaral_models)/launch/right_hand_keypoints_detection.launch">
+        <arg name="input_image_topic" value="front_camera/color/image_raw"/>
+    </include>
+
+    <include file="$(find pamaral_models)/launch/points_preprocessing.launch"/>
+
+    <include file="$(find pamaral_models)/launch/object_classifier.launch"/>
+</launch>
