@@ -1,1 +1,8 @@
+matplotlib
 mediapipe
+numpy
+opencv-python
+psycopg2
+scikit-learn
+sqlalchemy
+tensorflow

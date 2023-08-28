@@ -5,8 +5,9 @@ import rospy
 
 from cv_bridge import CvBridge
 from geometry_msgs.msg import PointStamped
-from pamaral_color_image_processing.msg import CentroidList
 from sensor_msgs.msg import Image
+
+from pamaral_perception_system.msg import CentroidList
 
 
 class DataMerger:
@@ -59,13 +60,10 @@ class DataMerger:
 
 
 def main():
-    # ---------------------------------------------------
-    # INITIALIZATION
-    # ---------------------------------------------------
     default_node_name = 'data_merger'
     rospy.init_node(default_node_name, anonymous=False)
 
-    data_merger = DataMerger()
+    DataMerger()
 
     rospy.spin()
 

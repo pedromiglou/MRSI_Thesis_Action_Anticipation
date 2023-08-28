@@ -2,48 +2,30 @@
 
 MRSI Thesis Repository
 
+<!-- ## Repository Structure
+
+- data: ROS package containing datasets and other data
+- dissertation_reports: pdf reports and latex files
+- model_training: model training scripts, Dockerfile and results
+- pamaral_bringup: system launch files
+- pamaral_decision_making_block: decision making nodes
+- pamaral_models: 
+-->
+
 ## Installation Guide (In Progress)
 
-usb_cam dependency:
+The code in this repository was made to work with:
+- Ubuntu 20.04.3 LTS
+- ROS Noetic
 
-```sudo apt-get install libv4l-dev```
+Install system dependencies:
 
-other dependencies:
+```sudo apt install libpq-dev libv4l-dev python3-pip```
 
-```sudo apt install python3-pip```
+Install python requirements:
 
-## Paper Search Keywords
-
-### Review Paper
-combination of keywords was used: (‘‘human–robot
-collaborat*’’ OR ‘‘human–robot cooperat*’’ OR ‘‘collaborative robot*’’
-OR ‘‘cobot*’’ OR ‘‘hrc’’) AND ‘‘learning’’
-
-This set of keywords
-was searched in the title, abstract and keywords records of the journal
-articles and conference proceedings written in English, from 2015 to
-2020.
-Inputting this set of search parameters returned a total of 389 results
-from ISI Web of Knowledge (191 articles, 198 proceedings), 178 from
-IEEE Xplore (48 articles, 130 proceedings) and 486 from Scopus (206
-articles and 280 proceedings).
-
-### Mine
-
-( TITLE-ABS-KEY ( "human–robot collaborat*" ) OR TITLE-ABS-KEY ( human–robot AND cooperat* ) OR TITLE-ABS-KEY ( collaborative AND robot* ) OR TITLE-ABS-KEY ( ‘‘cobot*’’ ) OR TITLE-ABS-KEY ( ‘‘hrc’’ ) AND TITLE-ABS-KEY ( "learning" ) ) AND ( LIMIT-TO ( PUBYEAR , 2023 ) OR LIMIT-TO ( PUBYEAR , 2022 ) OR LIMIT-TO ( PUBYEAR , 2021 ) OR LIMIT-TO ( PUBYEAR , 2020 ) OR LIMIT-TO ( PUBYEAR , 2019 ) OR LIMIT-TO ( PUBYEAR , 2018 ) ) AND ( LIMIT-TO ( LANGUAGE , "english" ) )
-
-## Sensor links
-
-https://www.bosch-sensortec.com/media/boschsensortec/downloads/development_desktop_software/usermanuals/dd2-0_bhyxxx.pdf
+```pip install -r requirements.txt```
 
 ## Other thesis in action anticipation
 
 - https://repository.kaust.edu.sa/handle/10754/673882
-
-## Backlog
-
-- antecipate user side with both position and velocity
-- learn transformers neural networks
-- finish up wrong guess state
-- record new demonstration
-- fix socket problem
