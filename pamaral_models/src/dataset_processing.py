@@ -37,9 +37,9 @@ class DatasetProcessing:
             points = np.array(points)
 
             # Open the CSV file in append mode
-            #with open(self.csv_paths[0], 'a+', newline='') as file:
-                #writer = csv.writer(file)
-                #writer.writerow(points)
+            with open(self.csv_paths[0], 'a+', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(points)
         
         self.num_messages -= 1
         if self.num_messages == 0:

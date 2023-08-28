@@ -44,7 +44,7 @@ The code in this repository was made to work with:
 5. Install additional system dependencies:
 
     ```
-    sudo apt install libpq-dev libv4l-dev python3-pip
+    sudo apt install libpq-dev libv4l-dev python3-pip v4l-utils
     ```
 
 6. Compile the catkin workspace:

@@ -7,16 +7,18 @@ import numpy as np
 import rospy
 import tensorflow as tf
 
+from std_msgs.msg import String
+
 from pamaral_models.msg import PointList
 
 
 class ObjectClassifier:
     def __init__(self, model_path):
-        # load keras model
         self.model = tf.keras.models.load_model(model_path)
+        self.labels = ["bottle", "cube", "phone", "screwdriver"]
 
+        self.object_class_pub = rospy.Publisher("object_class", String, queue_size=1)
         self.preprocessed_points_sub = rospy.Subscriber("preprocessed_points", PointList, self.preprocessed_points_callback)
-        
 
     def preprocessed_points_callback(self, msg):
         if len(msg.points)>0:
@@ -26,9 +28,11 @@ class ObjectClassifier:
             print(points.shape)
 
             # make prediction using loaded model
-            prediction = self.model.predict(tf.expand_dims(points, axis=0))
+            prediction = np.argmax(self.model.predict(tf.expand_dims(points, axis=0)))
+            prediction = self.labels[prediction]
 
-            print(prediction)
+            # publish prediction
+            self.object_class_pub.publish(prediction)
 
 
 def main():
