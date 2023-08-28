@@ -17,14 +17,48 @@ MRSI Thesis Repository
 The code in this repository was made to work with:
 - Ubuntu 20.04.3 LTS
 - ROS Noetic
+- UR10e manipulator (Universal Robot 10 e-series)
+- 2 Astra Pro RGB-D cameras
 
-Install system dependencies:
+1. Install [ROS Noetic](https://wiki.ros.org/noetic/Installation/Ubuntu).
 
-```sudo apt install libpq-dev libv4l-dev python3-pip```
+2. (Optional) Install [Docker](https://docs.docker.com/engine/install/ubuntu/) to train machine learning models inside a container or to run the probability-based decision making node.
 
-Install python requirements:
+3. Follow the instructions in the following repositories to install them:
+    - [larcc_interface](https://github.com/afonsocastro/larcc_interface)
+    - [ros_astra_camera package](https://github.com/orbbec/ros_astra_camera)
+    
+    Change the branch of larcc_interface to `stop-mid-movement`:
+    ```
+    cd ~/catkin_ws/src/larcc_interface && git checkout stop-mid-movement
+    ```
 
-```pip install -r requirements.txt```
+4. Clone this repository and [usb_cam](https://github.com/ros-drivers/usb_cam) into your catkin workspace:
+
+    ```
+    cd ~/catkin_ws/src
+    git clone https://github.com/pedromiglou/MRSI_Thesis_Action_Anticipation.git
+    git clone https://github.com/ros-drivers/usb_cam.git
+    ```
+
+5. Install additional system dependencies:
+
+    ```
+    sudo apt install libpq-dev libv4l-dev python3-pip
+    ```
+
+6. Compile the catkin workspace:
+
+    ```
+    cd ~/catkin_ws && catkin_make
+    ```
+
+6. Install python requirements:
+
+    ```
+    cd ~/catkin_ws/src/MRSI_Thesis_Action_Anticipation
+    pip install -r requirements.txt
+    ```
 
 ## Other thesis in action anticipation
 
