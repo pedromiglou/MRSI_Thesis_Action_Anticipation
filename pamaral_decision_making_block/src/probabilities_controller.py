@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-# pip install sqlalchemy
-# pip install psycopg2
-
 import rospy
 import yaml
 

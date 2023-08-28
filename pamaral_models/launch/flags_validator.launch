@@ -1,6 +1,0 @@
-<launch>
-    <node name="flags_validator" pkg="pamaral_models" type="flags_validator.py" output="screen">
-        <param name="tokenizer_path" value="$(find pamaral_models)/models/flags_validator_model/tokenizer.json"/>
-        <param name="model_path" value="$(find pamaral_models)/models/flags_validator_model"/>
-    </node>
-</launch>

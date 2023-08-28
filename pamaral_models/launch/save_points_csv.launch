@@ -1,5 +1,0 @@
-<launch>
-    <node name="save_points_csv" pkg="pamaral_models" type="save_points_csv.py" output="screen">
-        <param name="output_folder" value="$(find data)/points/"/>
-    </node>
-</launch>

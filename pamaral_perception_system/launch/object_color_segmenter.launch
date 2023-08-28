@@ -1,6 +1,6 @@
 <launch>
     <arg name="colors" default="green;red"/>
-    <arg name="colors_path" default="$(find pamaral_perception_system)/config/color_limits"/>
+    <arg name="colors_path" default="$(find pamaral_perception_system)/config/color_limits/"/>
     <arg name="input_image_topic" default="camera/color/image_raw"/>
     <arg name="min_area" default="150"/>
     <arg name="prefix" default=""/>

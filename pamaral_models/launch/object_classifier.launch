@@ -1,0 +1,5 @@
+<launch>
+    <node name="object_classifier" pkg="pamaral_models" type="object_classifier.py" output="screen">
+        <param name="model_path" value="$(find pamaral_models)/models/transformer_model.h5"/>
+    </node>
+</launch>
