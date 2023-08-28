@@ -23,7 +23,7 @@ N_CLASSES = 4
 def create_model(input_shape, dropout=0.5, learning_rate=0.001, kernel_size=3, num_conv_layers=2):
     # Create a `Sequential` model and add a Dense layer as the first layer.
     model = tf.keras.models.Sequential()
-    model.add(tf.keras.Input(shape=(21,3)))
+    model.add(tf.keras.Input(shape=input_shape))
     for _ in range(num_conv_layers):
         model.add(tf.keras.layers.Conv1D(64, kernel_size, activation='relu'))
     #model.add(tf.keras.layers.MaxPooling1D(2,1))
@@ -59,14 +59,15 @@ if __name__ == "__main__":
     # model training and evaluation
     model = create_model(input_shape)
 
-    callbacks = [keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True),
-                keras.callbacks.ModelCheckpoint(
-        "results/cnn_model",
-        monitor='val_loss',  # Optional: Monitor a specific metric to save the best weights
-        save_weights_only=True,  # Only save the model's weights, not the entire model
-        save_best_only=True,  # Save only the best weights based on the monitored metric
-        verbose=1  # Optional: Display messages when saving weights
-    )]
+    callbacks = [
+        keras.callbacks.EarlyStopping(patience=200, restore_best_weights=True),
+        keras.callbacks.ModelCheckpoint("results/cnn_model.h5",
+            monitor='val_loss',  # Optional: Monitor a specific metric to save the best weights
+            save_weights_only=False,  # Save the entire model
+            save_best_only=True,  # Save only the best weights based on the monitored metric
+            verbose=1  # Optional: Display messages when saving weights
+        )
+    ]
 
     results = model.fit(
         x_train,
