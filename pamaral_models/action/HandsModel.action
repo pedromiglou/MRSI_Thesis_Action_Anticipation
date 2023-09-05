@@ -3,5 +3,6 @@ sensor_msgs/Image image
 ---
 # response message
 geometry_msgs/Point[] points
+std_msgs/String[] handednesses
 ---
 # feedback message

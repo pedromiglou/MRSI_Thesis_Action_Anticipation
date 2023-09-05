@@ -8,7 +8,7 @@ mp_hands = mp.solutions.hands
 # Initialize OpenCV video capture
 cap = cv2.VideoCapture(0)
 
-with mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.5) as hands:
+with mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5) as hands:
     while cap.isOpened():
         # Read frames from the video capture
         ret, frame = cap.read()
@@ -22,11 +22,15 @@ with mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_conf
         # Process the image with Mediapipe Hands
         results = hands.process(image)
 
+        # results attributes:
+        # ['count', 'index', 'multi_hand_landmarks', 'multi_hand_world_landmarks', 'multi_handedness']
+
         # Draw hand landmarks on the frame
         if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
-                print(hand_landmarks)
-                mp_drawing.draw_landmarks(
+            for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
+                print(len(handedness.classification))
+                if handedness.classification[0].label != 'Left':
+                    mp_drawing.draw_landmarks(
                     frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
         # Display the resulting frame
