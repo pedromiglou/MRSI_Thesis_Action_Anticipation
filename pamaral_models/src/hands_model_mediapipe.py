@@ -11,6 +11,7 @@ import rospy
 from cv_bridge import CvBridge
 from geometry_msgs.msg import Point
 from sensor_msgs.msg import Image
+from std_msgs.msg import String
 
 from pamaral_models.msg import HandsModelAction, HandsModelResult
 
@@ -50,12 +51,18 @@ class HandsModelMediapipe:
         results = self.hands.process(image_rgb)
 
         points = []
+        handednesses = []
 
         # If at least one hand was detected, extract the coordinates of each landmark
         if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
+            for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
                 for landmark in hand_landmarks.landmark:
                     points.append(Point(landmark.x, landmark.y, landmark.z))
+                
+                if handedness.classification[0].label != 'Left':
+                    handednesses.append(String('left'))
+                else:
+                    handednesses.append(String('right'))
                 
                 # Draw hand landmarks on the frame
                 self.mp_drawing.draw_landmarks(drawing, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
@@ -66,7 +73,7 @@ class HandsModelMediapipe:
             return
         
         # return landmarks
-        res = HandsModelResult(points=points)
+        res = HandsModelResult(points=points, handednesses=handednesses)
         self.server.set_succeeded(res)
 
         # Publish the frame with the hand landmarks
