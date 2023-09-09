@@ -42,8 +42,8 @@ There are different situations in which an anticipatory response seems to be an 
 
 \end{itemize}
 
-This dissertation aims at the development of an anticipatory system that allows to enhance human-robot collaboration in industrial settings under the AUGMANITY mobilizing project\footnote{AUGMANITY website: \url{https://www.augmanity.pt}}. The collaborative scenario will be one in which the robot observes the actions of the human operator, makes predictions about the human’s intention and reacts accordingly by either waiting for more observations or executing a physical action. Fig.~\ref{fig:usecase} illustrates the real workstation where the structure of a gas boiler for water heating is manually assembled. The collaborative robot’s main function will be to assist with the assembly task by placing the parts in the jig while coordinating its actions with those of the human
-operator who is focused on the riveting process. 
+\textcolor{red}{This dissertation aims at the development of an anticipatory system that allows to enhance human-robot collaboration in industrial settings under the AUGMANITY mobilizing project\footnote{AUGMANITY website: \url{https://www.augmanity.pt}}. The collaborative scenario will be one in which the robot observes the actions of the human operator, makes predictions about the human’s intention and reacts accordingly by either waiting for more observations or executing a physical action. Fig.~\ref{fig:usecase} illustrates the real workstation where the structure of a gas boiler for water heating is manually assembled. The collaborative robot’s main function will be to assist with the assembly task by placing the parts in the jig while coordinating its actions with those of the human
+operator who is focused on the riveting process.}
 
 \begin{figure}[H]
 \centerline{\includegraphics[width=6in]{figs/usecase.png}}
@@ -53,9 +53,15 @@ operator who is focused on the riveting process.
 
 \section{Objectives}
 
-\textcolor{red}{(taken from chapter 5 from proposal)}
+The main objectives of this dissertation are:
+\begin{itemize}
+    \item Produce deep learning models capable of perceiving and recognizing the objects being grasped by the user by using the hand keypoints.
+    
+    \item Study the current research direction of Action Anticipation in the context of \acl{hrc} including common machine learning methods and how they impact the behavior of the robot.
 
-\begin{enumerate}
+    \item Develop an infrastructure to support a practical implementation of action anticipation in the context of the collaborative task and validate it with more simple experiments.
+
+    \if{0}
     \item \textbf{Overview of the Experimental Setup}. Familiarization with the robot and tools that will be used throughout the dissertation.
 
     \item \textbf{Development of Action Anticipation Models}. To formally define how to anticipate an action in the context of the collaborative task under study using RGB-D images as input. \acs{ml} models, such as \acfp{rnn}, are at the forefront of the algorithms to explore.
@@ -65,8 +71,9 @@ operator who is focused on the riveting process.
     \item \textbf{Metrics and performance evaluation}. To provide performance metrics used to evaluate the action anticipation models and the add-value of the anticipatory controller (e.g., in terms of cycle time).
     
     \item \textbf{Thesis Writing}. Writing the master dissertation and other detailed documentation.
-\end{enumerate}
+    \fi
+\end{itemize}
 
 \section{Document Structure}
 
-The remainder of the document is organized into five chapters. Chapter $ref{chapter:state_of_the_art}$ contains background material about anticipation, \acl{ml} and collaborative robotics and a review of previous work on Action Anticipation in \acs{hrc} including sensors and methods. Chapter $ref{chapter:tools_review}$ reviews tools that can be useful in the future implementation. Chapter $ref{chapter:work_progress}$ describes the progress made in the first semester. Chapter $ref{chapter:planning}$ portrays the planning of the second semester work and illustrates its calendarization. Chapter $ref{chapter:conclusion}$ concludes the document by restating the objectives of the work and the plan to achieve them.
+The remainder of the document is organized into four chapters. \textcolor{red}{Chapter \ref{chapter:state_of_the_art} contains background material about anticipation, \acl{ml} and collaborative robotics and a review of previous work on Action Anticipation in \acs{hrc} including sensors and methods. Chapter \ref{chapter:hrc_system} reviews tools that can be useful in the future implementation and ... Chapter \ref{chapter:learning} ... Chapter \ref{chapter:conclusion} concludes the document by restating the objectives of the work and...}

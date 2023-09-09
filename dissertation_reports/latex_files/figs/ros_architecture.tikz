@@ -1,0 +1,33 @@
+\begin{tikzpicture}[
+        > = stealth, % arrow head style
+        shorten > = 1pt, % don't touch arrow head to node
+        auto,
+        node distance = 4.5cm, % distance between nodes
+        thick % line style
+    ]
+    
+    \tikzstyle{every state}=[
+        draw = black,
+        thick,
+        fill = white,
+        minimum size = 4mm,
+        text width = 1.5cm,
+        align = center
+    ]
+    
+    \node[state] (perception) {Perception System};
+    \node[state] (decisionmaking) [right of=perception] {Decision Making};
+    \node[state] (manipulator_arm_control) [right of=decisionmaking] {Manipular Arm Control};
+
+    \path[every edge,
+    	->,
+    	text width=1.8cm,
+    	align=center
+    	]
+    (perception)       edge[bend left]  node {blocks position}        (decisionmaking)
+    (perception)       edge[bend right]  node[below] {user position} (decisionmaking)
+    (decisionmaking)   edge[bend left]  node {go to position/stop} (manipulator_arm_control)
+    (manipulator_arm_control) edge[bend left] node {success/failure} (decisionmaking)
+    ;
+
+\end{tikzpicture}

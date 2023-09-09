@@ -1,9 +1,10 @@
 \chapter{\acl{hrc} System}
 \label{chapter:hrc_system}
 
-This chapter reviews the relevant hardware and software tools used during development and the software developed to support a practical implementation of action anticipation in human-robot collaboration.
+This chapter reviews the hardware and software tools used during development and the software developed to support a practical implementation of action anticipation in human-robot collaboration. In particular, Section \ref{section:system_architecture} describes the system architecture including the available hardware and the software tools chosen to establish communication between all the parts. \textcolor{red}{complete this...}
 
 \section{System Architecture \textcolor{red}{(LARCC, ROS-based framework)}}
+\label{section:system_architecture}
 
 The experimental part of this thesis was developed using the setup available at the Laboratory for Automation and Robotics (LAR) located in the Department of Mechanical Engineering at the University of Aveiro. This setup was designed to meet the requirements of the AUGMANITY mobilizing project\footnote{AUGMANITY website: \url{https://www.augmanity.pt}} and it contains an UR10e collaborative robot and multiple cameras.
 
@@ -27,7 +28,7 @@ Other relevant features include:
     \item \textbf{simulator support}: \acs{ros} has support for simulators with Gazebo being the most common.
 \end{itemize}
 
-For our system, the ROS 1 Noetic distribution was chosen over the more recent ROS 2 distributions so as to reuse work already done by other members of the AUGMANITY project at the University of Aveiro.
+For our system, the ROS 1 Noetic distribution was chosen over the more recent ROS 2 distributions so as to take advantage of work already done by other members of the AUGMANITY project at the University of Aveiro.
 
 \subsection{Perception System \textcolor{red}{(Orbbec Astra Pro, OpenCV)}}
 \label{subsection:perception_system}
@@ -42,11 +43,11 @@ In order to capture the necessary information from the environment, two Orbbec A
 \label{fig:orbbec_astra_pro}
 \end{figure}
 
-In the experimental setup, one of the cameras is placed above the workspace facing downwards allowing the perception of the objects in the table through the color image and the position of the user through the depth image. The second camera is above and slightly behind the robot to capture the user in front of the robot with the images from this camera being the ones used in the keypoint detection models. The communication with the cameras is established through ROS with the $usb\_cam$ package being used for the color image and the $ros\_astra\_camera$ package being used for the depth image. In order to have better control over the lightness in the environment, the back-light compensation was raised to the maximum in the $usb\_cam$ configurations. Then the frame rate was also set to 10 frames per second in both cameras given that those were enough frames for the following processing.
+In the experimental setup, one of the cameras is placed above the workspace facing downwards allowing the perception of the objects in the table through the color image and the position of the user through the depth image. The second camera is above and slightly behind the robot to capture the user in front of the robot with the images from this camera being the ones used in the keypoint detection models. The communication with the cameras is established through ROS with the $usb\_cam$ package being used for the color image and the $ros\_astra\_camera$ package being used for the depth image. In order to have better control over the lightness in the environment, only artificial lighting was used and the back-light compensation was raised to the maximum in the $usb\_cam$ configurations. Then the frame rate was also set to 10 frames per second in both cameras given that none of the following image processing tasks require a high frame rate.
 
-As said before, the color image of the first camera is used to detect objects in the environment. These objects are blocks of specific colors and therefore they can be identified with color segmentation, which is done with the help of OpenCV, a popular computer vision library. With this library, we start by cropping the image from the camera to a specific region of interest consisting of the table area, which is then converted from BGR to HSV given that the intervals of a color are easier to determine in this representation. From the HSV image and the color intervals, we obtain a mask for each color. These masks are then subject to a closing morphological operation to reduce any possible noise. Finally, the resulting areas are considered an object if they surpass a certain area threshold.
+As said before, the color image of the first camera is used to detect objects in the environment. These objects are blocks of specific colors and therefore they can be identified with color segmentation, which is done with the help of OpenCV, a popular computer vision library. With this library, we start by cropping the image from the camera to a specific region of interest consisting of the table area, which is then converted from BGR to HSV given that the intervals of a color are more reliable in this representation. From the HSV image and the color intervals, we obtain a mask for each color. These masks are then subject to a closing morphological operation to reduce any possible noise. Finally, the resulting areas are considered an object if they surpass a certain area threshold further reducing noise.
 
-On the other hand, the depth image is used to obtain the position of the human in the workspace by cropping it to a certain region of interest and then detecting the highest point.
+On the other hand, the depth image is used to obtain the position of the human in the workspace by cropping it to a certain region of interest corresponding to where the user would normally be and then detecting the highest point.
 
 \subsection{Manipulator Arm Control \textcolor{red}{(UR10e cobot, Robotiq gripper, Moveit)}}
 \label{subsection:manipulator_arm_control}
@@ -54,7 +55,7 @@ On the other hand, the depth image is used to obtain the position of the human i
 The collaborative robot available for this work is the UR10e. This robot model was developed by Universal Robots and it allows for payloads up to 12.5 kg and has a reach of 1300mm being suitable for tasks such as machine tending, palletizing, and packaging\cite{UR10e}. The one used in this work is equipped with a \textcolor{red}{(missing gripper model)} gripper.
 
 \begin{figure}[h]
-\centerline{\includegraphics[width=0.5\textwidth]{figs/UR10e.png}}
+\centerline{\includegraphics[width=0.49\textwidth]{figs/UR10e.png}}
 \caption[UR10e]{UR10e collaborative robot \cite{UR10e_image} \textcolor{red}{(missing gripper image)}}
 \label{fig:ur10e}
 \end{figure}
@@ -84,12 +85,16 @@ TensorFlow is one of the most popular machine learning frameworks along with Pyt
 
 \section{Methodologies/Research Methods}
 
+This section covers the methodologies employed to research anticipatory systems.
+
 \subsection{Knowledge-Based Systems \textcolor{red}{(Experta)}}
+
+In artificial intelligence, rule-based expert systems are commonly used to apply human expertise to complex problems. Experta\footnote{Experta documentation: \url{https://github.com/nilp0inter/experta}} is a python library to create and deploy rule-based systems that make informed decisions using a knowledge base of rules. In this library rules are defined as combinations of conditions and actions allowing for an intuitive syntax. Then, the engine uses these rules to make decisions using the declared information.
 
 \subsection{Keypoints Detection Frameworks \textcolor{red}{(OpenPose, OpenPifPaf, MediaPipe)}}
 \label{subsection:keypointdetection}
 
-This section reviews OpenPose and OpenPifPaf which are two projects containing models to detect key points in images, such as the human skeleton joints.
+This subsection reviews OpenPose, OpenPifPaf and Mediapipe which are three projects containing models to detect key points in images, such as the human skeleton joints.
 
 \subsubsection{OpenPose}
 
@@ -115,12 +120,38 @@ OpenPose can be used through the command-line or using an API for Python or C++.
 OpenPifPaf\cite{Kreiss2021,Kreiss2019}\footnote{OpenPifPaf documentation: \url{https://openpifpaf.github.io}} is an open-source project that aims to detect, associate and track semantic key points. Detecting human joints is an example of its usage but it is also able to generalize this detection to other classes such as cars and animals. It can be installed as a python package which can then be imported.
 
 \begin{figure}[h]
-\centerline{\includegraphics[height=1.8in]{figs/openpifpaf.jpeg}}
+\centerline{\includegraphics[width=0.6\textwidth]{figs/openpifpaf.jpeg}}
 \caption[OpenPifPaf Example]{OpenPifPaf Example \cite{Kreiss2021}}
 \label{openpifpaf}
 \end{figure}
 
 \subsubsection{MediaPipe}
+
+MediaPipe consists in a set of libraries and tools to apply artificial intelligence (AI) and machine learning (ML) techniques in other applications. Although it contains many features, in this work we are interested in the Hand and the Pose Landmark Detection Models. Just as the name suggests, the Hand Landmarker detects the landmarks of the hands (see Fig.~\ref{fig:mediapipe_hand_landmarks}) and the Pose Landmarker detects the landmarks of the pose over the entire body (see Fig.~\ref{fig:mediapipe_pose_landmarks}). These tasks use machine learning (ML) models that can analyze both static images or a continuous stream and output the landmarks in image and world coordinates as well as the handedness (left/right hand) of the detected hands in the case of the Hand Landmarker.
+
+\if{0}
+The Hand Landmarker detects the landmarks of the hands in an image, as shown in Fig.~\ref{fig:mediapipe_hand_landmarks}. This task uses a machine learning (ML) model that can analyze both static data or a continuous stream and outputs the hand landmarks in image coordinates, hand landmarks in world coordinates, and handedness(left/right hand) of multiple detected hands.
+
+The Pose Landmarker detects the landmarks of the pose over the entire body in an image, as shown in Fig.~\ref{fig:mediapipe_pose_landmarks}.  This task uses a machine learning (ML) model that can analyze both static data or a continuous stream and outputs the body pose landmarks in image coordinates and in 3-dimensional world coordinates.
+\fi
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \adjincludegraphics[width=\textwidth, trim={{.15\width} {0} {.05\width} {0}}, clip]{figs/hand_landmarks.png}
+        \caption[Hand Landmarker]{Hand Landmarker}
+        \label{fig:mediapipe_hand_landmarks}
+    \end{subfigure} \
+    \begin{subfigure}[b]{0.49\textwidth}
+        \adjincludegraphics[width=\textwidth, trim={{0} {0} {.20\width} {0}}, clip]{figs/pose_landmarks.png}
+        \caption[Pose Landmarker]{Pose Landmarker}
+        \label{fig:mediapipe_pose_landmarks}
+    \end{subfigure}
+    \caption[Mediapipe Landmark Detection Models]{Mediapipe Landmark Detection Models}
+    \label{fig:mediapipe_landmarks}
+\end{figure}
+
+%{\adjincludegraphics[width=.9\textwidth, trim={{.25\width} {0.25\height} {.25\width} {0.25\height}}, clip]{figs/dataset_preprocessing2_1.png}}
 
 \subsection{Convolutional Neural Networks}
 
@@ -157,7 +188,7 @@ Multi-head (self-)attention refers to the fact that a transformer can have multi
 
 \section{Integration of First Anticipation Experiments}
 
-This section covers the implementation of the human-robot collaboration infrastructure that will serve as a base for an anticipation application and the first anticipation experiments realized to validate it.
+\textcolor{red}{This section covers the implementation of the human-robot collaboration infrastructure that will serve as a base for an anticipation application and the first anticipation experiments realized to validate it.}
 
 \subsection{Assembly Task: Build a Three-Color Flag \textcolor{red}{(Problem description: interaction experiment and focus on integration...)}}
 
@@ -172,9 +203,20 @@ To develop the necessary infrastructure, a concrete problem was needed. For this
 
 These blocks are initially placed behind the robot, and the robot must fetch them and place them next to the user so that the user can build a flag. The blocks must be fetched in a certain order and there must be a way for the user to tell the robot that it is fetching the wrong block.
 
-\textcolor{red}{missing workspace image from above}
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.9\textwidth]{figs/table_workspace.png}}
+\caption[Table Workspace]{Table Workspace}
+\label{fig:table_workspace}
+\end{figure}
 
-Before the anticipation experiments, a base infrastructure was developed to build upon, integrating the perception system described in Subsection \ref{subsection:perception_system} and the manipulator arm control system described in Subsection \ref{subsection:manipulator_arm_control}. Connecting both of them is a decision-making node as shown in Fig~\ref{}. The logic in this node is implemented through a state machine with the behavior in each state corresponding to a method of a class, which facilitates the integration of additional logic by using subclasses of that class.
+Before the anticipation experiments, a base infrastructure was developed to build upon, integrating the perception system described in Subsection \ref{subsection:perception_system} and the manipulator arm control system described in Subsection \ref{subsection:manipulator_arm_control}. Connecting both of them is a decision-making node as shown in Fig~\ref{fig:ros_architecture}. The logic in this node is implemented through a state machine with the behavior in each state corresponding to a method of a class, which facilitates the integration of additional logic by using subclasses of that class.
+
+\begin{figure}[H]%[!ht]
+    \centering
+    \input{figs/ros_architecture.tikz}
+    \caption{ROS Architecture}
+    \label{fig:ros_architecture}
+\end{figure}
 
 The initial decision-making logic developed relied on interactions between the robot and the user. When the user puts his hand above a small block, if the robot is idle, then it proceeds to fetch a block of the same color. Additionally, when the user hovers his hand over the violet block while the robot is fetching a block, it means that the robot is fetching the wrong block, so it must stop and put the block back where it was before if it was already picked up. These interactions are also the fallback behavior if the methods in the following experiments fail to anticipate the block that the user desires.
 
@@ -200,19 +242,23 @@ As said before, the decision making node contains an internal state machine. Alt
 
 \subsection{First Anticipation Experiments \textcolor{red}{(probabilities, rule-based \& rule-based + MediaPipe)}}
 
-This subsection covers the workflow of the different experiments realized.
+This subsection describes the implementation and the workflow of the different experiments realized.
 
 \subsubsection{Probability Based}
 
-The first experiment consisted in having a database of probabilities that the robot would check to anticipate the block that the user would need next. These probabilities were established according to the possible country flags. However, the first block is still requested by the user and, if the robot exhausts all possibilities that it knows of, the user is able to request the following block using the interactions described in the first solution.
+The first experiment consisted of having a database of probabilities that the robot would check to anticipate the block that the user would need next. In this experiment, when the decision-making node starts, it reads a configuration file with all the possible flags and then calculates and saves in a database the conditional probabilities of a certain color considering the previous ones.
+
+When assembling a flag, the first block is still requested by the user but the following blocks are automatically given to the user according to the probabilities. However, if the robot chooses the wrong block the user can still communicate that fact by interacting with the small violet block and, if the robot exhausts all possibilities that it knows of, the user can request the following block using the interactions with the other small blocks.
 
 \subsubsection{Rule Based}
 
-\textcolor{red}{...}
+The second experiment consisted of having a set of rules that the robot follows to anticipate the next block. These rules are read from a configuration file when the decision-making node starts and then managed by the Experta library. For this experiment, a number of rules were defined about what should be the next block considering the blocks previously provided and the blocks rejected since the last accepted one.
+
+Similarly to the previous experiment, the first block is requested by the user but for the following blocks the robot checks if a rule is present for the current situation. If there is one, the robot follows that rule and provides a block and if there is not, it waits for the user to request the next block. The interactions for requesting and refusing a block are maintained.
 
 \subsubsection{Rule Based + MediaPipe}
 
-\textcolor{red}{...}
+The third experiment is very similar to the previous one. The rule based decision making is maintained with the same rules but the first block is no longer requested by the user. Instead, the user picks up the first block and the second camera which is facing the user detects the color of the object. To do this, the pose model from MediaPipe is used to detect the position of the hands which is then used to crop the received image to a region of interest. The resulting image is segmented similarly to the images of the other camera and if a color is detected, then that color is considered the color of the first block.
 
 \if{0}
 \subsection{System ROS Architecture}

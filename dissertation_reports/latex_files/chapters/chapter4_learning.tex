@@ -96,7 +96,7 @@ After having a dataset, the data had to be processed to have a fitting structure
     \label{fig:dataset_examples2}
 \end{figure}
 
-The Mediapipe Hands Model can detect a variable number of hands in an image, and it was set up so that it would only detect up to two hands, meaning that its output can consist of no hands detected, of a set of 21 points hand detected, which can be either the left or the right hand, or two sets of 21 points if both hands were detected. To better understand the Mediapipe results in this particular context, six videos with 250 frames each were recorded in different scenarios. Then, for each scenario, the full-body model provided by MediaPipe was used to register whether the model detected the left hand, right hand, both hands, or none, resulting in the metrics in Table \ref{table:mediapipe_metrics}. These results show that there is a significant number of frames where the right hand, which is the one holding the object, is not detected. This means that the results of the Hands Model must be filtered to avoid wrong predictions.
+The Mediapipe Hands Model can detect a variable number of hands in an image, and it was set up so that it would only detect up to two hands, meaning that its output can consist of no hands detected, of a set of 21 points hand detected, which can be either the left or the right hand, or two sets of 21 points if both hands were detected. To better understand the Mediapipe results in this particular context, six videos with 250 frames each were recorded in different scenarios. Then, for each scenario, the full-body model provided by MediaPipe was used to register whether the model detected the left hand, right hand, both hands, or none, resulting in the metrics in Table \ref{table:mediapipe_metrics}. These results show that there is a significant number of frames where the right hand, which is the one holding the object, is not detected.
 
 \begin{table}[H]
     \centering
@@ -108,20 +108,34 @@ The Mediapipe Hands Model can detect a variable number of hands in an image, and
         \hline
         Hands Visible & 1.6\% & 2\% & 8.8\% & 87.6\% \\
         \hline
-        Hand Holding Bottle & 0.4\% & 44.4\% & 22.8\% & 32.4\% \\
+        Holding Bottle & 0.4\% & 44.4\% & 22.8\% & 32.4\% \\
         \hline
-        Hand Holding Cube & 1.2\% & 22\% & 36.8\% & 40\% \\
+        Holding Cube & 1.2\% & 22\% & 36.8\% & 40\% \\
         \hline
-        Hand Holding Phone & 1.2\% & 28.4\% & 33.6\% & 36.8\% \\
+        Holding Phone & 1.2\% & 28.4\% & 33.6\% & 36.8\% \\
         \hline
-        Hand Holding Screwdriver & 1.2\% & 9.2\% & 44.4\% & 48.4\% \\
+        Holding Screwdriver & 1.2\% & 9.2\% & 44.4\% & 48.4\% \\
         \hline
         Hands Obstructed & 38.8\% & 21.6\% & 26.4\% & 13.2\% \\
         \hline
     \end{tabular}
 \end{table}
 
-Given that the scope of this work is restricted to scenarios where the user grasps the objects with his right hand, the instances where the right hand is not detected need to be ignored and, as a result, the images are also processed by the pose model provided by Mediapipe so that it is possible to identify the right hand.
+Given that the scope of this work is restricted to scenarios where the user grasps the objects with his right hand, the detected hands in each instance need to be filtered according to their handedness to avoid wrong predictions. This information can be given directly by the hands landmarker and by using the pose landmarker. The latter option is more reliable but it also increases the amount of processing. Assuming the results of the Pose Model are right, the results in Table \ref{table:mediapipe_metrics2}, consisting of the percentage of frames both models agree, were obtained with the same videos used for the previous table. These results show that for most frames both models agree about the handedness of the detected hands but when the right hand is grasping objects that require less common hand geometries, especially the screwdriver, the hands model is only able to correctly classify the handedness 55.1\% of the frames. To avoid this source of error, the images are also processed by the more reliable pose model.
+
+\begin{table}[H]
+    \centering
+    \caption{Mediapipe Hand Model Right Output Percentage in Different Scenarios}
+    \label{table:mediapipe_metrics2}
+    \begin{tabular}{|l|l|l|l|l|l|}
+        \hline
+        Hand\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Hand\multirow{2}{*}{} \\
+        Visible & Bottle & Cube & Phone & Screwdriver & Obstructed \\
+        \hline
+        92.7\% & 81.5\% & 71.1\% & 89.3\% & 55.1\% & 87.4\% \\
+        \hline
+    \end{tabular}
+\end{table}
 
 In the preprocessing implementation in ROS, each Mediapipe model has a corresponding ROS node that communicates with the others using actions. This communication method ensures that the models can run in parallel with each other and that the node that makes the requests does not need to wait for the results of the first model to make a request to the second as would be the case if services were used. Although communicating using publish/subscribe nodes would also respect the previous requirements, using actions also has the advantage of guaranteeing that the images analyzed by both models are the same.
 
@@ -533,6 +547,6 @@ From the three cases evaluated, the CNN performed better in situations requiring
 
 \section{Human Intention Prediction in Shared Tasks}
 
-\textcolor{red}{(What should be the content of this section? Is it the integration in the system described in the last chapter)}
+\textcolor{red}{(integration in the system described in the last chapter)}
 
 \section{Final Remarks}
