@@ -9,7 +9,7 @@
     </include>
 
     <node name="record_dataset" pkg="pamaral_models" type="record_dataset_mp_metrics.py" output="screen">
-        <param name="output_folder" value="$(find data)/bag_files"/>
+        <param name="output_folder" value="$(find data)/bag_files/new_mp_metrics"/>
     </node>
 
     <node name="rviz" pkg="rviz" type="rviz"
