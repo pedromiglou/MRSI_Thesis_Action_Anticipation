@@ -22,7 +22,10 @@ output_folder = rospy.get_param(rospy.search_param('output_folder')) + "/mp_metr
 
 # person = int(input("?"))
 
-objects = ["nonehv", "cube", "bottle", "phone", "screwdriver", "noneho"]
+#objects = ["nonehv", "cube", "bottle", "phone", "screwdriver", "noneho"]
+objects = ["hand_stopped_open", "hand_stopped_closed", "hand_movement_open", "hand_movement_closed",
+           "bottle_stopped", "bottle_movement", "cube_stopped", "cube_movement"]
+
 for i, o in enumerate(objects):
     print(f"{i} - {o}")
 
