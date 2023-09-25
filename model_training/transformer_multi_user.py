@@ -18,7 +18,7 @@ if __name__ == "__main__":
         sum_accs = 0
         sum_losses = 0
         sum_times = 0
-        for _ in range(100):
+        for _ in range(1):
             # read data
             x_train, y_train = read_dataset2(sessions=train_sessions)
             x_test, y_test = read_dataset2(sessions=test_sessions, num_samples=2713)
@@ -29,7 +29,7 @@ if __name__ == "__main__":
             x_train, y_train = shuffle(x_train, y_train)
 
             # data splitting
-            x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=1/4, stratify=y_train, shuffle=True)
+            x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=1/5, stratify=y_train, shuffle=True)
             
             # model training and evaluation
             model = create_model(input_shape)

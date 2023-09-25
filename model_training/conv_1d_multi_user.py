@@ -29,7 +29,7 @@ if __name__ == "__main__":
             x_train, y_train = shuffle(x_train, y_train)
 
             # data splitting
-            x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=1/4, stratify=y_train, shuffle=True)
+            x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=1/5, stratify=y_train, shuffle=True)
 
             # model training and evaluation
             model = create_model(input_shape)
