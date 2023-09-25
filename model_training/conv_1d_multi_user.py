@@ -18,7 +18,7 @@ if __name__ == "__main__":
         sum_accs = 0
         sum_losses = 0
         sum_times = 0
-        for _ in range(25):
+        for _ in range(1):
             # read data
             x_train, y_train = read_dataset2(sessions=train_sessions)
             x_test, y_test = read_dataset2(sessions=test_sessions, num_samples=2713)

@@ -81,14 +81,14 @@ def read_dataset2(folder_path="./dataset2_4objects", objects=["bottle", "cube", 
 
                 f.close()
     
+    x = np.array(x)
+    y = np.array(y)
+    
     if num_samples is not None:
         random_indices = np.random.choice(len(y), size=num_samples, replace=False)
 
         x = x[random_indices]
         y = y[random_indices]
-
-    x = np.array(x)
-    y = np.array(y)
 
     return x, y
 
