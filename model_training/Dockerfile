@@ -12,4 +12,4 @@ COPY *.py /model_training/
 
 RUN mkdir /model_training/results
 
-CMD ["python3", "/model_training/conv_1d_1_person.py"]
+CMD ["python3", "/model_training/conv_1d_multi_user.py"]
