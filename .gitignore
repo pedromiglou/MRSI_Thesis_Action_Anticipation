@@ -1,5 +1,7 @@
 **/.vscode/
 **/__pycache__/
 data/bag_files
+data/points_after_update
+data/points_after_update_square
 model_training/**/*.csv
 model_training/models
