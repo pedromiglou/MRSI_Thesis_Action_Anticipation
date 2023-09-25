@@ -80,7 +80,7 @@ if __name__ == "__main__":
             #            save_path = f"./results/cnn_{test_sessions[0]}_results.txt")
         
         f = open(f"./results/cnn_multi_user_session_{test_sessions[0]}_results.txt", "w")
-        f.write("Average accuracy: ", sum_accs/25)
-        f.write("Average loss: ", sum_losses/25)
-        f.write("Average time: ", sum_times/25)
+        f.write(f"Average accuracy: {sum_accs/25}")
+        f.write(f"Average loss: {sum_losses/25}")
+        f.write(f"Average time: {sum_times/25}")
         f.close()
