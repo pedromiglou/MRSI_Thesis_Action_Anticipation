@@ -68,7 +68,7 @@ def read_dataset2(folder_path="./dataset2_4objects", objects=["bottle", "cube", 
             filename = filename.split("_")
             object_name = filename[0]
             person = filename[1]
-            session = filename[2]
+            session = filename[2][0]
 
             if object_name in objects and person in people and session in sessions:
                 # Open the file
