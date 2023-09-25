@@ -49,10 +49,13 @@ if __name__ == "__main__":
                 t = time.time() - start_time
                 print(t)
 
-
                 l, a = model.evaluate(x_val, y_val, verbose=1)
 
                 L, A = model.evaluate(x_test, y_test, verbose=1)
+
+                sum_accs += A
+                sum_losses += L
+                sum_times += t
 
                 # plots and save results
                 plot_accuracy_comparison([results.history["sparse_categorical_accuracy"],
