@@ -11,12 +11,6 @@ from tensorflow.keras import layers
 from utils import *
 
 
-# make more reproducible results, GPU does not allow full reproducibility
-os.environ["PYTHONHASHSEED"] = "0"
-random.seed(1234)
-np.random.seed(1234)
-tf.random.set_seed(1234)
-
 N_CLASSES = 4
 
 
@@ -84,6 +78,12 @@ def create_model(input_shape, mlp_dropout=0.1, dropout=0.5, learning_rate=0.0001
 
 
 if __name__ == "__main__":
+    # make more reproducible results, GPU does not allow full reproducibility
+    os.environ["PYTHONHASHSEED"] = "0"
+    random.seed(1234)
+    np.random.seed(1234)
+    tf.random.set_seed(1234)
+
     # read data
     x, y = read_dataset2()
 
