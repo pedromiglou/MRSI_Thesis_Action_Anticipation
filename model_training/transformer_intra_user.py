@@ -14,8 +14,10 @@ from utils import *
 
 
 if __name__ == "__main__":
-    for person in ["joel", "manuel", "pedro"]:
-        for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"], ["1","2","4"], ["1","2","3"]], [["1"],["2"],["3"],["4"]]):
+    #for person in ["joel", "manuel", "pedro"]:
+    for person in ["joel"]:
+        #for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"], ["1","2","4"], ["1","2","3"]], [["1"],["2"],["3"],["4"]]):
+        for train_sessions, test_sessions in zip([["2","3","4"]], [["1"]]):
             sum_accs = 0
             sum_losses = 0
             sum_times = 0
