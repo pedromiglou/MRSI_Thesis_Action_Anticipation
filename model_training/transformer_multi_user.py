@@ -22,7 +22,7 @@ if __name__ == "__main__":
         sum_recalls = 0
         sum_f1_scores = 0
 
-        for _ in range(50):
+        for _ in range(1):
             # read data
             x_train, y_train = read_dataset2(sessions=train_sessions)
             x_test, y_test = read_dataset2(sessions=test_sessions, num_samples=2713)
@@ -93,7 +93,7 @@ if __name__ == "__main__":
             #             training_time = t,
             #             save_path = f"./results/transformer_{person}_{test_sessions[0]}_results.txt")
 
-        f = open(f"./results/transformer_multi_user_session_{test_sessions[0]}_results.txt", "w")
+        f = open(f"./results/transformer_multi_user_session_{test_sessions[0]}_results_1_repeat.txt", "w")
         f.write(f"Average accuracy: {sum_accs/50}")
         f.write(f"Average loss: {sum_losses/50}")
         f.write(f"Average time: {sum_times/50}")
