@@ -17,7 +17,7 @@ if __name__ == "__main__":
     #for person in ["joel", "manuel", "pedro"]:
     for person in ["joel"]:
         #for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"], ["1","2","4"], ["1","2","3"]], [["1"],["2"],["3"],["4"]]):
-        for train_sessions, test_sessions in zip([["2","3","4"]], [["1"]]):
+        for train_sessions, test_sessions in zip([["1","3","4"], ["1","2","4"], ["1","2","3"]], [["2"],["3"],["4"]]):
             sum_accs = 0
             sum_losses = 0
             sum_times = 0
@@ -25,7 +25,7 @@ if __name__ == "__main__":
             sum_recalls = 0
             sum_f1_scores = 0
             
-            for _ in range(50):
+            for _ in range(1):
                 # read data
                 x_train, y_train = read_dataset2(people=[person], sessions=train_sessions)
                 x_test, y_test = read_dataset2(people=[person], sessions=test_sessions, num_samples=872)
@@ -96,11 +96,11 @@ if __name__ == "__main__":
                 #             training_time = t,
                 #             save_path = f"./results/transformer_{person}_session_{test_sessions[0]}_results.txt")
 
-            f = open(f"./results/transformer_intra_user_{person}_session_{test_sessions[0]}_results.txt", "w")
-            f.write(f"Average accuracy: {sum_accs/50}")
-            f.write(f"Average loss: {sum_losses/50}")
-            f.write(f"Average time: {sum_times/50}")
-            f.write(f"Average precision: {sum_precisions/50}")
-            f.write(f"Average recall: {sum_recalls/50}")
-            f.write(f"Average f1-score: {sum_f1_scores/50}")
+            f = open(f"./results/transformer_intra_user_{person}_session_{test_sessions[0]}_results_1time.txt", "w")
+            f.write(f"Average accuracy: {sum_accs/1}")
+            f.write(f"Average loss: {sum_losses/1}")
+            f.write(f"Average time: {sum_times/1}")
+            f.write(f"Average precision: {sum_precisions/1}")
+            f.write(f"Average recall: {sum_recalls/1}")
+            f.write(f"Average f1-score: {sum_f1_scores/1}")
             f.close()
