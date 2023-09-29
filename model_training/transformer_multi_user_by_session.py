@@ -14,15 +14,17 @@ from utils import *
 
 
 if __name__ == "__main__":
-    for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"], ["1","2","4"], ["1","2","3"]], [["1"],["2"],["3"],["4"]]):
+    #for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"], ["1","2","4"], ["1","2","3"]], [["1"],["2"],["3"],["4"]]):
+    for train_sessions, test_sessions in zip([["2","3","4"]], [["1"]]):
         sum_accs = 0
         sum_losses = 0
         sum_times = 0
         sum_precisions = 0
         sum_recalls = 0
         sum_f1_scores = 0
+        sum_conf_matrices = np.zeros((4,4))
 
-        for _ in range(50):
+        for _ in range(25):
             # read data
             x_train, y_train = read_dataset2(sessions=train_sessions)
             x_test, y_test = read_dataset2(sessions=test_sessions, num_samples=2713)
@@ -72,6 +74,9 @@ if __name__ == "__main__":
             sum_recalls += recall
             sum_f1_scores += f1_score
 
+            cm = confusion_matrix(y_test, y_pred)
+            sum_conf_matrices += cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
             # plots and save results
             # plot_accuracy_comparison([results.history["sparse_categorical_accuracy"],
             #                         results.history["val_sparse_categorical_accuracy"]],
@@ -94,10 +99,14 @@ if __name__ == "__main__":
             #             save_path = f"./results/transformer_{person}_{test_sessions[0]}_results.txt")
 
         f = open(f"./results/transformer_multi_user_session_{test_sessions[0]}_results.txt", "w")
-        f.write(f"Average accuracy: {sum_accs/50}")
-        f.write(f"Average loss: {sum_losses/50}")
-        f.write(f"Average time: {sum_times/50}")
-        f.write(f"Average precision: {sum_precisions/50}")
-        f.write(f"Average recall: {sum_recalls/50}")
-        f.write(f"Average f1-score: {sum_f1_scores/50}")
+        f.write(f"Average accuracy: {sum_accs/25}")
+        f.write(f"Average loss: {sum_losses/25}")
+        f.write(f"Average time: {sum_times/25}")
+        f.write(f"Average precision: {sum_precisions/25}")
+        f.write(f"Average recall: {sum_recalls/25}")
+        f.write(f"Average f1-score: {sum_f1_scores/25}")
         f.close()
+
+
+        plot_confusion_matrix(sum_conf_matrices/25, ["bottle", "cube", "phone", "screwdriver"],
+                             show=False, save_path = f"./results/transformer_multi_user_session_{test_sessions[0]}_conf_matrix.svg")
