@@ -126,14 +126,11 @@ def plot_accuracy_comparison(accs, title, legend, show=True, save_path=False):
         plt.show()
 
 
-def plot_confusion_matrix(y_test, y_pred, target_names=None, show=True, save_path=False):
-    cm = confusion_matrix(y_test, y_pred)
-
+def plot_confusion_matrix(cm, target_names=None, show=True, save_path=False):
+    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+    
     fig = plt.figure()
     plt.imshow(cm, interpolation='nearest', cmap=plt.get_cmap('Blues'))
-
-    cbar = plt.colorbar()
-    cbar.ax.tick_params()
 
     ax = fig.gca()
 
@@ -144,8 +141,6 @@ def plot_confusion_matrix(y_test, y_pred, target_names=None, show=True, save_pat
         tick_marks = np.arange(len(target_names))
         plt.xticks(tick_marks, target_names)
         plt.yticks(tick_marks, target_names, rotation="vertical", va="center")
-
-    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
     thresh = cm.max() / 1.5
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
