@@ -123,9 +123,7 @@ for test_people, train_people in zip([["joel"], ["manuel"], ["pedro"]], [["manue
     test_transformer_inter_user(train_users=train_people, test_users=test_people, num_test_samples=3663)
 
 for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"]], [["1"],["2"]]):
-    test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions,
-                                           test_sessions=test_sessions, num_test_samples=872)
+    test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions, num_test_samples=872)
 
 for train_sessions, test_sessions in zip([["1","2","4"], ["1","2","3"]], [["3"],["4"]]):
-    test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions,
-                                           test_sessions=test_sessions, num_test_samples=872)
+    test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions, num_test_samples=872)
