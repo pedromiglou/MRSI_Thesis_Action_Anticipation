@@ -37,9 +37,15 @@ def test_transformer(train_users, train_sessions, test_users=None, test_sessions
         if test_users is None and test_sessions is None:
             x_train, x_test, y_train, y_test = train_test_split(x_train, y_train, test_size=1/5, stratify=y_train, shuffle=True)
         elif test_users is not None and test_sessions is not None:
-            x_test, y_test = read_dataset2(sessions=test_sessions, people=test_users, num_samples=num_test_samples)
+            x_test, y_test = read_dataset2(sessions=test_sessions, people=test_users)
         else:
             raise ValueError("test_users and test_sessions must be both None or not None")
+        
+        if num_test_samples is not None:
+            random_indices = np.random.choice(len(y_test), size=num_test_samples, replace=False)
+
+            x_test = x_test[random_indices]
+            y_test = y_test[random_indices]
 
         x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=1/5, stratify=y_train, shuffle=True)
 
@@ -109,21 +115,25 @@ test_transformer_multi_user_by_session = partial(test_transformer, train_users =
                                                  n_simulations=25, test_name="transformer_multi_user_by_session")
 
 test_transformer_intra_user = partial(test_transformer, train_sessions=["1","2","3","4"], test_sessions=["1","2","3","4"], n_simulations=25,
-                                      test_name = "transformer_intra_user", test_params=["user"])
+                                      num_test_samples=732, test_name = "transformer_intra_user", test_params=["user"])
 
 test_transformer_intra_user_by_session = partial(test_transformer, n_simulations=25, test_name = "transformer_intra_user_by_session",
-                                                 test_params=["session","user"])
+                                                 num_test_samples=872, test_params=["session","user"])
 
 test_transformer_inter_user = partial(test_transformer, train_sessions=["1","2","3","4"], test_sessions=["1","2","3","4"], n_simulations=25,
-                                      test_name = "transformer_inter_user", test_params=["user"])
+                                      num_test_samples=3663, test_name = "transformer_inter_user", test_params=["user"])
+
+# for test_people, train_people in zip([["joel"], ["manuel"], ["pedro"]], [["manuel", "pedro"], ["joel", "pedro"], ["joel", "manuel"]]):
+#     test_transformer_inter_user(train_users=train_people, test_users=test_people)
+
+# for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"]], [["1"],["2"]]):
+#     test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
+
+# for train_sessions, test_sessions in zip([["1","2","4"], ["1","2","3"]], [["3"],["4"]]):
+#     test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
+
+test_transformer_intra_user(train_users=["joel"], test_users=["joel"])
+test_transformer_intra_user(train_users=["manuel"], test_users=["manuel"])
+test_transformer_intra_user(train_users=["pedro"], test_users=["pedro"])
 
 # test_transformer_multi_user()
-
-for test_people, train_people in zip([["joel"], ["manuel"], ["pedro"]], [["manuel", "pedro"], ["joel", "pedro"], ["joel", "manuel"]]):
-    test_transformer_inter_user(train_users=train_people, test_users=test_people, num_test_samples=3663)
-
-for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"]], [["1"],["2"]]):
-    test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions, num_test_samples=872)
-
-for train_sessions, test_sessions in zip([["1","2","4"], ["1","2","3"]], [["3"],["4"]]):
-    test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions, num_test_samples=872)
