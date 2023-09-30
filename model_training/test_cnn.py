@@ -10,11 +10,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 from tensorflow import keras
 
-from transformer_main import create_model
+from conv_1d_main import create_model
 from utils import *
 
 
-def test_transformer(train_users, train_sessions, test_users=None, test_sessions=None,
+def test_conv_1d(train_users, train_sessions, test_users=None, test_sessions=None,
         num_test_samples=None, n_simulations=1, test_name="transformer", test_params=None):
     sum_accs = 0
     sum_losses = 0
@@ -60,7 +60,7 @@ def test_transformer(train_users, train_sessions, test_users=None, test_sessions
             y_train,
             validation_data=(x_val,y_val),
             epochs=10000,
-            batch_size=256,
+            batch_size=128,
             callbacks=callbacks,
         )
         t = time.time() - start_time
@@ -107,37 +107,37 @@ def test_transformer(train_users, train_sessions, test_users=None, test_sessions
                             show=False, save_path = file_path+"_conf_matrix.svg")
 
 
-test_transformer_multi_user = partial(test_transformer, train_users = ["joel", "manuel", "pedro"], train_sessions=["1","2","3","4"],
-                                      n_simulations=25, test_name="transformer_multi_user")
+test_conv_1d_multi_user = partial(test_conv_1d, train_users = ["joel", "manuel", "pedro"], train_sessions=["1","2","3","4"],
+                                      n_simulations=25, test_name="conv_1d_multi_user")
 
-test_transformer_multi_user_by_session = partial(test_transformer, train_users = ["joel", "manuel", "pedro"], test_users=["joel", "manuel", "pedro"],
-                                                 num_test_samples=2713, n_simulations=25, test_name="transformer_multi_user_by_session", test_params=["session"])
+test_conv_1d_multi_user_by_session = partial(test_conv_1d, train_users = ["joel", "manuel", "pedro"], test_users=["joel", "manuel", "pedro"],
+                                            num_test_samples=2713, n_simulations=25, test_name="conv_1d_multi_user_by_session", test_params=["session"])
 
-test_transformer_intra_user = partial(test_transformer, train_sessions=["1","2","3","4"], test_sessions=["1","2","3","4"], n_simulations=25,
-                                      num_test_samples=732, test_name = "transformer_intra_user", test_params=["user"])
+test_conv_1d_intra_user = partial(test_conv_1d, train_sessions=["1","2","3","4"], test_sessions=["1","2","3","4"], n_simulations=25,
+                                      num_test_samples=732, test_name = "conv_1d_intra_user", test_params=["user"])
 
-test_transformer_intra_user_by_session = partial(test_transformer, n_simulations=25, test_name = "transformer_intra_user_by_session",
+test_conv_1d_intra_user_by_session = partial(test_conv_1d, n_simulations=25, test_name = "conv_1d_intra_user_by_session",
                                                  num_test_samples=872, test_params=["session","user"])
 
-test_transformer_inter_user = partial(test_transformer, train_sessions=["1","2","3","4"], test_sessions=["1","2","3","4"], n_simulations=25,
-                                      num_test_samples=3663, test_name = "transformer_inter_user", test_params=["user"])
+test_conv_1d_inter_user = partial(test_conv_1d, train_sessions=["1","2","3","4"], test_sessions=["1","2","3","4"], n_simulations=25,
+                                      num_test_samples=3663, test_name = "conv_1d_inter_user", test_params=["user"])
 
 # tests
-#test_transformer_multi_user_by_session(train_sessions=["2","3","4"], test_sessions=["1"])
-#test_transformer_multi_user_by_session(train_sessions=["1","3","4"], test_sessions=["2"])
-#test_transformer_multi_user_by_session(train_sessions=["1","2","4"], test_sessions=["3"])
-#test_transformer_multi_user_by_session(train_sessions=["1","2","3"], test_sessions=["4"])
+#test_conv_1d_multi_user_by_session(train_sessions=["2","3","4"], test_sessions=["1"])
+#test_conv_1d_multi_user_by_session(train_sessions=["1","3","4"], test_sessions=["2"])
+#test_conv_1d_multi_user_by_session(train_sessions=["1","2","4"], test_sessions=["3"])
+#test_conv_1d_multi_user_by_session(train_sessions=["1","2","3"], test_sessions=["4"])
 
 #for test_people, train_people in zip([["joel"], ["manuel"], ["pedro"]], [["manuel", "pedro"], ["joel", "pedro"], ["joel", "manuel"]]):
-#    test_transformer_inter_user(train_users=train_people, test_users=test_people)
+#    test_conv_1d_inter_user(train_users=train_people, test_users=test_people)
 
 #for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"]], [["1"],["2"]]):
-#    test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
+#    test_conv_1d_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
 #for train_sessions, test_sessions in zip([["1","2","4"], ["1","2","3"]], [["3"],["4"]]):
-#    test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
+#    test_conv_1d_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
 
-#test_transformer_intra_user(train_users=["joel"], test_users=["joel"])
-#test_transformer_intra_user(train_users=["manuel"], test_users=["manuel"])
-#test_transformer_intra_user(train_users=["pedro"], test_users=["pedro"])
+#test_conv_1d_intra_user(train_users=["joel"], test_users=["joel"])
+#test_conv_1d_intra_user(train_users=["manuel"], test_users=["manuel"])
+#test_conv_1d_intra_user(train_users=["pedro"], test_users=["pedro"])
 
-#test_transformer_multi_user()
+#test_conv_1d_multi_user()
