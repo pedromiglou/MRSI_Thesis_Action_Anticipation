@@ -88,10 +88,11 @@ def test_conv_1d(train_users, train_sessions, test_users=None, test_sessions=Non
         sum_conf_matrices += cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
     file_path = f"./results/{test_name}"
-    if "user" in test_params:
-        file_path += f"_{test_users[0] if test_users is not None else train_users[0]}"
-    if "session" in test_params:
-        file_path += f"_session_{test_sessions[0]}"
+    if test_params is not None:
+        if "user" in test_params:
+            file_path += f"_{test_users[0] if test_users is not None else train_users[0]}"
+        if "session" in test_params:
+            file_path += f"_session_{test_sessions[0]}"
 
 
     f = open(file_path+"_results.txt", "w")
@@ -128,16 +129,16 @@ test_conv_1d_inter_user = partial(test_conv_1d, train_sessions=["1","2","3","4"]
 #test_conv_1d_multi_user_by_session(train_sessions=["1","2","4"], test_sessions=["3"])
 #test_conv_1d_multi_user_by_session(train_sessions=["1","2","3"], test_sessions=["4"])
 
-for test_people, train_people in zip([["joel"], ["manuel"], ["pedro"]], [["manuel", "pedro"], ["joel", "pedro"], ["joel", "manuel"]]):
-   test_conv_1d_inter_user(train_users=train_people, test_users=test_people)
+#for test_people, train_people in zip([["joel"], ["manuel"], ["pedro"]], [["manuel", "pedro"], ["joel", "pedro"], ["joel", "manuel"]]):
+#   test_conv_1d_inter_user(train_users=train_people, test_users=test_people)
 
 #for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"]], [["1"],["2"]]):
 #    test_conv_1d_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
 #for train_sessions, test_sessions in zip([["1","2","4"], ["1","2","3"]], [["3"],["4"]]):
 #    test_conv_1d_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
 
-test_conv_1d_intra_user(train_users=["joel"])
-test_conv_1d_intra_user(train_users=["manuel"])
-test_conv_1d_intra_user(train_users=["pedro"])
+#test_conv_1d_intra_user(train_users=["joel"])
+#test_conv_1d_intra_user(train_users=["manuel"])
+#test_conv_1d_intra_user(train_users=["pedro"])
 
 test_conv_1d_multi_user()
