@@ -89,7 +89,7 @@ def test_transformer(train_users, train_sessions, test_users=None, test_sessions
 
     file_path = f"./results/{test_name}"
     if "user" in test_params:
-        file_path += f"_{test_users[0]}"
+        file_path += f"_{test_users[0] if test_users is not None else train_users[0]}"
     if "session" in test_params:
         file_path += f"_session_{test_sessions[0]}"
 
