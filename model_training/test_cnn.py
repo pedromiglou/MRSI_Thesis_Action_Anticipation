@@ -113,7 +113,7 @@ test_conv_1d_multi_user = partial(test_conv_1d, train_users = ["joel", "manuel",
 test_conv_1d_multi_user_by_session = partial(test_conv_1d, train_users = ["joel", "manuel", "pedro"], test_users=["joel", "manuel", "pedro"],
                                             num_test_samples=2713, n_simulations=25, test_name="conv_1d_multi_user_by_session", test_params=["session"])
 
-test_conv_1d_intra_user = partial(test_conv_1d, train_sessions=["1","2","3","4"], test_sessions=["1","2","3","4"], n_simulations=25,
+test_conv_1d_intra_user = partial(test_conv_1d, train_sessions=["1","2","3","4"], n_simulations=25,
                                       num_test_samples=732, test_name = "conv_1d_intra_user", test_params=["user"])
 
 test_conv_1d_intra_user_by_session = partial(test_conv_1d, n_simulations=25, test_name = "conv_1d_intra_user_by_session",
@@ -128,16 +128,16 @@ test_conv_1d_inter_user = partial(test_conv_1d, train_sessions=["1","2","3","4"]
 #test_conv_1d_multi_user_by_session(train_sessions=["1","2","4"], test_sessions=["3"])
 #test_conv_1d_multi_user_by_session(train_sessions=["1","2","3"], test_sessions=["4"])
 
-#for test_people, train_people in zip([["joel"], ["manuel"], ["pedro"]], [["manuel", "pedro"], ["joel", "pedro"], ["joel", "manuel"]]):
-#    test_conv_1d_inter_user(train_users=train_people, test_users=test_people)
+for test_people, train_people in zip([["joel"], ["manuel"], ["pedro"]], [["manuel", "pedro"], ["joel", "pedro"], ["joel", "manuel"]]):
+   test_conv_1d_inter_user(train_users=train_people, test_users=test_people)
 
 #for train_sessions, test_sessions in zip([["2","3","4"], ["1","3","4"]], [["1"],["2"]]):
 #    test_conv_1d_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
 #for train_sessions, test_sessions in zip([["1","2","4"], ["1","2","3"]], [["3"],["4"]]):
 #    test_conv_1d_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
 
-#test_conv_1d_intra_user(train_users=["joel"], test_users=["joel"])
-#test_conv_1d_intra_user(train_users=["manuel"], test_users=["manuel"])
-#test_conv_1d_intra_user(train_users=["pedro"], test_users=["pedro"])
+test_conv_1d_intra_user(train_users=["joel"])
+test_conv_1d_intra_user(train_users=["manuel"])
+test_conv_1d_intra_user(train_users=["pedro"])
 
-#test_conv_1d_multi_user()
+test_conv_1d_multi_user()
