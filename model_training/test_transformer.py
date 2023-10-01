@@ -113,7 +113,7 @@ test_transformer_multi_user = partial(test_transformer, train_users = ["joel", "
 test_transformer_multi_user_by_session = partial(test_transformer, train_users = ["joel", "manuel", "pedro"], test_users=["joel", "manuel", "pedro"],
                                                  num_test_samples=2713, n_simulations=25, test_name="transformer_multi_user_by_session", test_params=["session"])
 
-test_transformer_intra_user = partial(test_transformer, train_sessions=["1","2","3","4"], test_sessions=["1","2","3","4"], n_simulations=25,
+test_transformer_intra_user = partial(test_transformer, train_sessions=["1","2","3","4"], n_simulations=25,
                                       num_test_samples=732, test_name = "transformer_intra_user", test_params=["user"])
 
 test_transformer_intra_user_by_session = partial(test_transformer, n_simulations=25, test_name = "transformer_intra_user_by_session",
@@ -136,8 +136,8 @@ test_transformer_inter_user = partial(test_transformer, train_sessions=["1","2",
 #for train_sessions, test_sessions in zip([["1","2","4"], ["1","2","3"]], [["3"],["4"]]):
 #    test_transformer_intra_user_by_session(train_users=["joel"], test_users=["joel"], train_sessions=train_sessions, test_sessions=test_sessions)
 
-#test_transformer_intra_user(train_users=["joel"], test_users=["joel"])
-#test_transformer_intra_user(train_users=["manuel"], test_users=["manuel"])
-#test_transformer_intra_user(train_users=["pedro"], test_users=["pedro"])
+#test_transformer_intra_user(train_users=["joel"])
+#test_transformer_intra_user(train_users=["manuel"])
+#test_transformer_intra_user(train_users=["pedro"])
 
 #test_transformer_multi_user()
