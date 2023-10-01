@@ -88,10 +88,11 @@ def test_transformer(train_users, train_sessions, test_users=None, test_sessions
         sum_conf_matrices += cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
     file_path = f"./results/{test_name}"
-    if "user" in test_params:
-        file_path += f"_{test_users[0] if test_users is not None else train_users[0]}"
-    if "session" in test_params:
-        file_path += f"_session_{test_sessions[0]}"
+    if test_params is not None:
+        if "user" in test_params:
+            file_path += f"_{test_users[0] if test_users is not None else train_users[0]}"
+        if "session" in test_params:
+            file_path += f"_session_{test_sessions[0]}"
 
 
     f = open(file_path+"_results.txt", "w")
@@ -140,4 +141,4 @@ test_transformer_inter_user = partial(test_transformer, train_sessions=["1","2",
 #test_transformer_intra_user(train_users=["manuel"])
 #test_transformer_intra_user(train_users=["pedro"])
 
-#test_transformer_multi_user()
+test_transformer_multi_user(n_simulations=12)
