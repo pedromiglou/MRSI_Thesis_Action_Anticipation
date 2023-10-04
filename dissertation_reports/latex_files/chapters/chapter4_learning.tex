@@ -1,9 +1,10 @@
 \chapter{Learning-Based Recognition of Human-Grasped Objects}
 \label{chapter:learning}
 
-\textcolor{red}{needs a better chapter introduction} This chapter covers this dissertation's learning part, including data collecting, dataset preprocessing, and the models' structures and optimizations.
+This chapter covers the development of machine learning models in order to recognize human-grasped objects. In particular, Section \ref{section:proposal_overview} formulates the problem with greater detail and describes the evaluation metrics. Section \ref{section:data_representation} details the data collecting and the dataset preprocessing and splitting. Section \ref{section:cnn_classifier} and Section \ref{section:transformer_classifier} describe the implementation of the CNN and Transformer models respectively and their results. Section \ref{section:comparative_analysis} compares the results of both models in three different cases. \textcolor{red}{Section \ref{section:human_intention_prediction} ... Section \ref{section:learning_final_remarks} ...}
 
 \section{Proposal Overview}
+\label{section:proposal_overview}
 
 \subsection{Problem Description and Formulation \textcolor{red}{(Must be changed)}}
 
@@ -57,6 +58,7 @@ In addition to the previous metrics, a Confusion Matrix can be used to visually 
 \end{figure}
 
 \section{Data Representation}
+\label{section:data_representation}
 
 \subsection{Dataset Acquisition}
 
@@ -96,7 +98,7 @@ After having a dataset, the data had to be processed to have a fitting structure
     \label{fig:dataset_examples2}
 \end{figure}
 
-The Mediapipe Hands Model can detect a variable number of hands in an image, and it was set up so that it would only detect up to two hands, meaning that its output can consist of no hands detected, of a set of 21 points hand detected, which can be either the left or the right hand, or two sets of 21 points if both hands were detected. To better understand the Mediapipe results in this particular context, six videos with 250 frames each were recorded in different scenarios. Then, for each scenario, the full-body model provided by MediaPipe was used to register whether the model detected the left hand, right hand, both hands, or none, resulting in the metrics in Table \ref{table:mediapipe_metrics}. These results show that there is a significant number of frames where the right hand, which is the one holding the object, is not detected.
+The Mediapipe Hands Model can detect a variable number of hands in an image, and it was set up so that it would only detect up to two hands, meaning that its output can consist of no hands detected, of a set of 21 points hand detected, which can be either the left or the right hand, or two sets of 21 points if both hands were detected. \textcolor{red}{To better understand the Mediapipe results in this particular context, six videos with 250 frames each were recorded in different scenarios. Then, for each scenario, the full-body model provided by MediaPipe was used to register whether the model detected the left hand, right hand, both hands, or none, resulting in the metrics in Table \ref{table:mediapipe_metrics}. These results show that there is a significant number of frames where the right hand, which is the one holding the object, is not detected.}
 
 \begin{table}[H]
     \centering
@@ -121,18 +123,58 @@ The Mediapipe Hands Model can detect a variable number of hands in an image, and
     \end{tabular}
 \end{table}
 
+\textcolor{red}{(new tables below)}
+
+Given that the Mediapipe Landmarks are a critical part of the project, it is important to understand if it is able to consistently detect the right hand in different situations. To achieve this, four scenarios were considered: hand open, hand closed, hand holding bottle, and hand holding phone with all of them being recorded both still and making similar movements. Table \ref{table:mediapipe_metrics3} shows the percentage of frames that generated keypoints and Table \ref{table:mediapipe_metrics4} shows the length of the longest sequence of consecutive frames without generating keypoints.
+
+\begin{table}[H]
+    \centering
+    \caption{Failure Percentage}
+    \label{table:mediapipe_metrics3}
+    \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        & Hand Open & Hand Closed & Holding Bottle & Holding Phone \\
+        \hline
+        No Movement & 100\% & 99.6\% & 99.2\% & 93.2\% \\
+        \hline
+        In Movement & 93.2\% & 98.4\% & 83.2\% & 84.8\% \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Longest Sequence of Empty Frames}
+    \label{table:mediapipe_metrics4}
+    \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        & Hand Open & Hand Closed & Holding Bottle & Holding Phone \\
+        \hline
+        No Movement & - & 1 & 2 & 17 \\
+        \hline
+        In Movement & 17 & 4 & 42 & 38 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+From the obtained results we can see that the landmarker is able to almost always detect the right hand. However, when holding an object in movement there can be a large interval of frames where the hand is not detected due to being obstructed by the object. 
+
 Given that the scope of this work is restricted to scenarios where the user grasps the objects with his right hand, the detected hands in each instance need to be filtered according to their handedness to avoid wrong predictions. This information can be given directly by the hands landmarker and by using the pose landmarker. The latter option is more reliable but it also increases the amount of processing. Assuming the results of the Pose Model are right, the results in Table \ref{table:mediapipe_metrics2}, consisting of the percentage of frames both models agree, were obtained with the same videos used for the previous table. These results show that for most frames both models agree about the handedness of the detected hands but when the right hand is grasping objects that require less common hand geometries, especially the screwdriver, the hands model is only able to correctly classify the handedness 55.1\% of the frames. To avoid this source of error, the images are also processed by the more reliable pose model.
 
 \begin{table}[H]
     \centering
     \caption{Mediapipe Hand Model Right Output Percentage in Different Scenarios}
     \label{table:mediapipe_metrics2}
-    \begin{tabular}{|l|l|l|l|l|l|}
+    \begin{tabular}{|l|l|l|l|l|l|l|}
         \hline
-        Hand\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Hand\multirow{2}{*}{} \\
-        Visible & Bottle & Cube & Phone & Screwdriver & Obstructed \\
+        & Hand\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Holding\multirow{2}{*}{} & Hand\multirow{2}{*}{} \\
+        & Visible & Bottle & Cube & Phone & Screwdriver & Obstructed \\
         \hline
-        92.7\% & 81.5\% & 71.1\% & 89.3\% & 55.1\% & 87.4\% \\
+        Left Hand & 92.7\% & 91.9\% & 71.5\% & 97.3\% & 57.1\% & 88.7\% \\
+        \hline
+        Right Hands & 95.5\% & 88.7\% & 99.2\% & 92.0\% & 96.4\% & 98.7\% \\
+        \hline
+        All Hands & 97.2\% & 81.5\% & 71.1\% & 89.3\% & 55.1\% & 87.4\% \\
         \hline
     \end{tabular}
 \end{table}
@@ -147,13 +189,23 @@ The points corresponding to the right hand are then subject to further processin
     \label{fig:dataset_examples3}
 \end{figure}
 
+Despite all classes having, initially, the same number of captured frames, after all the described processing some frames do not result in relevant data to use for training possibly resulting in an unbalanced dataset. Fig.~\ref{fig:dataset2_distribution} shows the final distribution of the second dataset throughout the different classes.
+
+\begin{figure}[H]
+    \centering
+    {\fontsize{10}{12}\selectfont\includesvg[width=0.85\textwidth]{figs/dataset_distribution.svg}}
+    \caption[Dataset Distribution]{Dataset Distribution}
+    \label{fig:dataset2_distribution}
+\end{figure}
+
 \subsection{Train-Validation-Test Split}
 
 In order to train the model, the dataset was split into three sets: the train set (60\%), the validation set (20\%), and the test set (20\%). The random variables in the data shuffling and splitting were also fixed so that the test set is always the same, and therefore, its data is never used to train or validate the model, even in different trains. During hyperparameter optimization, the different combinations are tested using 4-fold cross-validation, which means that the model is trained four times, and therefore every sample of data in the initial training and validation set was used both for training and validation. Additionally, early stopping was set up so that the model would stop training after 200 epochs without a better validation loss and restore the best weights.
 
 \section{Convolutional Neural Network Classifier}
+\label{section:cnn_classifier}
 
-Convolutional Neural Networks excel at detecting local relations. Given that each sample provided to the model is made of the 21 points that always follow the same structure representing the right hand, a one-dimensional convolutional neural network was used to take advantage of this characteristic.
+Convolutional Neural Networks excel at detecting local relations, which makes them an advantageous solution for this problem given that each sample provided to the model is made of the 21 3D points that always follow the same structure representing the right hand. Although the input data is bi-dimensional (21x3) resulting in a 2D kernel, a one-dimensional convolutional neural network was used so that the kernel only moves in one direction including all the point coordinates.
 
 \subsection{Model Selection}
 
@@ -302,6 +354,7 @@ After the model finished training, the metrics in Table \ref{table:cnn_dataset2_
 \end{figure}
 
 \section{Transformer Neural Network Classifier}
+\label{section:transformer_classifier}
 
 As said in Subsection \ref{subsection:transformer_neural_networks}, Transformer Neural Networks shine at capturing long-range dependencies and relationships. Therefore, because the points obtained from Mediapipe have a specific order, we can use this ability to process structured data and effectively capture dependencies and patterns.
 
@@ -457,10 +510,25 @@ After the model finished training, the metrics in Table \ref{table:transformer_d
 \end{figure}
 
 \section{Comparative Analysis of Deep Models}
+\label{section:comparative_analysis}
 
+\textcolor{red}{(precisa de várias alterações relativas à reunião de amanhã)}
 In order to compare the models, they were evaluated in three different cases using different data for model training and testing.
 
 \subsubsection{First Case}
+
+\begin{table}[H]
+    \centering
+    \caption{Distribution of the Data in the First Case by User}
+    \label{table:data_distribution_first_case}
+    \begin{tabular}{|l|l|l|}
+        \hline
+        User1 & User2 & User3 \\
+        \hline
+        80\% train, 20\% test & 80\% train, 20\% test & 80\% train, 20\% test \\
+        \hline
+    \end{tabular}
+\end{table}
 
 The first case corresponds to the method the models were tested in the previous sections. This means that all data was randomly split into the training and test sets resulting in the metrics shown in Table \ref{table:results_first_case}. These results show both models having similar performances of over 92\%.
 
@@ -480,6 +548,23 @@ The first case corresponds to the method the models were tested in the previous 
 \end{table}
 
 \subsubsection{Second Case}
+
+\begin{table}[H]
+    \centering
+    \caption{Distribution of the Data in the Second Case by User}
+    \label{table:data_distribution_second_case}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        & User1 & User2 & User3 \\
+        \hline
+        First Training & 80\% train, 20\% test & - & - \\
+        \hline
+        Second Training & - & 80\% train, 20\% test & - \\
+        \hline
+        Third Training & - & - & 80\% train, 20\% test \\
+        \hline
+    \end{tabular}
+\end{table}
 
 In the second case, the model was trained once for each user present in the dataset and, on each training, only the data collected with one user was used for both training and testing, resulting in the metrics in the tables \ref{table:results_second_case}. These results show that when testing with only one user, the results with the CNN are similar, but those with the Transformer are slightly lower. One justification could be that even with less variety in the data, the fact that there are fewer samples of data might counterbalance that. Given that the Transformers tend to need more training data, this also justifies the difference in the accuracy.
 
@@ -512,6 +597,23 @@ In the second case, the model was trained once for each user present in the data
 
 \subsubsection{Third Case}
 
+\begin{table}[H]
+    \centering
+    \caption{Distribution of the Data in the Third Case by User}
+    \label{table:data_distribution_third_case}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        & User1 & User2 & User3 \\
+        \hline
+        First Training & test & train & train \\
+        \hline
+        Second Training & train & test & train \\
+        \hline
+        Third Training & train & train & test \\
+        \hline
+    \end{tabular}
+\end{table}
+
 In the third case, the model was also trained once for each user in the dataset. However, this time, the model was trained with the data collected from two users, with the data from the third being used for testing resulting in the metrics in the tables \ref{table:results_third_case}. These results show that testing with a user whose data was not used to train a model produces significantly lower results. This can be justified due to different people grasping objects in different ways. Additionally, since the dataset is made of data derived from only three people, removing one from the training data significantly reduces the variety of the training data.
 
 \begin{table}[H]
@@ -543,10 +645,12 @@ In the third case, the model was also trained once for each user in the dataset.
 
 \subsubsection{Summary}
 
-From the three cases evaluated, the CNN performed better in situations requiring more generalization capability and with less data, such as the second and third cases. However, in the first case, the Transformer obtained similar metrics, while in the other cases, the metrics were lower by a relatively small difference. From the confusion matrixes in Fig.~\ref{fig:cnn_dataset2_confusion_matrix} and Fig.~\ref{fig:transformer_dataset2_confusion_matrix} we can also see that the Transformer has a more consistent performance across all classes in comparison with the CNN which shows higher differences between per-class accuracies. Given that a key difference in the second and third cases is the amount of data, this may mean that, with a bigger dataset, the performance of the Transformer might surpass the CNN.
+From the three cases evaluated, the CNN performed better in situations requiring more generalization capability and with less data, such as the second and third cases. However, in the first case, the Transformer obtained similar metrics, while in the other cases, the metrics were lower by a relatively small difference. From the confusion matrixes in Fig.~\ref{fig:cnn_dataset2_confusion_matrix} and Fig.~\ref{fig:transformer_dataset2_confusion_matrix} we can also see that the Transformer has a more consistent performance across all classes in comparison with the CNN which shows higher differences between per-class accuracies. Considering the dataset distribution from Fig.~\ref{fig:dataset2_distribution} we can also see that both models have greater accuracies in the most common classes. Given that a key difference in the second and third cases is the amount of data, this may mean that, with a bigger dataset, the performance of the Transformer might generally surpass the CNN.
 
 \section{Human Intention Prediction in Shared Tasks}
+\label{section:human_intention_prediction}
 
 \textcolor{red}{(integration in the system described in the last chapter)}
 
 \section{Final Remarks}
+\label{section:learning_final_remarks}
