@@ -1,17 +1,17 @@
 \chapter{\acl{hrc} System}
 \label{chapter:hrc_system}
 
-This chapter reviews the hardware and software tools used during development and the software developed to support a practical implementation of action anticipation in human-robot collaboration. In particular, Section \ref{section:system_architecture} describes the system architecture including the available hardware and the software tools chosen to establish communication between all the parts. \textcolor{red}{complete this...}
+This chapter reviews the hardware and software tools used during development and the software developed to support a practical implementation of action anticipation in human-robot collaboration. In particular, Section \ref{section:system_architecture} details the system architecture including the available hardware and the software tools chosen to establish communication between all the parts. Section \ref{section:methodologies} describes the research methodologies employed in this dissertation. Section \ref{section:first_experiments} delves into the implementation of initial experiments which integrate all the parts to simulate anticipatory behavior. Section \ref{section:materials_methods_final_remarks} provides final remarks about the content of this chapter and its connection to the next.
 
 \section{System Architecture \textcolor{red}{(LARCC, ROS-based framework)}}
 \label{section:system_architecture}
 
 The experimental part of this thesis was developed using the setup available at the Laboratory for Automation and Robotics (LAR) located in the Department of Mechanical Engineering at the University of Aveiro. This setup was designed to meet the requirements of the AUGMANITY mobilizing project\footnote{AUGMANITY website: \url{https://www.augmanity.pt}} and it contains an UR10e collaborative robot and multiple cameras.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centerline{\includegraphics[width=0.9\textwidth, trim={0 5cm 0 0}, clip]{figs/setup2.jpg}}
 \caption[setup]{LAR hardware setup}
-\label{fig:ur10e}
+\label{fig:LARCC}
 \end{figure}
 
 \subsection{\acf{ros}}
@@ -37,7 +37,7 @@ For our system, the ROS 1 Noetic distribution was chosen over the more recent RO
 
 In order to capture the necessary information from the environment, two Orbbec Astra Pro RGBD cameras were used. This camera model was developed by Orbbec Technologies and it is frequently used in computer vision and robotics\cite{AstraPro}. Among the available cameras, it was chosen since it allowed to capture both color and depth images.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centerline{\includegraphics[width=0.6\textwidth]{figs/Astra.jpg}}
 \caption[Orbbec Astra Pro]{Orbbec Astra Pro \cite{AstraPro}}
 \label{fig:orbbec_astra_pro}
@@ -54,7 +54,7 @@ On the other hand, the depth image is used to obtain the position of the human i
 
 The collaborative robot available for this work is the UR10e. This robot model was developed by Universal Robots and it allows for payloads up to 12.5 kg and has a reach of 1300mm being suitable for tasks such as machine tending, palletizing, and packaging\cite{UR10e}. The one used in this work is equipped with a \textcolor{red}{(missing gripper model)} gripper.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centerline{\includegraphics[width=0.49\textwidth]{figs/UR10e.png}}
 \caption[UR10e]{UR10e collaborative robot \cite{UR10e_image} \textcolor{red}{(missing gripper image)}}
 \label{fig:ur10e}
@@ -84,8 +84,9 @@ TensorFlow is one of the most popular machine learning frameworks along with Pyt
 \end{itemize}
 
 \section{Methodologies/Research Methods}
+\label{section:methodologies}
 
-This section covers the methodologies employed to research anticipatory systems.
+This section covers the methodologies employed in this dissertation to research anticipatory systems.
 
 \subsection{Knowledge-Based Systems \textcolor{red}{(Experta)}}
 
@@ -109,7 +110,7 @@ OpenPose\cite{Cao2021,Simon2017,Cao2018,Wei2016}\footnote{OpenPose documentation
 
 OpenPose can be used through the command-line or using an API for Python or C++.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centerline{\includegraphics[height=1.55in]{figs/openpose.jpeg}\includegraphics[height=1.55in]{figs/openpose2.PNG}}
 \caption[OpenPose Examples]{OpenPose Examples \cite{Cao2021,Simon2017}}
 \label{openpose}
@@ -119,7 +120,7 @@ OpenPose can be used through the command-line or using an API for Python or C++.
 
 OpenPifPaf\cite{Kreiss2021,Kreiss2019}\footnote{OpenPifPaf documentation: \url{https://openpifpaf.github.io}} is an open-source project that aims to detect, associate and track semantic key points. Detecting human joints is an example of its usage but it is also able to generalize this detection to other classes such as cars and animals. It can be installed as a python package which can then be imported.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centerline{\includegraphics[width=0.6\textwidth]{figs/openpifpaf.jpeg}}
 \caption[OpenPifPaf Example]{OpenPifPaf Example \cite{Kreiss2021}}
 \label{openpifpaf}
@@ -135,7 +136,7 @@ The Hand Landmarker detects the landmarks of the hands in an image, as shown in 
 The Pose Landmarker detects the landmarks of the pose over the entire body in an image, as shown in Fig.~\ref{fig:mediapipe_pose_landmarks}.  This task uses a machine learning (ML) model that can analyze both static data or a continuous stream and outputs the body pose landmarks in image coordinates and in 3-dimensional world coordinates.
 \fi
 
-\begin{figure}[H]
+\begin{figure}[!ht]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \adjincludegraphics[width=\textwidth, trim={{.15\width} {0} {.05\width} {0}}, clip]{figs/hand_landmarks.png}
@@ -155,46 +156,51 @@ The Pose Landmarker detects the landmarks of the pose over the entire body in an
 
 \subsection{Convolutional Neural Networks}
 
+Convolutional Neural Networks (CNN) are currently one of the most popular deep learning architectures and they are typically used to take advantage of the matrix structure of input data such as images and video \cite{Sarker2021}.  This architecture was originally introduced in the 1988 article \textcolor{red}{(article ref here)} and has since been further improved.
+
+\textcite{Alom2019} describes the architecture as the junction of two main parts: Feature Extractors and a Classifier, as shown in Fig.~\ref{fig:cnn_arch}. The first part is composed of one or more pairs of convolutional and pooling layers. In a convolutional layers, features are extracted from a certain part of the input, such as a region of pixels in an image, with a sliding window named kernel that goes through the entire input, resulting in feature maps. Then, in the pooling layers, the feature maps are downsampled with the most common strategy being Max Pooling which simply returns the maximum value of the input. The repetition of these processes makes it so the dimension of the features progressively decreases and higher-level features can eventually be derived from the the previous layers. Finally, the classifier is made up of feed-forward layers and a final classifier layer and it is responsible for converting the higher-level feature maps into an array of scores for each class.
+
+\begin{figure}[!ht]
+\centerline{\includegraphics[width=0.9\textwidth]{figs/cnn_arch.png}}
+\caption[CNN Architecture]{CNN Architecture \cite{Alom2019}}
+\label{fig:cnn_arch}
+\end{figure}
+
 \subsection{Transformer Neural Networks}
 \label{subsection:transformer_neural_networks}
 
-Transformer Neural Networks consist of a new kind of neural network architecture that aims to solve tasks involving sequence data such as those in natural language processing. They were initially proposed in the "Attention Is All You Need" paper published by Google Research in 2017\cite{Vaswani2017} and proceeded to surpass several established architectures in numerous tasks using attention mechanisms that identify complex relationships between elements in the input sequence.
+Transformer Neural Networks consist of a new kind of neural network architecture that aims to solve tasks involving sequence data such as those in natural language processing. They were initially proposed in the "Attention Is All You Need" paper published by Google Research in 2017\cite{Vaswani2017} and proceeded to surpass several established architectures in numerous tasks using attention mechanisms that identify complex relationships between elements in the input sequence. According to \textcolor{red}{https://learning.oreilly.com/library/view/deep-learning-with/9781803232911/}, the transformer's architectures are built upon 4 core concepts: % positional encoding, attention, self-attention, and multi-head (self-)attention.
 
-According to \textcolor{red}{https://learning.oreilly.com/library/view/deep-learning-with/9781803232911/}, the transformer's architectures are built upon 4 core concepts: positional encoding, attention, self-attention, and multi-head (self-)attention.
+\begin{itemize}
+    \item \textbf{Positional Encoding} - RNNs are able to work with sequences given that the tokens are processed sequentially. However, this approach comes with the disadvantage of the model having greater difficulty in analyzing long sequences, since important data might be forgotten. Transformers address this issue by using positional encoding, assigning a unique number to each token representing its position in the input sequence. This enables the transformer to learn the significance of each token's position.
+    
+    \item \textbf{Attention} - Attention is a concept that consists in measuring the relative importance of the input tokens to the output tokens. It was initially designed to facilitate language translation given that, when translating text from one language to the other, each word in the output can be influenced by multiple words from the input, and it became a key idea behind the transformer's architecture.
 
-\subsubsection{Positional encoding}
+    \item \textbf{Self-attention} - Self-attention derives from attention but consists in measuring the relative importance of the input tokens to the other tokens of the input sequence instead of the output tokens. This concept allows the model to learn the relationships between tokens and their relevance in the input sequence even if they are far away.
 
-RNNs are able to work with sequences given that the tokens are processed sequentially. However, this approach comes with the disadvantage of the model having greater difficulty in analyzing long sequences, since important data might be forgotten. Transformers address this issue by using positional encoding, assigning a unique number to each token representing its position in the input sequence. This enables the transformer to learn the significance of each token's position.
+    \item \textbf{Multi-head (self-)attention} - Multi-head (self-)attention refers to the fact that a transformer can have multiple attention heads. Each attention head performs a parallel process of (self-)attention allowing for multiple resulting weight matrices and, therefore, multiple definitions of relevance between the tokens.
+\end{itemize}
 
-\subsubsection{Attention}
+The Fig.~\ref{fig:transformer_arch} shows the first published Transformer architecture. Initially, positional encodings are added to the input and output embeddings providing information about the relative positions. Then, in the encoder (left side of the figure), the input goes through a multi-head (self-)attention layer and a position-wise feedforward layer. In the decoder (right side of the figure), a different multi-head attention is applied on the output embeddings and its output is used alongside the output of the encoder in another multi-head self-attention layer ending in a feedforward layer. Finally, the output of the last transformer block is passed on to a dense layer converting it into a sequence of probabilities.
 
-Attention is a concept that consists in measuring the relative importance of the input tokens to the output tokens. It was initially designed to facilitate language translation given that, when translating text from one language to the other, each word in the output can be influenced by multiple words from the input, and it became a key idea behind the transformer's architecture.
-
-\subsubsection{Self-attention}
-
-Self-attention derives from attention but consists in measuring the relative importance of the input tokens to the other tokens of the input sequence instead of the output tokens. This concept allows the model to learn the relationships between tokens and their relevance in the input sequence even if they are far away.
- 
-\subsubsection{Multi-head (self-)attention}
-
-Multi-head (self-)attention refers to the fact that a transformer can have multiple attention heads. Each attention head performs a parallel process of (self-)attention allowing for multiple resulting weight matrices and, therefore, multiple definitions of relevance between the tokens.
-
-\subsubsection{Architecture}
-
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centerline{\includegraphics[height=6in]{figs/transformer.jpg}}
 \caption[Transformer Architecture]{Transformer Architecture \cite{Vaswani2017}}
 \label{fig:transformer_arch}
 \end{figure}
 
 \section{Integration of First Anticipation Experiments}
+\label{section:first_experiments}
 
-\textcolor{red}{This section covers the implementation of the human-robot collaboration infrastructure that will serve as a base for an anticipation application and the first anticipation experiments realized to validate it.}
+This section covers the integration of previously described tools and then the implementation of the first experiments to simulate anticipatory behavior in human-robot collaboration.
+
+%\textcolor{red}{This section covers the implementation of the human-robot collaboration infrastructure that will serve as a base for an anticipation application and the first anticipation experiments realized to validate it.}
 
 \subsection{Assembly Task: Build a Three-Color Flag \textcolor{red}{(Problem description: interaction experiment and focus on integration...)}}
 
 To develop the necessary infrastructure, a concrete problem was needed. For this work, it was chosen to use sequences of big \textcolor{red}{"Lego"} blocks comparable to the stripes of a flag, as shown in Fig~\ref{fig:flags_examples}.
 
-\begin{figure}[H]%[!ht]
+\begin{figure}[!ht]%[!ht]
     \centering
     \input{figs/flag_stripes_assembly_task.tikz}
     \caption{Flags Examples}
@@ -203,7 +209,7 @@ To develop the necessary infrastructure, a concrete problem was needed. For this
 
 These blocks are initially placed behind the robot, and the robot must fetch them and place them next to the user so that the user can build a flag. The blocks must be fetched in a certain order and there must be a way for the user to tell the robot that it is fetching the wrong block.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centerline{\includegraphics[width=0.9\textwidth]{figs/table_workspace.png}}
 \caption[Table Workspace]{Table Workspace}
 \label{fig:table_workspace}
@@ -211,7 +217,7 @@ These blocks are initially placed behind the robot, and the robot must fetch the
 
 Before the anticipation experiments, a base infrastructure was developed to build upon, integrating the perception system described in Subsection \ref{subsection:perception_system} and the manipulator arm control system described in Subsection \ref{subsection:manipulator_arm_control}. Connecting both of them is a decision-making node as shown in Fig~\ref{fig:ros_architecture}. The logic in this node is implemented through a state machine with the behavior in each state corresponding to a method of a class, which facilitates the integration of additional logic by using subclasses of that class.
 
-\begin{figure}[H]%[!ht]
+\begin{figure}[!ht]%[!ht]
     \centering
     \input{figs/ros_architecture.tikz}
     \caption{ROS Architecture}
@@ -224,7 +230,7 @@ The initial decision-making logic developed relied on interactions between the r
 
 As said before, the decision making node contains an internal state machine. Although the logic of some states changes depending on the solution, all implementations follow the same general design represented in the state machine diagram shown in Fig.~\ref{fig:state_machine}.
 
-\begin{figure}[H]%[!ht]
+\begin{figure}[!ht]%[!ht]
     \centering
     \input{figs/general_state_machine.tikz}
     \caption{State Machine}
@@ -289,3 +295,6 @@ This is a group of nodes responsible for planning the robot's trajectory in each
 \fi
 
 \section{Final Remarks}
+\label{section:materials_methods_final_remarks}
+
+\textcolor{red}{Connect the work in this chapter to the next}

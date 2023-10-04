@@ -23,7 +23,7 @@ In particular, sports is a field where, according to \textcite{Smith2016}, \text
 
 \acl{ml} algorithms have been increasingly more common in the last years due to, for example, their ability to deal with multidimensional data. These algorithms can automatically learn from data and make predictions or decisions, which makes them a prime candidate to use in the context of human action anticipation in collaborative environments. The most common strategies in \acs{ml} are Supervised Learning, Unsupervised Learning, and Reinforcement Learning. \if{0}As we can see in Fig.~\ref{machinelearning} obtained from a review article about HRC in general, supervised learning and reinforcement learning are dominant in this area, with composite solutions surpassing unsupervised learning in the most recent year showed.
 
-\begin{figure}[H]
+\begin{figure}[!ht]
 \centerline{\includegraphics[width=6in]{figs/machinelearning.PNG}}
 \caption{Number of articles relevant to the HRC review from each machine learning technique throughout the years\cite{Semeraro2023}}
 \label{machinelearning}
@@ -56,7 +56,7 @@ Dimensionality reduction is a technique that aims to reduce the number of featur
 
 \acl{rl} is different from the previous approaches because it does not need a dataset. According to \textcite{Alom2019}, the agent learns how to act in an unknown environment by interacting with it. After the agent's action, the environment returns an observation and a certain reward to the agent depending on the quality of the action. The agent uses the reward to update its internal model named policy improving its future performance and the cycle repeats, as shown in Fig.~\ref{rl_diagram}. This type of learning by trial and error has a certain resemblance to how humans gain knowledge, and it is useful when there is a need for an agent to make decisions in an environment that has considerable complexity, such as controlling a robot or playing a game.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centering
 %\includegraphics[width=7cm]{figs/rl_diagram.png}
 %Alternative in tikz :-) vsantos
@@ -160,7 +160,7 @@ After knowing which data is usually captured and provided to an algorithm, this 
 
 Predicting the next action of the worker can be represented as a classification problem since it is possible to use a sequence of images that must be classified as a particular future action class. Using Fig.~\ref{superviseddiagram} as an example, the high-five action should be predicted before the frames that contain it are captured. The previous work with this kind of algorithm mainly includes \acp{cnn} and \acp{rnn}, with the latter being the most common.
 
-\begin{figure}[H]
+\begin{figure}[!ht]
 \centerline{\includegraphics[width=6in]{figs/superviseddiagram.PNG}}
 \caption[Action Anticipation using Supervised Learning diagram]{Action Anticipation using Supervised Learning diagram\cite{Gammulle2019}}
 \label{superviseddiagram}
@@ -217,7 +217,7 @@ Finally, safety is a topic that must always be mentioned when robots work with h
 
 In \cite{Psarakis2022}, the authors attempted to create a sense of anticipation in humans towards the robot's movements through visual cues of the robot's upcoming action, which is the reverse of what it is being tried to achieve in the other reviewed papers. As with the previous article, they also made it so the robot must reduce its movement speed when close to the robot. Although it was only tested in the Virtual Reality simulation shown in Fig.~\ref{vr}, where the users feel safer, they concluded that the efficiency of the collaboration was increased, and the user had a greater feeling of safety and trust. Furthermore, knowing what the robot will do next also decreases the risk of a collision since the user will avoid the space where the robot is working, increasing safety.
 
-\begin{figure}[H]
+\begin{figure}[!ht]
 \centerline{\includegraphics[width=3.5in]{figs/reverse.PNG}}
 \caption{VR Simulation of \cite{Psarakis2022}, the orange means the robot will pick that puck next}
 \label{vr}
