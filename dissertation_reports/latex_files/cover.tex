@@ -81,8 +81,8 @@
 
 %%% Uncomment one of the following options:
 %\DocumentTypeThesis
-\DocumentTypeThesisProposal
-%\DocumentTypeDissertation
+%\DocumentTypeThesisProposal
+\DocumentTypeDissertation
 
 %%% Uncomment if you are a student of a MAP Doctoral program 
 %%% http://www.map.edu.pt/
@@ -113,8 +113,9 @@
 
 %%% OPTIONAL: add a quotation if you like.
 %% Optional Quotation
-\Quote{\selectlanguage{english}The greatest challenge to any thinker is stating
-the problem in a way that will allow a solution}{Bertrand Russell}
+%\Quote{\selectlanguage{english}The greatest challenge to any thinker is stating the problem in a way that will allow a solution}{Bertrand Russell}
+
+\Quote{\selectlanguage{english}Predicting the future isn’t magic, it’s artificial intelligence.}{Dave Waters}
 
 %%% Edit your supervisor's information.
 %%%
@@ -133,7 +134,7 @@ the problem in a way that will allow a solution}{Bertrand Russell}
 %%% | auxiliar convidado     |
 %%% --------------------------
 %% Supervisor information
-\Supervisor{Filipe Silva}{associado}
+\Supervisor{Filipe Silva}{auxiliar}
 
 %%% OPTIONAL: you can add a second supervisor.
 %%%
@@ -149,7 +150,7 @@ the problem in a way that will allow a solution}{Bertrand Russell}
 %%% school    : University/Scholl name; Choose the
 %%%             preposition accordingly.
 %% Optional SecondSuperviser information
-\SecondSupervisor{Vítor Santos}{auxiliar convidado}{do Departamento de Matemática}{da Universidade de Aveiro}
+\SecondSupervisor{Vítor Santos}{associado c/ agregação}{do Departamento de Engenharia Mecânica}{da Universidade de Aveiro}
 
 %%% Edit your degree information.
 %%%
@@ -165,24 +166,23 @@ the problem in a way that will allow a solution}{Bertrand Russell}
 %%%
 %%% \GrantText{grant1}{grant2}
 %% Optional Grant support texts
-\GrantText{Texto Apoio financeiro do POCTI no âmbito do III Quadro Comunitário de Apoio.}
-          {Texto Apoio financeiro da FCT e do FSE no âmbito do III Quadro Comunitário de Apoio.}
+\GrantText{The present study was developed in the scope of the Project Augmented Humanity [POCI-01-0247-FEDER-046103], financed by Portugal 2020, under the Competitiveness and Internationalization Operational Program, the Lisbon Regional Operational Program, and by the European Regional Development Fund}
 
 %%% OPTIONAL: Add a dedication text.
 %% Optional Dedication text
-\Dedication{Dedico este trabalho à minha esposa e filho pelo incansável apoio.}
+%\Dedication{Dedico este trabalho à minha esposa e filho pelo incansável apoio.}
 
 %%% OPTIONAL: Add an acknowledgement text
 %% Optional Acknowledgement text
-\Acknowledgements{Agradeço toda a ajuda a todos os meus colegas e companheiros.}
+\Acknowledgements{Agradeço ao meu orientador Filipe Silva e co-orientador Vítor Santos por toda a dedicação e ajuda durante o desenvolvimento desta dissertação. Quero também agradecer aos meus amigos e família que me apoiaram durante o percurso.}
 
 %%% Edit the keywords and abstract in Portuguese
 %%% Don't forget to remove the \blindtext[3]
 %%%  declaration.
 %%% Don't remove the \selectlanguage statement or you will end with incorrect hyphenation
 %% Mandatory Keywords and Abstract in Portuguese
-\Abstract{Palavras Chave}{texto livro, arquitetura, história, construção, materiais de construção, saber tradicional.}
-         {Resumo}{\selectlanguage{portuguese}Um resumo é um pequeno apanhado de um trabalho mais longo (como uma tese, dissertação ou trabalho de pesquisa). O resumo relata de forma concisa os objetivos e resultados da sua pesquisa, para que os leitores saibam exatamente o que se aborda no seu documento.\\Embora a estrutura possa variar um pouco dependendo da sua área de estudo, o seu resumo deve descrever o propósito do seu trabalho, os métodos que você usou e as conclusões a que chegou.\\Uma maneira comum de estruturar um resumo é usar a estrutura IMRaD. Isso significa: \begin{itemize} \item Introdução \item Métodos \item Resultados \item Discussão \end{itemize} Veja mais pormenores aqui:\\\texttt{https://www.scribbr.com/dissertation/abstract/}}
+\Abstract{Palavras Chave}{Colaboração Humano-Robô, Aprendizagem Automática, Reconhecimento de Objetos, Antecipação de Ações, Modelo Preditivo, Controlador de Robô, Robô Colaborativo}
+         {Resumo}{\selectlanguage{portuguese}O aumento da diversidade de produtos comerciais devido à evolução da tecnologia e do nível de vida originou uma crescente necessidade por processos de fabrico flexíveis que correspondam às necessidades de produção, principalmente nas pequenas empresas. Embora a solução mais habitual para estas necessidades seja a utilização de operadores humanos, que proporcionam a flexibilidade e a precisão necessárias, isto tem um custo maior. Em contrapartida, os robôs industriais oferecem um preço relativamente menor e demostram maior capacidade para tarefas pesadas e repetitivas. A Colaboração Humano-Robô surge como um conceito que complementa a flexibilidade de um trabalhador humano com a força e o menor custo de um trabalhador robótico no mesmo espaço de trabalho. Avanços recentes no campo da robótica colaborativa visam dotar os robôs industriais de capacidades de previsão e antecipação. Em muitas tarefas partilhadas, a capacidade do robô de perceber e reconhecer com precisão os objetos que estão a ser manipulados pelo operador humano é crucial para fazer previsões sobre as intenções do operador. Neste contexto, esta dissertação propõe uma nova estrutura baseada em aprendizagem para permitir que um robô auxiliar reconheça o objeto manipulado pelo operador humano com base no padrão das articulações da mão e dos dedos. A framework combina os pontos fortes do software MediaPipe na detecção de pontos de referência das mãos a partir de uma imagem RGB com um classificador multiclasse profundo que prevê o objeto manipulado a partir dos pontos-chave extraídos. Este estudo concentra-se na comparação de duas arquiteturas de aprendizagem profunda, uma rede neuronal convolucional e uma transformer, em termos de exatidão, precisão, recall e F1-score. O desempenho do sistema de reconhecimento é testado em diferentes conjuntos de dados coletados com diferentes usuários e em diferentes sessões. Os resultados demonstram a eficácia dos métodos propostos, ao mesmo tempo que fornecem informações valiosas sobre os fatores que limitam a capacidade de generalização dos modelos.}
 
 %%% OPTIONAL: you can write the keywords and
 %%%  abstract in other languages. You can repeat
@@ -193,21 +193,21 @@ the problem in a way that will allow a solution}{Bertrand Russell}
 %% Optional Keywords and Abstract in additional languages.
 %\Abstract{Keywords}{textbook, architecture, history, construction, construction materials, traditional knowledge.}
 %         {Abstract}{\selectlanguage{english}An abstract is a short summary of a longer work (such as a thesis, dissertation or research paper).\\The abstract concisely reports the aims and outcomes of your research, so that readers know exactly what your paper is about.\\Although the structure may vary slightly depending on your discipline, your abstract should describe the purpose of your work, the methods you’ve used, and the conclusions you’ve drawn.\\One common way to structure your abstract is to use the IMRaD structure. This stands for: \begin{itemize} \item Introduction \item Methods \item Results \item Discussion \end{itemize} Check for more details here:\\\texttt{https://www.scribbr.com/dissertation/abstract/}}
-\Abstract{Keywords}{Human-Robot Collaboration, Machine Learning, Action Anticipation, Predictive Model, Robot Controller, Collaborative Robot}
-         {Abstract}{\selectlanguage{english}The increase in the diversity of products on sale due to the evolution of technology and standard of life results in a growing demand for flexible manufacturing that can meet the necessary production, especially in small companies. Although the usual solution for these needs is to use human operators, which provide the necessary flexibility and precision, this comes at a greater cost. In contrast, industrial robots offer a relatively smaller price and show more value in repetitive and heavy tasks. This is where Human-Robot Collaboration (HRC) comes into action since it complements the flexibility of a human worker with the strength and lower cost of the robotic worker in the same workspace. However, to achieve true collaboration it is not enough to react to the partner's movements and intentions, the robot must anticipate them. Inside HRC, Action Anticipation is a technique used to predict the actions of the human workers so that the robot can better plan its movements, increasing manufacturing efficiency and safety. This dissertation aims at the development of an anticipatory system that allows to enhance human-robot collaboration in an industrial setting. The collaborative scenario will be one in which the robot observes the actions of the human operator, makes predictions about the human’s intention, and reacts accordingly by executing a physical action. This document reviews the research in this field, including the commonly used data sources and algorithms with a particular focus on machine learning methodologies. The nature of anticipation and the mechanisms that support it remains open questions in the field of HRC. To this extent, this study may have an impact on how to model, implement and validate anticipatory processes in an assembly task. }
+\Abstract{Keywords}{Human-Robot Collaboration, Machine Learning, Object Recognition, Action Anticipation, Predictive Model, Robot Controller, Collaborative Robot}
+         {Abstract}{\selectlanguage{english}The increase in the diversity of products on sale due to the evolution of technology and standard of life results in a growing demand for flexible manufacturing that can meet the production necessities, especially in small companies. Although the usual solution for these needs is to use human operators, which provide the necessary flexibility and precision, this comes at a greater cost. In contrast, industrial robots provide a relatively smaller cost and show more value in repetitive and heavy tasks. This is where Human-Robot Collaboration comes into action since it complements the flexibility of a human worker with the strength and lower cost of the robotic worker in the same workspace. Recent advances in the field of collaborative robotics aim to endow industrial robots with prediction and anticipation abilities. In many shared tasks, the robot’s ability to accurately perceive and recognize the objects being manipulated by the human operator is crucial to make predictions about the operator's intentions. In this context, this dissertation proposes a novel learning-based framework to enable an assistive robot to recognize the object grasped by the human operator based on the pattern of the hand and finger joints. The framework combines the strengths of the commonly available software MediaPipe in detecting hand landmarks in an RGB image with a deep multi-class classifier that predicts the manipulated object from the extracted keypoints. This study focuses on the comparison between two deep architectures, a convolutional neural network, and a transformer, in terms of prediction accuracy, precision, recall, and F1-score. The performance of the recognition system is tested on different datasets with different users and in different sessions. The results demonstrate the effectiveness of the proposed methods while providing valuable insights into the factors that limit the generalization ability of models.}
 
 %%% Edit the Jury President information.
 %% First Member will be the President of the Jury
-\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
+%\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
 
 %%% Repeat the above declaration for additional
 %%%  members of the jury as many times as necessary.
 %% Additional members of the Jury
-\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
-\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
-\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
-\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
-\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
+%\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
+%\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
+%\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
+%\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
+%\JuriMember{Prof. Doutor João Antunes da Silva}{professor associado da Faculdade de Engenharia da Universidade do Porto}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
