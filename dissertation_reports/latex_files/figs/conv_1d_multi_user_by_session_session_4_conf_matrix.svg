@@ -1,0 +1,191 @@
+<ns0:svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns2="http://www.inkscape.org/namespaces/inkscape" xmlns:ns4="http://creativecommons.org/ns#" xmlns:ns6="http://www.w3.org/1999/xlink" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" width="312.55319pt" height="313.71298pt" viewBox="0 0 312.5532 313.71298" version="1.1" id="svg30" ns1:docname="conv_1d_multi_user_by_session_session_4_conf_matrix.svg" ns2:version="1.3 (0e150ed6c4, 2023-07-21)">
+  <ns1:namedview id="namedview30" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25" ns2:showpageshadow="2" ns2:pageopacity="0.0" ns2:pagecheckerboard="0" ns2:deskcolor="#d1d1d1" ns2:document-units="pt" ns2:zoom="1.6097006" ns2:cx="234.82628" ns2:cy="208.42386" ns2:window-width="1920" ns2:window-height="1080" ns2:window-x="0" ns2:window-y="0" ns2:window-maximized="1" ns2:current-layer="svg30" />
+  <ns0:metadata id="metadata1">
+    <rdf:RDF>
+      <ns4:Work>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:date>2023-09-30T23:52:29.459401</dc:date>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:creator>
+          <ns4:Agent>
+            <dc:title>Matplotlib v3.7.3, https://matplotlib.org/</dc:title>
+          </ns4:Agent>
+        </dc:creator>
+      </ns4:Work>
+    </rdf:RDF>
+  </ns0:metadata>
+  <ns0:defs id="defs1">
+    <ns0:style type="text/css" id="style1">*{stroke-linejoin: round; stroke-linecap: butt}</ns0:style>
+  </ns0:defs>
+  <ns0:g id="figure_1" transform="translate(-54.306793,-16.08703)">
+    <ns0:g id="axes_1">
+      <ns0:g id="patch_2">
+        <ns0:path d="M 94.34,329.4 H 366.46 V 57.28 H 94.34 Z" style="fill:#ffffff" id="path2" />
+      </ns0:g>
+      <ns0:g clip-path="url(#p1df1f740b8)" id="g2">
+        <ns0:image ns6:href="data:image/png;base64, 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" id="image178c60c840" transform="matrix(1,0,0,-1,0,272.16)" x="94.339996" y="-57.240002" width="272.16" height="272.16" />
+      </ns0:g>
+      <ns0:g id="matplotlib.axis_1">
+        <ns0:g id="xtick_1">
+          <ns0:g id="line2d_1">
+            <ns0:defs id="defs2">
+              <ns0:path id="md7660cb7c9" d="M 0,0 V -3.5" style="stroke:#000000;stroke-width:0.8" />
+            </ns0:defs>
+            <ns0:g id="g3">
+              <ns0:use ns6:href="#md7660cb7c9" x="128.355" y="57.279999" style="stroke:#000000;stroke-width:0.8" id="use2" />
+            </ns0:g>
+          </ns0:g>
+          <ns0:g id="text_1">
+            <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="128.355" y="47.160469" id="text3">bottle</ns0:text>
+          </ns0:g>
+        </ns0:g>
+        <ns0:g id="xtick_2">
+          <ns0:g id="line2d_2">
+            <ns0:g id="g4">
+              <ns0:use ns6:href="#md7660cb7c9" x="196.38499" y="57.279999" style="stroke:#000000;stroke-width:0.8" id="use3" />
+            </ns0:g>
+          </ns0:g>
+          <ns0:g id="text_2">
+            <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="196.38499" y="47.160469" id="text4">cube</ns0:text>
+          </ns0:g>
+        </ns0:g>
+        <ns0:g id="xtick_3">
+          <ns0:g id="line2d_3">
+            <ns0:g id="g5">
+              <ns0:use ns6:href="#md7660cb7c9" x="264.41501" y="57.279999" style="stroke:#000000;stroke-width:0.8" id="use4" />
+            </ns0:g>
+          </ns0:g>
+          <ns0:g id="text_3">
+            <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="264.41501" y="47.160469" id="text5">phone</ns0:text>
+          </ns0:g>
+        </ns0:g>
+        <ns0:g id="xtick_4">
+          <ns0:g id="line2d_4">
+            <ns0:g id="g6">
+              <ns0:use ns6:href="#md7660cb7c9" x="332.44501" y="57.279999" style="stroke:#000000;stroke-width:0.8" id="use5" />
+            </ns0:g>
+          </ns0:g>
+          <ns0:g id="text_4">
+            <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="332.44501" y="47.160469" id="text6">screw.</ns0:text>
+          </ns0:g>
+        </ns0:g>
+      </ns0:g>
+      <ns0:g id="matplotlib.axis_2">
+        <ns0:g id="ytick_1">
+          <ns0:g id="line2d_5">
+            <ns0:defs id="defs6">
+              <ns0:path id="mba4f68a5cd" d="M 0,0 H -3.5" style="stroke:#000000;stroke-width:0.8" />
+            </ns0:defs>
+            <ns0:g id="g7">
+              <ns0:use ns6:href="#mba4f68a5cd" x="94.339996" y="91.294998" style="stroke:#000000;stroke-width:0.8" id="use6" />
+            </ns0:g>
+          </ns0:g>
+          <ns0:g id="text_5">
+            <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif" transform="rotate(-90,98.722383,14.501914)" id="text7">bottle</ns0:text>
+          </ns0:g>
+        </ns0:g>
+        <ns0:g id="ytick_2">
+          <ns0:g id="line2d_6">
+            <ns0:g id="g8">
+              <ns0:use ns6:href="#mba4f68a5cd" x="94.339996" y="159.325" style="stroke:#000000;stroke-width:0.8" id="use7" />
+            </ns0:g>
+          </ns0:g>
+          <ns0:g id="text_6">
+            <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif" transform="rotate(-90,130.8993,46.678828)" id="text8">cube</ns0:text>
+          </ns0:g>
+        </ns0:g>
+        <ns0:g id="ytick_3">
+          <ns0:g id="line2d_7">
+            <ns0:g id="g9">
+              <ns0:use ns6:href="#mba4f68a5cd" x="94.339996" y="227.355" style="stroke:#000000;stroke-width:0.8" id="use8" />
+            </ns0:g>
+          </ns0:g>
+          <ns0:g id="text_7">
+            <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif" transform="rotate(-90,167.52348,83.303008)" id="text9">phone</ns0:text>
+          </ns0:g>
+        </ns0:g>
+        <ns0:g id="ytick_4">
+          <ns0:g id="line2d_8">
+            <ns0:g id="g10">
+              <ns0:use ns6:href="#mba4f68a5cd" x="94.339996" y="295.38501" style="stroke:#000000;stroke-width:0.8" id="use9" />
+            </ns0:g>
+          </ns0:g>
+          <ns0:g id="text_8">
+            <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif" transform="rotate(-90,201.49922,117.27875)" id="text10">screw.</ns0:text>
+          </ns0:g>
+        </ns0:g>
+        <ns0:g id="text_9">
+          <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="65.703278" y="193.34" transform="rotate(-90,65.703281,193.34)" id="text11">True Label</ns0:text>
+        </ns0:g>
+      </ns0:g>
+      <ns0:g id="patch_3">
+        <ns0:path d="M 94.34,329.4 V 57.28" style="fill:none;stroke:#000000;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter" id="path11" />
+      </ns0:g>
+      <ns0:g id="patch_4">
+        <ns0:path d="M 366.46,329.4 V 57.28" style="fill:none;stroke:#000000;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter" id="path12" />
+      </ns0:g>
+      <ns0:g id="patch_5">
+        <ns0:path d="M 94.34,329.4 H 366.46" style="fill:none;stroke:#000000;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter" id="path13" />
+      </ns0:g>
+      <ns0:g id="patch_6">
+        <ns0:path d="M 94.34,57.28 H 366.46" style="fill:none;stroke:#000000;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter" id="path14" />
+      </ns0:g>
+      <ns0:g id="text_10">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle;fill:#ffffff" x="128.355" y="91.294998" id="text14">0.77</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_11">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="196.38499" y="91.294998" id="text15">0.11</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_12">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="264.41501" y="91.294998" id="text16">0.10</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_13">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="332.44501" y="91.294998" id="text17">0.02</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_14">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="128.355" y="159.325" id="text18">0.07</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_15">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle;fill:#ffffff" x="196.38499" y="159.325" id="text19">0.76</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_16">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="264.41501" y="159.325" id="text20">0.08</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_17">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="332.44501" y="159.325" id="text21">0.09</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_18">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="128.355" y="227.355" id="text22">0.09</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_19">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="196.38499" y="227.355" id="text23">0.08</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_20">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle;fill:#ffffff" x="264.41501" y="227.355" id="text24">0.75</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_21">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="332.44501" y="227.355" id="text25">0.08</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_22">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="128.355" y="295.38501" id="text26">0.08</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_23">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="196.38499" y="295.38501" id="text27">0.09</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_24">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="264.41501" y="295.38501" id="text28">0.03</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_25">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle;fill:#ffffff" x="332.44501" y="295.38501" id="text29">0.80</ns0:text>
+      </ns0:g>
+      <ns0:g id="text_26">
+        <ns0:text style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18px;line-height:normal;font-family:'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', Verdana, Geneva, Lucid, Arial, Helvetica, 'Avant Garde', sans-serif;text-anchor:middle" x="230.39999" y="29.762812" id="text30">Predicted Label</ns0:text>
+      </ns0:g>
+    </ns0:g>
+  </ns0:g>
+  <ns0:defs id="defs30">
+    <ns0:clipPath id="p1df1f740b8">
+      <ns0:rect x="94.339996" y="57.279999" width="272.12" height="272.12" id="rect30" />
+    </ns0:clipPath>
+  </ns0:defs>
+</ns0:svg>

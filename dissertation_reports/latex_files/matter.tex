@@ -71,18 +71,20 @@
 
 % Configure Hyperlink color
 % As a matter or style, you may use this to enable/disable color boxes on links
-%\usepackage[breaklinks=true,colorlinks=false,linkcolor=blue]{hyperref}
+\usepackage[breaklinks=true,colorlinks=false,linkcolor=blue]{hyperref}
 % Or use the default values provided by the hyperref package
-\usepackage[
-hidelinks % added by vsantos
-]{hyperref}
+%\usepackage[
+%hidelinks % added by vsantos
+%]{hyperref}
 
-% Redefine section names according to your preference
-%\def\sectionautorefname{Section}
-%\def\chapterautorefname{Chapter}
-%\def\figureautorefname{Figure}
-%\def\listingautorefname{Listing}
-%\def\tableautorefname{Table}
+% Redefine section names according to your preference (uncommented, not changed)
+\addto\extrasenglish{  % added this line
+    \def\sectionautorefname{Section}
+    \def\chapterautorefname{Chapter}
+    \def\figureautorefname{Figure}
+    \def\listingautorefname{Listing}
+    \def\tableautorefname{Table}
+}
 
 % Redefine code boxes
 \ifthenelse{\equal{\useoverleaf}{0}}
@@ -124,10 +126,19 @@ hidelinks % added by vsantos
 \usepackage[backend=biber, style=ieee, sorting=none, natbib=true, mincitenames=1, maxcitenames=2]{biblatex}
 % in the proposal I used:
 % \usepackage[backend=biber,style=numeric, sorting=none, maxnames=1,minnames=1]{biblatex}
-\bibliography{bib/myrefs}
+\bibliography{bib/myrefs, bib/article_refs}
 
 % Use acronyms
 \usepackage[printonlyused]{acronym} % For acronyms
+
+% lowercase acronyms
+\makeatletter
+\newif\if@in@acrolist
+\AtBeginEnvironment{acronym}{\@in@acrolisttrue}
+\newrobustcmd{\LU}[2]{\if@in@acrolist#1\else#2\fi}
+
+\newcommand{\ACF}[1]{{\@in@acrolisttrue\acf{#1}}}
+\makeatother
 
 % Indenting the first paragraph after section start
 \usepackage{indentfirst}
@@ -257,6 +268,10 @@ hidelinks % added by vsantos
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+
+% Fix the numbering scheme by having a ghost style for page numbering
+\pagenumbering{Alph}
+
 \ifthenelse{\equal{\useoverleaf}{0}}{}{\makecoverfile{}}%
 \includepdf[pages=-]{cover.pdf}
 
@@ -346,6 +361,7 @@ hidelinks % added by vsantos
 
 % List of code snippets
 
+\if{0}
 % Fix for Listings with memoir
 
 \RenewDocumentCommand \chapter { s O{#3} m }{%
@@ -360,6 +376,7 @@ hidelinks % added by vsantos
 \cleardoublepage
 {\small\listoflistings}
 \addcontentsline{toc}{chapter}{\listoflistingscaption}
+\fi
 
 % Reset Chapters
 \renewcommand{\chapter}[2][]{

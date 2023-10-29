@@ -381,7 +381,9 @@
 \long\def\JURI#1#2#3{\TEXT{#1}{\textsf{#2}\newline\ua@font@size0{#3}}\par\medskip\vspace*{20pt}}
 
 %Used to display a text acknowledging the grant
-\long\def\SPONSOR#1#2#3{\TEXT{#1}{\begin{minipage}[t]{52.5mm}\ua@font@size1\textsf{#2}\end{minipage}\hspace*{5mm}\begin{minipage}[t]{52.5mm}\ua@font@size1\textsf{#3}\end{minipage}}}
+%\long\def\SPONSOR#1#2#3{\TEXT{#1}{\begin{minipage}[t]{52.5mm}\ua@font@size1\textsf{#2}\end{minipage}\hspace*{5mm}\begin{minipage}[t]{52.5mm}\ua@font@size1\textsf{#3}\end{minipage}}}
+% version for only one
+\long\def\SPONSOR#1#2#3{\TEXT{#1}{\begin{minipage}[t]{110mm}\ua@font@size1\textsf{#2}\end{minipage}}}
 
 %
 % The environment used to build a special page.
@@ -569,11 +571,11 @@ obten\c c\~ao do grau de {\ciDegreeTitle}
 \ifdefined \ciMAPProgram%
 no âmbito do Programa de Doutoramento
 \fi%
-em {\ciDegreeName}
+em {\ciDegreeName},
 \ifdefined \ciMAPProgram%
  das Universidades do Minho, Aveiro e Porto (MAP-\ciMAPProgram)
 \fi%
-, realizada sob a orienta\c c\~ao cient\'ifica do Doutor {\ciSupervisorName}, Professor {\ciSupervisorTitle} do {\ua@textA} {\ua@textB} da Universidade de Aveiro{\yourSecondSupervisor}.}
+realizada sob a orienta\c c\~ao cient\'ifica do Doutor {\ciSupervisorName}, Professor {\ciSupervisorTitle} do {\ua@textA} {\ua@textB} da Universidade de Aveiro{\yourSecondSupervisor}.}
     \vspace{95mm}
 \ifdefined \ciGrantFirst
     \SPONSOR{}{

@@ -1,8 +1,31 @@
-\chapter{Conclusion \textcolor{red}{and Future Work}}
+\chapter{Conclusion and Future Work}
 \label{chapter:conclusion}
 
-This document presented the problem of anticipating human actions in collaborative environments with the goal of developing an anticipatory robot controller for an assembly task. Looking at previous work found in the literature, there is a clear predominance of perception using RGB cameras with different ways of preprocessing the captured images. When it comes to the methods, \acl{ml} and, in particular, supervised learning techniques are predominant, given that most work nowadays takes advantage of the progress made in that field. With the continuous evolution of \acs{ml}, it is expected that the algorithms related to the topic in this paper also evolve and, consequently, give rise to even better solutions. 
+\section{Discussion}
 
-To complete the study of previous work, some relevant tools were reviewed with a particular emphasis on two libraries that can detect key points in an image, such as skeleton joints which are very important to detect human poses. Regarding the practical side of the dissertation, an inertial sensor was tested in other to evaluate its inclusion as another source of data. Although it was possible to capture data, an additional effort will be required to demonstrate its usefulness for the proposed study. Furthermore, as a result of this work, the tasks for the second semester were delineated and scheduled.
+This document studies the problem of anticipating human actions in collaborative environments with the goal of developing an anticipatory robot controller for an assembly task. Looking at previous work found in the literature, there is a clear predominance of perception using RGB cameras with different ways of preprocessing the captured images, particularly with libraries that can detect keypoints in an image such as skeleton joints which are very important to detect human poses. Then, supervised learning techniques are used to predict the action being made and associate that information with the following action.
 
-In summary, the results of this study demonstrate that Action Anticipation is still a relatively new concept, but it has much potential to increase the efficiency and safety of collaborative tasks, revolutionizing the world of \acl{hrc}.
+The approach adopted in this work was to perform action anticipation by recognizing the object being grasped by the user from the configuration of the user's hand. The DL-based framework for hand-object recognition relies on the MediaPipe Hands model to predict the hand keypoints and a multi-class classifier that uses them to predict the grasped object. The study focused on the classifier's generalization ability, remarking the importance of an effective evaluation before the system is applied in real-world scenarios. Throughout the experiments, variations in performance were observed, particularly in scenarios involving session-based testing and user-specific adaptation. The main results emphasize the importance of continuous model monitoring, retraining, and active data collection to enable the classifier to generalize effectively across diverse user behaviors and grasping patterns. Personalized modeling approaches and fine-tuning strategies may be useful to address the challenges at hand. In this context, careful consideration of dataset dimensionality is essential to optimize model performance and facilitate meaningful insights from the data. 
+The findings offer valuable insights into the factors influencing the performance of the classifier and the implications for real-world applications. Moving forward, future research will explore advanced techniques to further enhance the adaptability and generalization capabilities of the hand-object recognition system. This work sets the stage for ongoing improvements with the ultimate goal of delivering effective solutions for a wide range of applications.
+
+\section{Future Work}
+
+This study presents a proof-of-concept about how to perform action anticipation from a different type of information and the associated limitations. Moving forward, there are three main topics of research:
+
+\begin{itemize}
+    \item \textbf{More Data}: test the current architectures with a bigger dataset which can have more people from different sex and/or age groups, can have more objects, can be from different keypoint detection frameworks, or can be from different camera angles.
+    \item \textbf{More Architectures}: test more neural network architectures such as Feed Forward to take advantage of the low size of the data or \acs{rnn}s which also take advantage of the data structure or try different architectures from the used neural network.
+    \item \textbf{Real-Time Integration}: although not tested in a specific example, most of the infrastructure needed to proceed to real-time integration was implemented. However, a real-time application of this work could prove to be an interesting research topic when dealing with the limitations of the system described in \autoref{section:human_intention_prediction}, particularly, using the models in this work alongside an object recognition model that classifies directly from images could provide a consistent object detection since they complement each other.
+\end{itemize}
+
+\if{0}
+\section{Contributions}
+
+This work provided the following contributions:
+
+\begin{itemize}
+    \item Paper Submitted: ...
+    \item Code in Github: ...
+    \item Dataset in Kaggle: ...
+\end{itemize}
+\fi
