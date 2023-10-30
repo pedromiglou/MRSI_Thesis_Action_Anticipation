@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
     y_pred=np.argmax(model.predict(x_test), axis=-1)
 
-    plot_confusion_matrix(y_test, y_pred, ["bottle", "cube", "phone", "screwdriver"],
+    plot_confusion_matrix(confusion_matrix(y_test, y_pred), ["bottle", "cube", "phone", "screwdriver"],
                         show=False, save_path = "./results/cnn_conf_matrix.svg")
     
     write_results(results.history['sparse_categorical_accuracy'][-200], a, A,
