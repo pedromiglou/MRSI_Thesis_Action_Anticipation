@@ -1,6 +1,6 @@
 import numpy as np
-import os
-import random
+# import os
+# import random
 import tensorflow as tf
 
 from sklearn.metrics import classification_report
@@ -79,10 +79,10 @@ def create_model(input_shape, mlp_dropout=0.1, dropout=0.5, learning_rate=0.0001
 
 if __name__ == "__main__":
     # make more reproducible results, GPU does not allow full reproducibility
-    os.environ["PYTHONHASHSEED"] = "0"
-    random.seed(1234)
-    np.random.seed(1234)
-    tf.random.set_seed(1234)
+    # os.environ["PYTHONHASHSEED"] = "0"
+    # random.seed(1234)
+    # np.random.seed(1234)
+    # tf.random.set_seed(1234)
 
     # read data
     x, y = read_dataset2()
@@ -137,7 +137,7 @@ if __name__ == "__main__":
 
     y_pred=np.argmax(model.predict(x_test), axis=-1)
 
-    plot_confusion_matrix(y_test, y_pred, ["bottle", "cube", "phone", "screwdriver"],
+    plot_confusion_matrix(confusion_matrix(y_test, y_pred), ["bottle", "cube", "phone", "screw."],
                         show=False, save_path = "./results/transformer_conf_matrix.svg")
 
     write_results(results.history['sparse_categorical_accuracy'][-200], a, A,
