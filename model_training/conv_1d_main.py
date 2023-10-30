@@ -1,6 +1,6 @@
 import numpy as np
-import os
-import random
+# import os
+# import random
 import tensorflow as tf
 
 from sklearn.metrics import classification_report
@@ -39,10 +39,10 @@ def create_model(input_shape, dropout=0.5, learning_rate=0.001, kernel_size=3, n
 
 if __name__ == "__main__":
     # make more reproducible results, GPU does not allow full reproducibility
-    os.environ["PYTHONHASHSEED"] = "0"
-    random.seed(1234)
-    np.random.seed(1234)
-    tf.random.set_seed(1234)
+    # os.environ["PYTHONHASHSEED"] = "0"
+    # random.seed(1234)
+    # np.random.seed(1234)
+    # tf.random.set_seed(1234)
 
     # read data
     x, y = read_dataset2()
