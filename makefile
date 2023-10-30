@@ -20,7 +20,7 @@ docker_build:
 	docker build -t pedroamaral/model_training ./model_training
 
 docker_run:
-	docker run -v /home/pedroamaral/container_results:/model_training/results --gpus '"device=1"' -d pedroamaral/model_training
+	docker run -v /home/pedroamaral/container_results:/model_training/results --gpus '"device=3"' -d pedroamaral/model_training
 
 docker_run_bash:
 	docker run -v /home/pedroamaral/container_results:/model_training/results --gpus '"device=3"' -it pedroamaral/model_training bash
