@@ -2,13 +2,13 @@
 <!-- Created with matplotlib (https://matplotlib.org/) -->
 
 <svg
-   height="310.2814pt"
+   height="304.77017pt"
    version="1.1"
-   viewBox="0 0 361.81242 310.2814"
-   width="361.81241pt"
+   viewBox="0 0 303.61039 304.77017"
+   width="303.61038pt"
    id="svg199"
    sodipodi:docname="conf_matrix_example2.svg"
-   inkscape:version="1.3 (1:1.3+202307231459+0e150ed6c4)"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -29,11 +29,11 @@
      inkscape:cx="245.12343"
      inkscape:cy="187.95287"
      inkscape:window-width="1920"
-     inkscape:window-height="1000"
+     inkscape:window-height="1080"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="axes_1" />
+     inkscape:current-layer="figure_1" />
   <defs
      id="defs4">
     <style
@@ -265,92 +265,110 @@
       <g
          id="text_8">
         <text
-           style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:middle;fill:#ffffff;-inkscape-font-specification:'DejaVu Sans, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-linecap:butt;stroke-linejoin:round"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;fill:#ffffff;stroke-linecap:butt;stroke-linejoin:round"
            x="144.14053"
            y="101.79333"
            id="text92"><tspan
              sodipodi:role="line"
-             id="tspan10">57</tspan></text>
+             id="tspan10"
+             x="144.14053"
+             y="101.79333">57</tspan></text>
       </g>
       <g
          id="text_9">
         <text
-           style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:middle;-inkscape-font-specification:'DejaVu Sans, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-linecap:butt;stroke-linejoin:round"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;stroke-linecap:butt;stroke-linejoin:round"
            x="231.7272"
            y="101.79333"
            id="text95"><tspan
              sodipodi:role="line"
-             id="tspan9">1</tspan></text>
+             id="tspan9"
+             x="231.7272"
+             y="101.79333">1</tspan></text>
       </g>
       <g
          id="text_10">
         <text
-           style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:middle;-inkscape-font-specification:'DejaVu Sans, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-linecap:butt;stroke-linejoin:round"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;stroke-linecap:butt;stroke-linejoin:round"
            x="319.31387"
            y="101.79333"
            id="text98"><tspan
              sodipodi:role="line"
-             id="tspan8">1</tspan></text>
+             id="tspan8"
+             x="319.31387"
+             y="101.79333">1</tspan></text>
       </g>
       <g
          id="text_11">
         <text
-           style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:middle;-inkscape-font-specification:'DejaVu Sans, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-linecap:butt;stroke-linejoin:round"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;stroke-linecap:butt;stroke-linejoin:round"
            x="144.14053"
            y="189.38"
            id="text101"><tspan
              sodipodi:role="line"
-             id="tspan7">0</tspan></text>
+             id="tspan7"
+             x="144.14053"
+             y="189.38">0</tspan></text>
       </g>
       <g
          id="text_12">
         <text
-           style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:middle;fill:#ffffff;-inkscape-font-specification:'DejaVu Sans, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-linecap:butt;stroke-linejoin:round"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;fill:#ffffff;stroke-linecap:butt;stroke-linejoin:round"
            x="231.7272"
            y="189.38"
            id="text104"><tspan
              sodipodi:role="line"
-             id="tspan5">57</tspan></text>
+             id="tspan5"
+             x="231.7272"
+             y="189.38">57</tspan></text>
       </g>
       <g
          id="text_13">
         <text
-           style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:middle;-inkscape-font-specification:'DejaVu Sans, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-linecap:butt;stroke-linejoin:round"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;stroke-linecap:butt;stroke-linejoin:round"
            x="319.31387"
            y="189.38"
            id="text107"><tspan
              sodipodi:role="line"
-             id="tspan4">1</tspan></text>
+             id="tspan4"
+             x="319.31387"
+             y="189.38">1</tspan></text>
       </g>
       <g
          id="text_14">
         <text
-           style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:middle;-inkscape-font-specification:'DejaVu Sans, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-linecap:butt;stroke-linejoin:round"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;stroke-linecap:butt;stroke-linejoin:round"
            x="144.14053"
            y="276.96667"
            id="text110"><tspan
              sodipodi:role="line"
-             id="tspan3">1</tspan></text>
+             id="tspan3"
+             x="144.14053"
+             y="276.96667">1</tspan></text>
       </g>
       <g
          id="text_15">
         <text
-           style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:middle;-inkscape-font-specification:'DejaVu Sans, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-linecap:butt;stroke-linejoin:round"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;stroke-linecap:butt;stroke-linejoin:round"
            x="231.7272"
            y="276.96667"
            id="text113"><tspan
              sodipodi:role="line"
-             id="tspan2">14</tspan></text>
+             id="tspan2"
+             x="231.7272"
+             y="276.96667">14</tspan></text>
       </g>
       <g
          id="text_16">
         <text
-           style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:middle;fill:#ffffff;-inkscape-font-specification:'DejaVu Sans, Normal';font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-linecap:butt;stroke-linejoin:round"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;fill:#ffffff;stroke-linecap:butt;stroke-linejoin:round"
            x="319.31387"
            y="276.96667"
            id="text116"><tspan
              sodipodi:role="line"
-             id="tspan6">43</tspan></text>
+             id="tspan6"
+             x="319.31387"
+             y="276.96667">43</tspan></text>
       </g>
       <g
          id="text_17">
@@ -359,182 +377,6 @@
            x="231.7272"
            y="30.065624"
            id="text119">Predicted Label</text>
-      </g>
-    </g>
-    <g
-       id="axes_2">
-      <g
-         id="patch_7">
-        <path
-           clip-path="url(#pd2723f654e)"
-           d="M 383.4804,320.76 V 319.73359 59.026406 58 h 13.138 V 59.026406 319.73359 320.76 Z"
-           style="fill:#ffffff;stroke:#ffffff;stroke-width:0.01;stroke-linejoin:miter"
-           id="path123" />
-      </g>
-      <image
-         height="262.79999"
-         id="image9830412a40"
-         transform="matrix(1,0,0,-1,0,262.8)"
-         width="12.96"
-         x="383.76001"
-         xlink:href="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABIAAAFtCAYAAAAKzTr3AAAABHNCSVQICAgIfAhkiAAAAcNJREFUeJztm0Fuw0AMA7eF///dHgrYeQJ9GAQDgnoA4RFXXMVJfv7+n+cAdTEy5/wyMudcz2Ee6YJ0UDRKSIgmcw1rNtgjDo1R8qFhT+RD40ZE12wu2IyZPdeSEJjZrcHWfB2djUgWEqLJNrZi14TBtj37hdBcy0LC6V+wRSEhmsy1BVuu4mArdm3Blqs42IpdW7Dl4tBuyDYhmu5AXrdw+otf+8hcEwYbNyI6+++d7CxE2U8123iyGR0UjQo2REaJBm61tpNNuSZEKx5a3Z4ttB882YyQ0f5eNG7P9vXItrGR9mNCtjzi1mPuZNt6BNrPCAk/ZgnRbEO7HuUyojE63T0SnuzaodXdtNUvWYT216LpXDNmNiakQ9MFm/CmLb7XdC/Gl9m5ltm5fNNvzOzir1eX2S+EEJ1l9ovyuSYMtmq02R9qaK+EhpaFEJ3m6R9aLhJtPcpCiA65jEKrvxBN59rutVxC+4V/OxNm9uwPJUSba1mouEfFaBva7wkZ/yqsQ9O5JuzR7P+ekBBt9meho0M7D/MjvaG9EmKeqLhHQ8vlQ1Oe7KFlIR0a9T4bHBFdj4rtH9oLIVn4F99rQ8uFoX0AU+kblqtZlFsAAAAASUVORK5CYII="
-         y="-58.32" />
-      <g
-         id="matplotlib.axis_3" />
-      <g
-         id="matplotlib.axis_4">
-        <g
-           id="ytick_4">
-          <g
-             id="line2d_7">
-            <defs
-               id="defs129">
-              <path
-                 d="M 0,0 H 3.5"
-                 id="m5e5543fe61"
-                 style="stroke:#000000;stroke-width:0.8" />
-            </defs>
-            <g
-               id="g133">
-              <use
-                 style="stroke:#000000;stroke-width:0.8"
-                 x="396.61841"
-                 xlink:href="#m5e5543fe61"
-                 y="320.76001"
-                 id="use131" />
-            </g>
-          </g>
-          <g
-             id="text_18">
-            <text
-               style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:start"
-               x="403.61841"
-               y="326.45883"
-               id="text136">0</text>
-          </g>
-        </g>
-        <g
-           id="ytick_5">
-          <g
-             id="line2d_8">
-            <g
-               id="g142">
-              <use
-                 style="stroke:#000000;stroke-width:0.8"
-                 x="396.61841"
-                 xlink:href="#m5e5543fe61"
-                 y="275.45654"
-                 id="use140" />
-            </g>
-          </g>
-          <g
-             id="text_19">
-            <text
-               style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:start"
-               x="403.61841"
-               y="281.15536"
-               id="text145">10</text>
-          </g>
-        </g>
-        <g
-           id="ytick_6">
-          <g
-             id="line2d_9">
-            <g
-               id="g151">
-              <use
-                 style="stroke:#000000;stroke-width:0.8"
-                 x="396.61841"
-                 xlink:href="#m5e5543fe61"
-                 y="230.15311"
-                 id="use149" />
-            </g>
-          </g>
-          <g
-             id="text_20">
-            <text
-               style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:start"
-               x="403.61841"
-               y="235.85193"
-               id="text154">20</text>
-          </g>
-        </g>
-        <g
-           id="ytick_7">
-          <g
-             id="line2d_10">
-            <g
-               id="g160">
-              <use
-                 style="stroke:#000000;stroke-width:0.8"
-                 x="396.61841"
-                 xlink:href="#m5e5543fe61"
-                 y="184.84966"
-                 id="use158" />
-            </g>
-          </g>
-          <g
-             id="text_21">
-            <text
-               style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:start"
-               x="403.61841"
-               y="190.54848"
-               id="text163">30</text>
-          </g>
-        </g>
-        <g
-           id="ytick_8">
-          <g
-             id="line2d_11">
-            <g
-               id="g169">
-              <use
-                 style="stroke:#000000;stroke-width:0.8"
-                 x="396.61841"
-                 xlink:href="#m5e5543fe61"
-                 y="139.5462"
-                 id="use167" />
-            </g>
-          </g>
-          <g
-             id="text_22">
-            <text
-               style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:start"
-               x="403.61841"
-               y="145.24504"
-               id="text172">40</text>
-          </g>
-        </g>
-        <g
-           id="ytick_9">
-          <g
-             id="line2d_12">
-            <g
-               id="g178">
-              <use
-                 style="stroke:#000000;stroke-width:0.8"
-                 x="396.61841"
-                 xlink:href="#m5e5543fe61"
-                 y="94.24276"
-                 id="use176" />
-            </g>
-          </g>
-          <g
-             id="text_23">
-            <text
-               style="font-style:normal;font-weight:normal;font-size:15px;font-family:'DejaVu Sans';text-anchor:start"
-               x="403.61841"
-               y="99.941589"
-               id="text181">50</text>
-          </g>
-        </g>
-      </g>
-      <g
-         id="patch_8">
-        <path
-           d="M 383.4804,320.76 V 319.73359 59.026406 58 h 13.138 V 59.026406 319.73359 320.76 Z"
-           style="fill:none;stroke:#000000;stroke-width:0.8;stroke-linejoin:miter"
-           id="path186" />
       </g>
     </g>
   </g>

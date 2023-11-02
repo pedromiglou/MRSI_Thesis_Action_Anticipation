@@ -14,8 +14,8 @@
     
     \node [rblock] (camera) {Camera\\Image};
     \node [block, right =0.4cm of camera] (right_hand_keypoints_detection) {Right Hand\\Keypoints\\Detection};
-    \node [block, above =1cm of right_hand_keypoints_detection] (hands_keypoints) {Mediapipe\\Hands Model};
-    \node [block, below =1cm of right_hand_keypoints_detection] (body_keypoints) {Mediapipe\\Pose Model};
+    \node [block, above =0.8cm of right_hand_keypoints_detection] (hands_keypoints) {Mediapipe\\Hands Model};
+    \node [block, below =0.8cm of right_hand_keypoints_detection] (body_keypoints) {Mediapipe\\Pose Model};
     \node [block, right =2cm of right_hand_keypoints_detection] (normalization) {Points\\Normalization};
     \node [block, right =2cm of normalization] (model) {Model\\Prediction};
     \node [rblock, right =0.4cm of model] (output) {Predicted\\Object};

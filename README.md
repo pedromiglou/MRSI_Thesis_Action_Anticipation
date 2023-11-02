@@ -1,4 +1,4 @@
-# MRSI Thesis - Robot Action Anticipation for Collaborative Assembly Tasks
+# Recognition of Human Grasping Patterns for Intention Prediction in Collaborative Tasks
 
 MRSI Thesis Repository
 

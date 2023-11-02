@@ -23,7 +23,7 @@
 
 % Enable for for Overleaf support
 \usepackage{ifthen}
-\def\useoverleaf{1}  % change to non-zero (for instance, 1) to enable it
+\def\useoverleaf{0}  % change to non-zero (for instance, 1) to enable it
 
 \makeatletter
 \newcommand{\makecoverfile}[0]{%
@@ -71,11 +71,11 @@
 
 % Configure Hyperlink color
 % As a matter or style, you may use this to enable/disable color boxes on links
-\usepackage[breaklinks=true,colorlinks=false,linkcolor=blue]{hyperref}
+%\usepackage[breaklinks=true,colorlinks=false,linkcolor=blue]{hyperref}
 % Or use the default values provided by the hyperref package
-%\usepackage[
-%hidelinks % added by vsantos
-%]{hyperref}
+\usepackage[
+hidelinks % added by vsantos
+]{hyperref}
 
 % Redefine section names according to your preference (uncommented, not changed)
 \addto\extrasenglish{  % added this line
@@ -401,12 +401,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Uncomment to add further chapters
-%\include{chapters/example}
-\include{chapters/chapter1_introduction}
-\include{chapters/chapter2_state_of_the_art}
-\include{chapters/chapter3_hrc_system}
-\include{chapters/chapter4_learning}
-\include{chapters/chapter5_conclusion}
+%\input{chapters/example}
+\input{chapters/chapter1_introduction.tex}
+\input{chapters/chapter2_state_of_the_art.tex}
+\input{chapters/chapter3_hrc_system.tex}
+\input{chapters/chapter4_learning.tex}
+\input{chapters/chapter5_conclusion.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % End of Thesis text 
