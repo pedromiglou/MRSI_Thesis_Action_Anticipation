@@ -94,10 +94,6 @@ TensorFlow is one of the most popular machine learning frameworks along with Pyt
 
 This section covers the methodologies employed in this dissertation to research anticipatory systems.
 
-\subsection{Knowledge-Based Systems}
-
-In artificial intelligence, rule-based expert systems are commonly used to apply human expertise to complex problems. Experta\footnote{Experta documentation: \url{https://github.com/nilp0inter/experta}} is a Python library to create and deploy rule-based systems that make informed decisions using a knowledge base of rules. In this library rules are defined as combinations of conditions and actions allowing for an intuitive syntax. Then, the engine uses these rules to make decisions using the declared information.
-
 \subsection{Keypoints Detection Frameworks}
 \label{subsection:keypointdetection}
 
@@ -127,16 +123,23 @@ OpenPifPaf\cite{Kreiss2021,Kreiss2019}\footnote{OpenPifPaf documentation: \url{h
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{figs/openpifpaf.jpg}
+    \adjincludegraphics[width=0.7\textwidth, trim={{0} {.05\height} {0} {.10\height}}, clip]{figs/openpifpaf.jpg}
     \caption[OpenPifPaf Example]{OpenPifPaf Example \cite{Kreiss2021}}
     \label{fig:openpifpaf}
 \end{figure}
 
 \subsubsection{MediaPipe}
 
-MediaPipe\footnote{MediaPipe documentation: \url{https://developers.google.com/mediapipe}} consists of a set of libraries and tools to apply \acs{ai} and \acs{ml} techniques in other applications. Although it contains many features, in this work the focus in on the Hand and the Pose Landmark Detection Models. Just as the name suggests, the Hand Landmarker detects the landmarks of the hands (\autoref{fig:mediapipe_hand_landmarks}), and the Pose Landmarker detects the landmarks of the pose over the entire body (\autoref{fig:mediapipe_pose_landmarks}). These tasks use \acs{ml} models that can analyze both static images or a continuous stream and output the landmarks in the image and world coordinates as well as the handedness (left/right hand) of the detected hands in the case of the Hand Landmarker \cite{mediapipe_docs}.
+% MediaPipe consists of a set of libraries and tools commonly used in \acs{ml} pipelines for advanced real-time vision-based applications \cite{Lugaresi2019}. The Hand Landmark Detection model \cite{Zhang2020} uses two sub-modules: a hand palm detection model and a hand landmark model. Each frame of an RGB input is fed into the palm detection model, which produces a bounding box based on the palm. The hand landmark model uses this bounding box and returns the keypoint localization of 21 landmarks, including the fingertips, the finger joints (knuckles), and the base of the palm. 
+
+MediaPipe\footnote{MediaPipe documentation: \url{https://developers.google.com/mediapipe}} consists of a set of libraries and tools to apply \acs{ai} and \acs{ml} techniques in other applications, particularly in pipelines for advanced real-time vision-based applications \cite{Lugaresi2019}. Although it contains many features, in this work the focus is on the Hand and the Pose Landmark Detection Models.
+The Hand Landmark Detection model \cite{Zhang2020} uses two sub-modules: a hand palm detection model and a hand landmark model. Each frame of an RGB input is fed into the palm detection model, which produces a bounding box based on the palm. The hand landmark model uses this bounding box and returns the keypoint localization of 21 landmarks, including the fingertips, the finger joints (knuckles), and the base of the palm (\autoref{fig:mediapipe_hand_landmarks}). The Pose Landmark Detection model also uses two sub-modules working in a similar way to return 33 landmarks over the entire body (\autoref{fig:mediapipe_pose_landmarks}). %Both of these models can be used to analyze both static images and continuous streams.
+
 
 \if{0}
+
+Just as the name suggests, the Hand Landmarker detects the landmarks of the hands (\autoref{fig:mediapipe_hand_landmarks}), and the Pose Landmarker detects the landmarks of the pose over the entire body (\autoref{fig:mediapipe_pose_landmarks}). These tasks use \acs{ml} models that can analyze both static images or a continuous stream and output the landmarks in the image and world coordinates as well as the handedness (left/right hand) of the detected hands in the case of the Hand Landmarker \cite{mediapipe_docs}.
+
 The Hand Landmarker detects the landmarks of the hands in an image, as shown in Fig.~\ref{fig:mediapipe_hand_landmarks}. This task uses a machine learning (ML) model that can analyze both static data or a continuous stream and outputs the hand landmarks in image coordinates, hand landmarks in world coordinates, and handedness(left/right hand) of multiple detected hands.
 
 The Pose Landmarker detects the landmarks of the pose over the entire body in an image, as shown in Fig.~\ref{fig:mediapipe_pose_landmarks}.  This task uses a machine learning (ML) model that can analyze both static data or a continuous stream and outputs the body pose landmarks in image coordinates and in 3-dimensional world coordinates.
@@ -154,7 +157,7 @@ The Pose Landmarker detects the landmarks of the pose over the entire body in an
         \caption{}
         \label{fig:mediapipe_pose_landmarks}
     \end{subfigure}
-    \caption[Mediapipe landmark detection models: Hand Landmarker and Pose Landmarker.]{Mediapipe landmark detection models \cite{mediapipe_docs}: (a) Hand Landmarker and (b) Pose Landmarker.}
+    \caption[Mediapipe landmarker models: Hand Landmarker and Pose Landmarker.]{Mediapipe landmarker models \cite{mediapipe_docs}: (a) Hand Landmarker and (b) Pose Landmarker.}
     \label{fig:mediapipe_landmarks}
 \end{figure}
 
@@ -173,10 +176,12 @@ The global architecture is then described as the junction of two main parts: Fea
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.9\textwidth]{figs/cnn_arch.pdf}
+    \includegraphics[width=1\textwidth]{figs/cnn_arch.pdf}
     \caption[\acs{cnn} Architecture]{\acs{cnn} Architecture \cite{Alom2019}}
     \label{fig:cnn_arch}
 \end{figure}
+
+\newpage
 
 \subsection{Transformer Neural Networks}
 \label{subsection:transformer_neural_networks}
@@ -207,7 +212,7 @@ This section covers the integration of previously described tools and then the i
 
 \subsection{Assembly Task: Build a Three-Color Flag}
 
-To develop the necessary infrastructure, a concrete problem was needed. For this work, it was chosen to use sequences of big Lego blocks comparable to the stripes of a flag (\autoref{fig:flags_examples}).
+To develop the necessary infrastructure, a concrete problem was needed. For this work, it was chosen to use sequences of big Lego blocks comparable to the stripes of a flag (\autoref{fig:flags_examples}). These blocks are initially placed behind the robot (\autoref{fig:table_workspace}), and the robot must fetch them and place them next to the user so that the user can build a flag. The blocks must be fetched in a certain order and there must be a way for the user to tell the robot that it is fetching the wrong block.
 
 \begin{figure}[ht]
     \centering
@@ -216,10 +221,8 @@ To develop the necessary infrastructure, a concrete problem was needed. For this
     \label{fig:flags_examples}
 \end{figure}
 
-These blocks are initially placed behind the robot, and the robot must fetch them and place them next to the user so that the user can build a flag. The blocks must be fetched in a certain order and there must be a way for the user to tell the robot that it is fetching the wrong block.
-
 \begin{figure}[ht]
-    \centerline{\includegraphics[width=0.8\textwidth]{figs/table_workspace.jpg}}
+    \centerline{\includegraphics[width=0.7\textwidth]{figs/table_workspace.jpg}}
     \caption{Table workspace}
     \label{fig:table_workspace}
 \end{figure}
@@ -266,7 +269,7 @@ When assembling a flag, the first block is still requested by the user but the f
 
 \subsubsection{Rule Based}
 
-The second experiment consisted of having a set of rules that the robot follows to anticipate the next block. These rules are read from a configuration file when the decision-making node starts and then managed by the Experta library. For this experiment, a number of rules were defined about what should be the next block considering the blocks previously provided and the blocks rejected since the last accepted one.
+The second experiment consisted of having a set of rules that the robot follows to anticipate the next block. These rules are read from a configuration file when the decision-making node starts and then managed by Experta\footnote{Experta documentation: \url{https://github.com/nilp0inter/experta}}. Experta is a Python library to create and deploy rule-based systems that make informed decisions using a knowledge base of rules. In this library, rules are defined as combinations of conditions and actions allowing for an intuitive syntax. Then, the engine uses these rules to make decisions using the declared information. For this experiment, some rules were defined about what should be the next block considering the blocks previously provided and the blocks rejected since the last accepted one.
 
 Similarly to the previous experiment, the first block is requested by the user but for the following blocks, the robot checks if a rule is present for the current situation. If there is one, the robot follows that rule and provides a block and if there is not, it waits for the user to request the next block. The interactions for requesting and refusing a block are maintained.
 
@@ -277,4 +280,4 @@ The third experiment is very similar to the previous one. The rule-based decisio
 \section{Final Remarks}
 \label{section:materials_methods_final_remarks}
 
-This chapter reviewed the necessary components to create a \acf{hrc} system starting with the provided collaboration cell and how the different components are set up and are able to establish communication using \acs{ros}. Then, the different tools that constitute this research are further described which were the Experta library, the Mediapipe framework, the \acfp{cnn}, and the Transformer Neural Networks. Finally, all components are connected with a decision-making node which handles which actions the robot should take. The first implementation included a database of probabilities that guided which action the robot should take but this solution proved to have reduced flexibility. Then, the second implementation used Experta to set up a list of rules to decide the action the robot should take next with a configuration file, a characteristic that made the robot's behavior more flexible since the rules could be easily changed. Finally, the last implementation integrated MediaPipe not only to reduce the direct communication between the robot and the user but also in preparation for its use in the next chapter.
+This chapter reviewed the necessary components to create a \acf{hrc} system starting with the provided collaboration cell and how the different components are set up and are able to establish communication using \acs{ros}. Then, the different tools that constitute this research are further described which were the keypoint detection frameworks, in particular MediaPipe, the \acfp{cnn}, and the Transformer Neural Networks. Finally, all components are connected with a decision-making node which handles which actions the robot should take. The first implementation included a database of probabilities that guided which action the robot should take but this solution proved to have reduced flexibility. Then, the second implementation used Experta to set up a list of rules to decide the action the robot should take next with a configuration file, a characteristic that made the robot's behavior more flexible since the rules could be easily changed. Finally, the last implementation integrated MediaPipe not only to reduce the direct communication between the robot and the user but also in preparation for its use in the next chapter.
