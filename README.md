@@ -12,6 +12,10 @@ MRSI Thesis Repository
 - pamaral_models: 
 -->
 
+## Important Links
+
+- [Dataset published on Kaggle](https://www.kaggle.com/datasets/pedromiglou/human-grasping-patterns-for-object-recognition)
+
 ## Installation Guide (In Progress)
 
 The code in this repository was made to work with:
