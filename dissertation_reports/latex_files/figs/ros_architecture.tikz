@@ -11,13 +11,13 @@
         thick,
         fill = white,
         minimum size = 4mm,
-        text width = 1.5cm,
+        text width = 2cm,
         align = center
     ]
     
     \node[state] (perception) {Perception System};
     \node[state] (decisionmaking) [right of=perception] {Decision Making};
-    \node[state] (manipulator_arm_control) [right of=decisionmaking] {Manipular Arm Control};
+    \node[state] (manipulator_arm_control) [right of=decisionmaking] {Manipulator Arm Control};
 
     \path[every edge,
     	->,
