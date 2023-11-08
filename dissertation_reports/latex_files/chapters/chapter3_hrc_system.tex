@@ -1,7 +1,7 @@
 \chapter{\acl{hrc} System}
 \label{chapter:hrc_system}
 
-This chapter reviews the hardware and software tools used during development and the software developed to support a practical implementation of action anticipation in human-robot collaboration. In particular, \autoref{section:system_architecture} details the system architecture including the available hardware and the software tools chosen to establish communication between all the parts. \autoref{section:methodologies} describes the research methodologies employed in this dissertation. Section \autoref{section:first_experiments} delves into the implementation of initial experiments which integrate all the parts to simulate anticipatory behavior. \autoref{section:materials_methods_final_remarks} provides final remarks about the content of this chapter and its connection to the next.
+This chapter describes the hardware and software tools used during development and the \acs{ros}-based architecture to support a practical implementation of action anticipation in human-robot collaboration. In particular, \autoref{section:system_architecture} details the system architecture including the available hardware and the software tools chosen to establish communication between all the parts. \autoref{section:methodologies} describes the research methodologies employed in this dissertation. Section \autoref{section:first_experiments} delves into the implementation of initial experiments which integrate all the parts to simulate anticipatory behavior. \autoref{section:materials_methods_final_remarks} provides final remarks about the content of this chapter and its connection to the next.
 
 \section{System Architecture}
 \label{section:system_architecture}
@@ -11,7 +11,7 @@ The work described in this dissertation is part of the AUGMANITY project\footnot
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.75\columnwidth]{figs/LARCC_prototype.pdf}
-    \caption{Prototype collaborative cell LARCC}
+    \caption{Prototype collaborative cell LARCC.}
     \label{fig:LARCC}
 \end{figure}
 
@@ -41,15 +41,15 @@ For this system, the \acs{ros} 1 Noetic distribution was chosen over the more re
 \subsection{Perception System}
 \label{subsection:perception_system}
 
-In order to capture the necessary information from the environment, two Orbbec Astra Pro RGBD cameras were used. This camera model was developed by Orbbec Technologies and it is frequently used in computer vision and robotics \cite{AstraPro}. Among the available cameras, it was chosen since it allowed to capture both color and depth images.
+In order to capture the necessary information from the environment, two Orbbec Astra Pro RGBD cameras were used (\autoref{fig:orbbec_astra_pro}). This camera model was developed by Orbbec Technologies and it is frequently used in computer vision and robotics \cite{AstraPro}. Among the available cameras, it was chosen since it allowed to capture both color and depth images.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[width=0.6\textwidth]{figs/AstraPro.jpg}}
-\caption[Orbbec Astra Pro]{Orbbec Astra Pro \cite{AstraPro}}
+\caption[Orbbec Astra Pro.]{Orbbec Astra Pro \cite{AstraPro}.}
 \label{fig:orbbec_astra_pro}
 \end{figure}
 
-In the experimental setup, one of the cameras is placed above the workspace facing downwards allowing the perception of the objects in the table through the color image and the position of the user through the depth image. The second camera is above and slightly behind the robot to capture the user in front of the robot with the images from this camera being the ones used in the keypoint detection models. The communication with the cameras is established through ROS with the $usb\_cam$ package being used for the color image and the $ros\_astra\_camera$ package being used for the depth image. In order to have better control over the lightness in the environment, only artificial lighting was used and the back-light compensation was raised to the maximum in the $usb\_cam$ configurations. Then the frame rate was also set to 10 frames per second in both cameras given that none of the following image processing tasks require a high frame rate.
+In the experimental setup, one of the cameras is placed above the workspace facing downwards allowing the perception of the objects in the table through the color image and the position of the user through the depth image. The second camera is above and slightly behind the robot to capture the user in front of the robot with the images from this camera being the ones used for detecting the hands keypoints. The communication with the cameras is established through ROS with the $usb\_cam$ package being used for the color image and the $ros\_astra\_camera$ package being used for the depth image. In order to have better control over the lightness in the environment, only artificial lighting was used and the back-light compensation was raised to the maximum in the $usb\_cam$ configurations. Then the frame rate was also set to 10 frames per second in both cameras given that none of the following image processing tasks require a high frame rate.
 
 As said before, the color image of the first camera is used to detect objects in the environment. These objects are blocks of specific colors and therefore they can be identified with color segmentation, which is done with the help of OpenCV\footnote{OpenCV documentation: \url{https://docs.opencv.org/4.x/}}, a popular computer vision library. With this library, the image from the camera is initially cropped to a specific region of interest consisting of the table area, which is then converted from BGR to HSV given that the intervals of a color are more reliable in this representation. From the HSV image and the color intervals, a mask is obtained for each color. These masks are then subject to a closing morphological operation to reduce any possible noise. Finally, the resulting areas are considered an object if they surpass a certain area threshold further reducing noise.
 
@@ -58,11 +58,11 @@ On the other hand, the depth image is used to obtain the position of the human i
 \subsection{Manipulator Arm Control}
 \label{subsection:manipulator_arm_control}
 
-The collaborative robot available for this work is a UR10e model which was developed by Universal Robots. This model has six degrees of freedom with six rotational joints, allows for payloads up to \SI{12.5}{\kilogram}, and has a reach of \SI{1300}{\milli\metre} being suitable for tasks such as machine tending, palletizing, and packaging\cite{UR10e}. In this work, the robot is equipped with a 2F-140 gripper developed by Robotiq, commonly used together with robot models from Universal Robots\cite{robotiq_gripper}.
+The collaborative robot available for this work is a UR10e model which was developed by Universal Robots (left side of \autoref{fig:ur10e}). This model has six degrees of freedom with six rotational joints, allows for payloads up to \SI{12.5}{\kilogram}, and has a reach of \SI{1300}{\milli\metre} being suitable for tasks such as machine tending, palletizing, and packaging\cite{UR10e}. In this work, the robot is equipped with a 2F-140 gripper developed by Robotiq (right side of \autoref{fig:ur10e}), commonly used together with robot models from Universal Robots\cite{robotiq_gripper}.
 
 \begin{figure}[ht]
     \centerline{\includegraphics[width=0.4\textwidth]{figs/UR10e.jpg} \ \ \includegraphics[width=0.35\textwidth]{figs/robotiq-2f-140.jpg}}
-    \caption[UR10e Collaborative Robot and Robotiq 2F-140 Gripper]{UR10e Collaborative Robot \cite{UR10e_image} and Robotiq 2F-140 Gripper \cite{robotiq_gripper}}
+    \caption[UR10e Collaborative Robot and Robotiq 2F-140 Gripper.]{UR10e Collaborative Robot \cite{UR10e_image} and Robotiq 2F-140 Gripper \cite{robotiq_gripper}.}
     \label{fig:ur10e}
 \end{figure}
 
@@ -79,7 +79,7 @@ The tasks involved in this work, such as training deep-learning models and analy
     \item 128GB DDR4 RAM.
 \end{itemize}
 
-The model training in Deeplar is executed using docker images, which allows multiple people to use the computer with each having their own isolated training environment with their own dependencies. The images used to design and train machine learning models in this work are based on the latest TensorFlow official image for GPUs.
+The model training in Deeplar is executed using docker images, which allows multiple people to use the computer with each having their own isolated training environment with their own dependencies. The images used to design and train machine learning models in this work are based on the latest TensorFlow official image for GPUs which uses Python.
 
 TensorFlow is one of the most popular machine learning frameworks along with Pytorch. In this work, the former was chosen over the latter since the higher-level API allowed for faster development. The main features of Tensorflow\footnote{Tensorflow documentation: \url{https://www.tensorflow.org/api_docs}} are:
 \begin{itemize}
@@ -89,42 +89,43 @@ TensorFlow is one of the most popular machine learning frameworks along with Pyt
     \item \textbf{implement MLOps}: run models in production, tracking their performance and identifying issues.
 \end{itemize}
 
-\section{Methodologies/Research Methods}
+As seen above, this work employs several tools, with Python being the common programming language between them and, therefore, the chosen language to ensure compatibility.
+
+\section{Software Tools and Deep Architectures}
 \label{section:methodologies}
 
-This section covers the methodologies employed in this dissertation to research anticipatory systems.
+This section covers the software tools and deep architectures employed in this dissertation to research anticipatory systems.
 
 \subsection{Keypoints Detection Frameworks}
 \label{subsection:keypointdetection}
 
-This subsection reviews OpenPose, OpenPifPaf, and Mediapipe which are three projects containing models to detect keypoints in images, such as the human skeleton joints.
+This subsection reviews OpenPose, OpenPifPaf, and MediaPipe which are three projects containing models to detect keypoints in images, such as the human skeleton joints.
 
 \subsubsection{OpenPose}
 
-OpenPose\cite{Cao2021,Simon2017,Cao2018,Wei2016}\footnote{OpenPose documentation: \url{https://cmu-perceptual-computing-lab.github.io/openpose}} is an open-source project that aims to detect keypoints in the human body, face, hands, and feet from images. Its main features are:
+OpenPose\cite{Cao2021,Simon2017,Cao2018,Wei2016}\footnote{OpenPose documentation: \url{https://cmu-perceptual-computing-lab.github.io/openpose}} is an open-source project that aims to detect keypoints in the human body, face, hands, and feet from images (\autoref{fig:openpose}). Its main features are:
 \begin{itemize}
     \item 2D real-time keypoint detection based on the body/foot, the hand, or the face of multiple people;
     \item 3D real-time keypoint detection based on images from multiple cameras of one person;
     \item estimation of camera calibration parameters;
-    \item single-person tracking.
+    \item single-person tracking;
+    \item can be used through the command line or using an API for Python or C++.
 \end{itemize}
-
-OpenPose can be used through the command line or using an API for Python or C++.
 
 \begin{figure}[ht]
     \centerline{\includegraphics[height=1.5in]{figs/openpose.jpg} \includegraphics[height=1.5in]{figs/openpose2.jpg}}
-    \caption[OpenPose Examples]{OpenPose Examples \cite{Cao2021,Simon2017}}
+    \caption[OpenPose Examples.]{OpenPose Examples \cite{Cao2021,Simon2017}.}
     \label{fig:openpose}
 \end{figure}
 
 \subsubsection{OpenPifPaf}
 
-OpenPifPaf\cite{Kreiss2021,Kreiss2019}\footnote{OpenPifPaf documentation: \url{https://openpifpaf.github.io}} is an open-source project that aims to detect, associate, and track semantic keypoints. Detecting human joints is an example of its usage but it is also able to generalize this detection to other classes such as cars and animals. It can be installed as a Python package which can then be imported.
+OpenPifPaf\cite{Kreiss2021,Kreiss2019}\footnote{OpenPifPaf documentation: \url{https://openpifpaf.github.io}} is an open-source project that aims to detect, associate, and track semantic keypoints (\autoref{fig:openpifpaf}). Detecting human joints is an example of its usage but it is also able to generalize this detection to other classes such as cars and animals. It can be installed as a Python package which can then be imported.
 
 \begin{figure}[ht]
     \centering
     \adjincludegraphics[width=0.7\textwidth, trim={{0} {.05\height} {0} {.10\height}}, clip]{figs/openpifpaf.jpg}
-    \caption[OpenPifPaf Example]{OpenPifPaf Example \cite{Kreiss2021}}
+    \caption[OpenPifPaf Example.]{OpenPifPaf Example \cite{Kreiss2021}.}
     \label{fig:openpifpaf}
 \end{figure}
 
@@ -161,9 +162,11 @@ The Pose Landmarker detects the landmarks of the pose over the entire body in an
     \label{fig:mediapipe_landmarks}
 \end{figure}
 
+From the three keypoint detection frameworks reviewed, MediaPipe was chosen for this work due to being easier to install compared to OpenPose, and having no dependency conflicts with other tools, which OpenPifPaf had. Additionally, MediaPipe was already being used by other members of the AUGMANITY project.
+
 \subsection{\acfp{cnn}}
 
-\acfp{cnn} are currently one of the most popular deep learning architectures and they are typically used to take advantage of the matrix structure of input data such as images and video where the input is too massive for other methods \cite{Sarker2021}. This architecture was originally introduced in a 1988 article \cite{Fukushima1988} and has since been further improved. According to \textcite{Alom2019}, the main building blocks are:
+\acfp{cnn} are currently one of the most popular deep learning architectures and they are typically used to take advantage of the matrix structure of input data such as images and video where the input is too massive for other methods \cite{Sarker2021}. This architecture was originally introduced in a 1988 article \cite{Fukushima1988} and has since evolved, giving rise to new variants. According to \textcite{Alom2019}, the main building blocks are:
 \begin{itemize}
     \item \textbf{Convolutional Layer}: in this layer, feature maps are extracted from receptive fields, which are parts of the input such as a region of pixels in an image or lower-level feature maps. This is done using a learnable kernel, consisting of a sliding window that goes through the entire input, computing the feature maps.
 
@@ -172,16 +175,14 @@ The Pose Landmarker detects the landmarks of the pose over the entire body in an
     \item \textbf{Classification Layer}: this layer is composed of a variable number of fully connected layers that use the higher-level features computed in earlier layers to obtain the final scores of each class.
 \end{itemize}
 
-The global architecture is then described as the junction of two main parts: Feature Extractors and a Classifier (\autoref{fig:cnn_arch}). The first part is composed of one or more pairs of convolutional and pooling layers. The repetition of these layers makes it so the dimension of the features progressively decreases and higher-level features can eventually be derived from the the previous layers. Finally, the classifier is made up of fully-connected feed-forward layers and a final classifier layer and it is responsible for converting the higher-level feature maps into an array of scores for each class.
+The global architecture is then described as the junction of two main parts: Feature Extractors and a Classifier (\autoref{fig:cnn_arch}). The first part is composed of one or more pairs of convolutional and pooling layers. The repetition of these layers results in the progressive reduction of feature dimensions, allowing higher-level features to be derived from the previous layers. Finally, the classifier is made up of fully-connected feed-forward layers and a final classifier layer and it is responsible for converting the higher-level feature maps into an array of scores for each class.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\textwidth]{figs/cnn_arch.pdf}
-    \caption[\acs{cnn} Architecture]{\acs{cnn} Architecture \cite{Alom2019}}
+    \includegraphics[width=0.95\textwidth]{figs/cnn_arch.pdf}
+    \caption[\acs{cnn} Architecture.]{\acs{cnn} Architecture \cite{Alom2019}.}
     \label{fig:cnn_arch}
 \end{figure}
-
-\newpage
 
 \subsection{Transformer Neural Networks}
 \label{subsection:transformer_neural_networks}
@@ -197,11 +198,11 @@ Transformer Neural Networks consist of a new kind of neural network architecture
     \item \textbf{Multi-head (self-)attention} - Multi-head (self-)attention refers to the fact that a transformer can have multiple attention heads. Each attention head performs a parallel process of (self-)attention allowing for multiple resulting weight matrices and, therefore, multiple definitions of relevance between the tokens.
 \end{itemize}
 
-The \autoref{fig:transformer_arch} shows the first published Transformer architecture. Initially, positional encodings are added to the input and output embeddings providing information about the relative positions. Then, in the encoder (left side of the figure), the input goes through a multi-head (self-)attention layer and a position-wise feedforward layer. In the decoder (right side of the figure), a different multi-head attention is applied on the output embeddings, and its output is used alongside the output of the encoder in another multi-head self-attention layer ending in a feedforward layer. Finally, the output of the last Transformer block is passed on to a dense layer converting it into a sequence of probabilities.
+\autoref{fig:transformer_arch} shows the first published Transformer architecture. Initially, positional encodings are added to the input and output embeddings providing information about the relative positions. Then, in the encoder (left side of the figure), the input goes through a multi-head (self-)attention layer and a position-wise feedforward layer. In the decoder (right side of the figure), a different multi-head attention is applied on the output embeddings, and its output is used alongside the output of the encoder in another multi-head self-attention layer ending in a feedforward layer. Finally, the output of the last Transformer block is passed on to a dense layer converting it into a sequence of probabilities.
 
 \begin{figure}[ht]
-    \centerline{\includegraphics[width=0.6\textwidth]{figs/transformer.pdf}}
-    \caption[Transformer Architecture]{Transformer Architecture \cite{Vaswani2017}}
+    \centerline{\includegraphics[width=0.65\textwidth]{figs/transformer.pdf}}
+    \caption[Transformer Architecture.]{Transformer Architecture \cite{Vaswani2017}.}
     \label{fig:transformer_arch}
 \end{figure}
 
@@ -210,29 +211,31 @@ The \autoref{fig:transformer_arch} shows the first published Transformer archite
 
 This section covers the integration of previously described tools and then the implementation of the first experiments to simulate anticipatory behavior in \acs{hrc}.
 
-\subsection{Assembly Task: Build a Three-Color Flag}
+\subsection{Assembly Task: Build a Striped Flag}
 
-To develop the necessary infrastructure, a concrete problem was needed. For this work, it was chosen to use sequences of big Lego blocks comparable to the stripes of a flag (\autoref{fig:flags_examples}). These blocks are initially placed behind the robot (\autoref{fig:table_workspace}), and the robot must fetch them and place them next to the user so that the user can build a flag. The blocks must be fetched in a certain order and there must be a way for the user to tell the robot that it is fetching the wrong block.
+To establish the required infrastructure, it was essential to define a concrete problem for evaluation, preferably involving some form of anticipation. For this work, it was chosen to put together sequences of big Lego blocks. The goal of the interactions would be to put three blocks together whose colors would be comparable to the stripes of a flag (\autoref{fig:flags_examples}). In total, ten big cubic Lego blocks were used for this task: two red, two dark blue, two light blue, one white, one yellow, one green, and one orange. Additionally, there are also eight small blocks, one of every color mentioned in addition to violet, that are used for the interactions with the user.
 
 \begin{figure}[ht]
     \centering
     \input{figs/flag_stripes_assembly_task.tikz}
-    \caption{Flag examples}
+    \caption{Flag examples.}
     \label{fig:flags_examples}
 \end{figure}
 
+\autoref{fig:work_environment} shows the work environment with the table and the robot. The big blocks are initially placed behind the robot, with the robot being responsible for picking them up and placing them next to the user so that the user can build a flag. Then, there are also eight small blocks placed in front of the user that can be used for the interactions. The small violet block is used to tell the robot that it is fetching the wrong block by hovering it. The remaining small blocks are used to request that the next block is of a certain color by hovering them.
+
 \begin{figure}[ht]
-    \centerline{\includegraphics[width=0.7\textwidth]{figs/table_workspace.jpg}}
-    \caption{Table workspace}
-    \label{fig:table_workspace}
+    \centerline{\includegraphics[width=0.7\textwidth]{figs/table_workspace2.jpg}}
+    \caption{Work environment: red - small block hovering area, blue - robot workspace with the remaining blocks, green - flag assembling area, yellow - user area.}
+    \label{fig:work_environment}
 \end{figure}
 
-Before the anticipation experiments, a base infrastructure was developed to build upon, integrating the perception system described in \autoref{subsection:perception_system} and the manipulator arm control system described in \autoref{subsection:manipulator_arm_control}. Connecting both of them is a decision-making node as shown in \autoref{fig:ros_architecture}. The logic in this node is implemented through a state machine with the behavior in each state corresponding to a method of a class, which facilitates the integration of additional logic by using subclasses of that class.
+Before the anticipation experiments, a base infrastructure was developed to build upon, integrating the perception system described in \autoref{subsection:perception_system} and the manipulator arm control system described in \autoref{subsection:manipulator_arm_control}. Both of them are connected to the \acs{ros} network and therefore an additional node was added to it to manage the communication between them and the decision-making in the system (\autoref{fig:ros_architecture}). For this purpose, this node contains a state machine where each state corresponds to a method of a class. As such, to integrate additional features or logic in the system, one only needs to create a subclass and redefine the relevant methods.
 
 \begin{figure}[ht]
     \centering
     \input{figs/ros_architecture.tikz}
-    \caption{General \acs{ros} architecture with decision-making node}
+    \caption{General \acs{ros} architecture with decision-making node.}
     \label{fig:ros_architecture}
 \end{figure}
 
@@ -244,7 +247,7 @@ As said before, the decision-making node contains an internal state machine. Alt
 \begin{figure}[ht]
     \centering
     \input{figs/general_state_machine.tikz}
-    \caption{State machine diagram}
+    \caption{State machine diagram.}
     \label{fig:state_machine}
 \end{figure}
 \begin{itemize}
@@ -259,7 +262,7 @@ As said before, the decision-making node contains an internal state machine. Alt
 \subsection{First Anticipation Experiments}
 \label{subsection:first_anticipation_experiments}
 
-This subsection describes the implementation and the workflow of the different experiments realized.
+This subsection describes the implementation and the workflow of the different experiments performed.
 
 \subsubsection{Probability Based}
 
@@ -269,15 +272,15 @@ When assembling a flag, the first block is still requested by the user but the f
 
 \subsubsection{Rule Based}
 
-The second experiment consisted of having a set of rules that the robot follows to anticipate the next block. These rules are read from a configuration file when the decision-making node starts and then managed by Experta\footnote{Experta documentation: \url{https://github.com/nilp0inter/experta}}. Experta is a Python library to create and deploy rule-based systems that make informed decisions using a knowledge base of rules. In this library, rules are defined as combinations of conditions and actions allowing for an intuitive syntax. Then, the engine uses these rules to make decisions using the declared information. For this experiment, some rules were defined about what should be the next block considering the blocks previously provided and the blocks rejected since the last accepted one.
+The second experiment consisted of having a set of rules that the robot follows to anticipate the next block. These rules are read from a configuration file when the decision-making node starts and then managed by Experta\footnote{Experta documentation: \url{https://github.com/nilp0inter/experta}}. Experta is a Python library to create and deploy rule-based systems that make informed decisions using a knowledge base of rules. In this library, rules are defined as combinations of conditions and actions allowing for an intuitive syntax. Then, the engine uses these rules to make decisions using the declared information. For this experiment, some rules were defined about what should be the next block considering the blocks previously provided and the blocks rejected since the last accepted one. For example, if the last accepted block was red and the user has since then rejected a dark blue block then the next block should be a yellow one.
 
 Similarly to the previous experiment, the first block is requested by the user but for the following blocks, the robot checks if a rule is present for the current situation. If there is one, the robot follows that rule and provides a block and if there is not, it waits for the user to request the next block. The interactions for requesting and refusing a block are maintained.
 
 \subsubsection{Rule Based + MediaPipe}
 
-The third experiment is very similar to the previous one. The rule-based decision-making is maintained with the same rules but the first block is no longer requested by the user. Instead, the user picks up the first block and the second camera which is facing the user detects the color of the object. To do this, the pose model from MediaPipe is used to detect the position of the hands which is then used to crop the received image to a region of interest. The resulting image is segmented similarly to the images of the other camera and if a color is detected, then that color is considered the color of the first block.
+The third experiment is very similar to the previous one. The rule-based decision-making is maintained with the same rules but the first block is no longer requested by the user. Instead, the user picks up the first block and the images from the camera facing the user are used to detect the color of the object. For this purpose, the pose model from MediaPipe is employed to detect the hand's position, which is subsequently used for cropping the received image to a region of interest. The resulting image is segmented similarly to the images of the other camera and if a color is detected, then that color is considered the color of the first block.
 
 \section{Final Remarks}
 \label{section:materials_methods_final_remarks}
 
-This chapter reviewed the necessary components to create a \acf{hrc} system starting with the provided collaboration cell and how the different components are set up and are able to establish communication using \acs{ros}. Then, the different tools that constitute this research are further described which were the keypoint detection frameworks, in particular MediaPipe, the \acfp{cnn}, and the Transformer Neural Networks. Finally, all components are connected with a decision-making node which handles which actions the robot should take. The first implementation included a database of probabilities that guided which action the robot should take but this solution proved to have reduced flexibility. Then, the second implementation used Experta to set up a list of rules to decide the action the robot should take next with a configuration file, a characteristic that made the robot's behavior more flexible since the rules could be easily changed. Finally, the last implementation integrated MediaPipe not only to reduce the direct communication between the robot and the user but also in preparation for its use in the next chapter.
+This chapter has reviewed the necessary components to build a \acf{hrc}, beginning by the collaborative cell and how the different components are configured and capable of establishing communication through \acs{ros}. Then, the different tools that constitute this research are further described, including keypoint detection frameworks such as MediaPipe, Convolutional Neural Networks (CNNs), and Transformer Neural Networks. Finally, all components are connected with a a node that determines the robot's actions. The first implementation included a database of probabilities that guided which action the robot should take but this solution proved to have reduced flexibility. Then, the second implementation used Experta to set up a list of rules to decide the action the robot should take next with a configuration file, a characteristic that made the robot's behavior more flexible since the rules could be easily changed. Finally, the last implementation integrated MediaPipe not only to reduce the direct communication between the robot and the user but also in preparation for its use in the next chapter.

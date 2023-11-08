@@ -197,7 +197,7 @@ P_{norm} = (P - C) \times scaleFactor + 0.5\text{ .}
 
 \begin{figure}[ht]
     \centerline{\includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing3_1.png} \ \includegraphics[width=0.49\textwidth]{figs/dataset_preprocessing3_2.png}}
-    \caption{Points from the pictures in \autoref{fig:dataset_examples2} after normalization}
+    \caption{Points from the pictures in \autoref{fig:dataset_examples2} after normalization.}
     \label{fig:dataset_examples3}
 \end{figure}
 
@@ -270,7 +270,7 @@ The final model can be seen in \autoref{fig:cnn_architecture} and it has \num{15
 \begin{figure}[ht]
     \centering
     {\fontsize{10}{12}\selectfont\includesvg[width=0.85\textwidth]{figs/cnn_architecture.svg}}
-    \caption{\acs{cnn} model architecture}
+    \caption{\acs{cnn} model architecture.}
     \label{fig:cnn_architecture}
 \end{figure}
 
@@ -310,7 +310,7 @@ After the model finished training, the metrics in the \autoref{table:cnn_dataset
 \begin{figure}[ht]
     \centering
     {\fontsize{10}{12}\selectfont\includesvg[width=0.4\textwidth]{figs/cnn_conf_matrix.svg}}
-    \caption{\acs{cnn} confusion matrix}
+    \caption{\acs{cnn} confusion matrix.}
     \label{fig:cnn_dataset2_confusion_matrix}
 \end{figure}
 
@@ -326,14 +326,14 @@ For this work, a Transformer architecture adapted from an example in the Keras d
 \begin{figure}[ht]
     \centering
     {\fontsize{10}{12}\selectfont\includesvg[width=0.8\textwidth]{figs/transformer_encoder.svg}}
-    \caption{Transformer encoder block}
+    \caption{Transformer encoder block.}
     \label{fig:transformer_encoder_architecture}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
     {\fontsize{10}{12}\selectfont\includesvg[width=0.8\textwidth]{figs/transformer_architecture.svg}}
-    \caption{Transformer model architecture}
+    \caption{Transformer model architecture.}
     \label{fig:transformer_architecture}
 \end{figure}
 
@@ -403,7 +403,7 @@ With the model training phase finished, the metrics on \autoref{table:transforme
 \begin{figure}[ht]
     \centering
     {\fontsize{10}{12}\selectfont\includesvg[width=0.4\textwidth]{figs/transformer_conf_matrix.svg}}
-    \caption{Transformer confusion matrix}
+    \caption{Transformer confusion matrix.}
     \label{fig:transformer_dataset2_confusion_matrix}
 \end{figure}
 
@@ -663,7 +663,7 @@ In the second configuration, the data of one acquisition session for a specific 
         \caption{\centering}
         % \label{}
     \end{subfigure}
-    \caption{"Session-Based User1 Testing" confusion matrices (\acs{cnn} model)}
+    \caption{"Session-Based User1 Testing" confusion matrices (\acs{cnn} model).}
     \label{fig:Session_Based_User1_Testing_CNN}
 \end{figure}
 
@@ -697,7 +697,7 @@ In the second configuration, the data of one acquisition session for a specific 
 \subsection{Leave-One-User-Out Test}
 The third experiment follows a distinctive approach termed the "Leave-One-User-Out Test". This is particularly relevant in scenarios where the data is collected from multiple users (i.e., dealing with user-dependent data), and the goal is to evaluate the model's generalization ability to new individuals who were not part of the training data. In this case, the process involves training the model on data from all users except one (the user to be left out) and then evaluating the model's performance on the data from the left-out user. This experiment allows the observation of a trend and it showcases the challenges of generalization to unseen users. In order to identify the trend, the process is repeated for each user, training the model on all users except the one being evaluated. This approach ensures that each user's data is used once as a test set (around 3660 samples), while the remaining data is employed for training (around 7350 samples).
 
-\autoref{table:results_third_case} shows the results obtained considering that only one user's data (all sessions) is used in testing the model. Although the classifier recognizes to some extent objects grasped by "User1" when it has not been explicitly trained on, the lower performance for "User2" and "User3" indicates limitations in generalization to users with distinct grasping patterns. The results indicate the difficulties the deep model faces when adapting to a new user in the absence of a dedicated training period. This emphasizes the need for personalized models or strategies that can adapt to individual user behaviors. In real-world scenarios, users may exhibit diverse hand-object interaction patterns and models should be capable of accommodating these variations. Whatever strategy is adopted, ensuring diverse and representative data (e.g., a bigger dataset) will be crucial for improving the results, either using a convolutional network as a transformer. 
+\autoref{table:results_third_case} and \autoref{fig:conf_matrix_examplesC_v2} shows the results obtained considering that only one user's data (all sessions) is used in testing the model. Although the classifier recognizes to some extent objects grasped by "User1" when it has not been explicitly trained on, the lower performance for "User2" and "User3" indicates limitations in generalization to users with distinct grasping patterns. The results indicate the difficulties the deep model faces when adapting to a new user in the absence of a dedicated training period. This emphasizes the need for personalized models or strategies that can adapt to individual user behaviors. In real-world scenarios, users may exhibit diverse hand-object interaction patterns and models should be capable of accommodating these variations. Whatever strategy is adopted, ensuring diverse and representative data (e.g., a bigger dataset) will be crucial for improving the results, either using a convolutional network as a transformer. 
 
 \begin{table}[ht]
     \captionsetup{width=0.6\textwidth}
@@ -740,7 +740,7 @@ The third experiment follows a distinctive approach termed the "Leave-One-User-O
        \caption{\centering}
        % \label{}
    \end{subfigure}
-   \caption{"Leave-One-User-Out Test" confusion matrices (\acs{cnn} model)}
+   \caption{"Leave-One-User-Out Test" confusion matrices (\acs{cnn} model).}
    \label{fig:conf_matrix_examplesC_v2}
 \end{figure}
 
