@@ -23,6 +23,8 @@ class RightHandKeypointsDetection:
         self.pose_model_client.wait_for_server()
 
         self.right_hand_keypoints_publisher = rospy.Publisher("right_hand_keypoints", PointList, queue_size=300)
+        self.hands_keypoints_publisher = rospy.Publisher("hands_keypoints", PointList, queue_size=300)
+        self.pose_keypoints_publisher = rospy.Publisher("pose_keypoints", PointList, queue_size=300)
         self.image_sub = rospy.Subscriber(input_topic, Image, self.image_callback)
 
     def image_callback(self, msg):
@@ -37,6 +39,9 @@ class RightHandKeypointsDetection:
         # Get results
         hands_keypoints = self.hands_model_client.get_result().points
         pose_keypoints = self.pose_model_client.get_result().points
+
+        self.hands_keypoints_publisher.publish(points = hands_keypoints)
+        self.pose_keypoints_publisher.publish(points = pose_keypoints)
 
         points = []
         if len(hands_keypoints) > 0 and len(pose_keypoints) > 0:
