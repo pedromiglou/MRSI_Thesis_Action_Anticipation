@@ -12,7 +12,7 @@
     <include file="$(find pamaral_models)/launch/points_preprocessing.launch"/>
 
     <node name="dataset_processing" pkg="pamaral_models" type="dataset_processing.py" output="screen">
-        <param name="input_folder" value="$(find data)/bag_files"/>
+        <param name="input_folder" value="$(find data)/bag_files/mp_metrics/chosen"/>
         <param name="output_folder" value="$(find data)/delete_this"/>
     </node>
 

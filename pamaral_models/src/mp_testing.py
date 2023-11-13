@@ -16,6 +16,8 @@ class RightHandKeypointsDetection:
         self.input_topic = input_topic
         self.images = []
         self.right_predictions = 0
+        self.right_right_predictions = 0
+        self.right_left_predictions = 0
         self.num_predictions = 0
 
         # Initialize Action Clients for MediaPipe Nodes
@@ -42,45 +44,55 @@ class RightHandKeypointsDetection:
         pose_keypoints = self.pose_model_client.get_result().points
 
         points = []
-        if len(hands_keypoints) > 0 and len(pose_keypoints) > 0:
-            pose_keypoints = [[p.x, p.y, p.z] for p in pose_keypoints]
-            hands_keypoints = [[p.x, p.y, p.z] for p in hands_keypoints]
 
-            # obtain right and left hands centroids and valid radius
-            left_hand = np.array([pose_keypoints[15], pose_keypoints[17], pose_keypoints[19], pose_keypoints[21]])
-            right_hand = np.array([pose_keypoints[16], pose_keypoints[18], pose_keypoints[20], pose_keypoints[22]])
-
-            left_hand_centroid = np.average(left_hand, axis=0)
-            right_hand_centroid = np.average(right_hand, axis=0)
-
-            left_hand_radius = 3*np.max(np.linalg.norm(left_hand_centroid - left_hand, axis=1))
-            right_hand_radius = 3*np.max(np.linalg.norm(right_hand_centroid - right_hand, axis=1))
-
-            # separate hands keypoints
-            hands_keypoints = [hands_keypoints[i*21:(i+1)*21] for i in range(len(hands_keypoints)//21)]
-
-            # check which hand is closer to the centroid of the right hand and if it is within the valid radius
-            best_distance = 100000
+        if len(hands_keypoints) > 0:
             true_handednesses = []
-            for hand in hands_keypoints:
-                hand_centroid = np.average(np.array(hand), axis=0)
+            if len(pose_keypoints) > 0:
+                pose_keypoints = [[p.x, p.y, p.z] for p in pose_keypoints]
+                hands_keypoints = [[p.x, p.y, p.z] for p in hands_keypoints]
 
-                right_hand_distance = np.linalg.norm(hand_centroid[:2] - right_hand_centroid[:2])
-                left_hand_distance = np.linalg.norm(hand_centroid[:2] - left_hand_centroid[:2])
+                # obtain right and left hands centroids and valid radius
+                left_hand = np.array([pose_keypoints[15], pose_keypoints[17], pose_keypoints[19], pose_keypoints[21]])
+                right_hand = np.array([pose_keypoints[16], pose_keypoints[18], pose_keypoints[20], pose_keypoints[22]])
 
-                if right_hand_distance < left_hand_distance and right_hand_distance < right_hand_radius:
-                    true_handednesses.append('right')
-                    if right_hand_distance < best_distance:
-                        points = [Point(p[0], p[1], p[2]) for p in hand]
-                        best_distance = right_hand_distance
+                left_hand_centroid = np.average(left_hand, axis=0)
+                right_hand_centroid = np.average(right_hand, axis=0)
+
+                left_hand_radius = 3*np.max(np.linalg.norm(left_hand_centroid - left_hand, axis=1))
+                right_hand_radius = 3*np.max(np.linalg.norm(right_hand_centroid - right_hand, axis=1))
+
+                # separate hands keypoints
+                hands_keypoints = [hands_keypoints[i*21:(i+1)*21] for i in range(len(hands_keypoints)//21)]
+
+                # check which hand is closer to the centroid of the right hand and if it is within the valid radius
+                best_distance = 100000
                 
-                elif right_hand_distance > left_hand_distance and left_hand_distance < left_hand_radius:
-                    true_handednesses.append('left')
-        
-        if tuple(true_handednesses) == tuple([h.data for h in handednesses]):
-            self.right_predictions += 1
-        self.num_predictions += 1
+                for hand in hands_keypoints:
+                    hand_centroid = np.average(np.array(hand), axis=0)
 
+                    right_hand_distance = np.linalg.norm(hand_centroid[:2] - right_hand_centroid[:2])
+                    left_hand_distance = np.linalg.norm(hand_centroid[:2] - left_hand_centroid[:2])
+
+                    if right_hand_distance < left_hand_distance: #and right_hand_distance < right_hand_radius:
+                        true_handednesses.append('right')
+                        if right_hand_distance < best_distance:
+                            points = [Point(p[0], p[1], p[2]) for p in hand]
+                            best_distance = right_hand_distance
+                    
+                    elif right_hand_distance > left_hand_distance: #and left_hand_distance < left_hand_radius:
+                        true_handednesses.append('left')
+        
+            if tuple(true_handednesses) == tuple([h.data for h in handednesses]):
+                self.right_predictions += 1
+            
+            if all([th!="right" or h.data == th for th, h in zip(true_handednesses, handednesses)]):
+                self.right_right_predictions += 1
+            if all([th!="left" or h.data == th for th, h in zip(true_handednesses, handednesses)]):
+                self.right_left_predictions += 1
+            self.num_predictions += 1
+
+        print(self.right_left_predictions/self.num_predictions*100)
+        print(self.right_right_predictions/self.num_predictions*100)
         print(self.right_predictions/self.num_predictions*100)
         
         # publish the keypoints of the hand that is closer to the centroid of the right hand

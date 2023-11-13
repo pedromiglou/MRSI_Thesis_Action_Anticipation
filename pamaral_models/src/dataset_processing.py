@@ -29,17 +29,17 @@ class DatasetProcessing:
                 self.csv_paths.append(os.path.join(self.output_folder, filename[:-4]+".csv"))
         
         self.image_publisher = rospy.Publisher("front_camera/color/image_raw", Image, queue_size=300)
-        self.preprocessed_points_sub = rospy.Subscriber("preprocessed_points", PointList, self.preprocessed_points_callback)
+        self.preprocessed_points_sub = rospy.Subscriber("pose_keypoints", PointList, self.preprocessed_points_callback)
 
     def preprocessed_points_callback(self, msg):
-        if len(msg.points)>0:
-            points = [[p.x, p.y, p.z] for p in msg.points]
-            points = np.array(points)
+        #if len(msg.points)>0:
+        points = [[p.x, p.y, p.z] for p in msg.points]
+        points = np.array(points)
 
-            # Open the CSV file in append mode
-            with open(self.csv_paths[0], 'a+', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow(points)
+        # Open the CSV file in append mode
+        with open(self.csv_paths[0], 'a+', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(points)
         
         self.num_messages -= 1
         if self.num_messages == 0:
