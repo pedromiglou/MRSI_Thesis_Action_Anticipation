@@ -1,5 +1,5 @@
 <launch>
-    <arg name="input_topic" default="camera/color/image_raw"/>
+    <arg name="input_topic" default="usb_cam/color/image_raw"/>
     <arg name="output_folder" default="$(find data)/bag_files"/>
 
     <node name="video_bag_recorder" pkg="pamaral_utils" type="video_bag_recorder.py" output="screen">
