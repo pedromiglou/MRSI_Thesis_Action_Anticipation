@@ -5,6 +5,7 @@
     
     <node name="dataset_processing" pkg="pamaral_models" type="dataset_processing.py" output="screen">
         <param name="input_folder" value="$(find data)/bag_files"/>
+        <param name="input_topic" value="pose_keypoints"/>
         <param name="output_folder" value="$(find data)/pose_keypoints"/>
     </node>
 </launch>

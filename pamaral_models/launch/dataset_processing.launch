@@ -8,6 +8,7 @@
     <node name="dataset_processing" pkg="pamaral_models" type="dataset_processing.py" output="screen">
         <param name="input_folder" value="$(find data)/bag_files"/>
         <param name="output_folder" value="$(find data)/points"/>
+        <param name="input_topic" value="preprocessed_points"/>
     </node>
 
     <node name="rviz" pkg="rviz" type="rviz"

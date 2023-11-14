@@ -13,7 +13,7 @@ from pamaral_models.msg import PointList
 
 class DatasetProcessing:
 
-    def __init__(self, input_folder, output_folder):
+    def __init__(self, input_folder, input_topic, output_folder):
         self.output_folder = output_folder
 
         # Iterate over all files in the folder
@@ -29,7 +29,7 @@ class DatasetProcessing:
                 self.csv_paths.append(os.path.join(self.output_folder, filename[:-4]+".csv"))
         
         self.image_publisher = rospy.Publisher("front_camera/color/image_raw", Image, queue_size=300)
-        self.preprocessed_points_sub = rospy.Subscriber("pose_keypoints", PointList, self.preprocessed_points_callback)
+        self.preprocessed_points_sub = rospy.Subscriber(input_topic, PointList, self.preprocessed_points_callback)
 
     def preprocessed_points_callback(self, msg):
         #if len(msg.points)>0:
@@ -61,10 +61,11 @@ def main():
     rospy.init_node(default_node_name, anonymous=False)
 
     input_folder = rospy.get_param(rospy.search_param('input_folder'))
+    input_topic = rospy.get_param(rospy.search_param('input_topic'))
     output_folder = rospy.get_param(rospy.search_param('output_folder'))
     os.makedirs(output_folder, exist_ok=True)
 
-    dataset_processing = DatasetProcessing(input_folder=input_folder, output_folder=output_folder)
+    dataset_processing = DatasetProcessing(input_folder=input_folder, input_topic=input_topic, output_folder=output_folder)
 
     input()
 
