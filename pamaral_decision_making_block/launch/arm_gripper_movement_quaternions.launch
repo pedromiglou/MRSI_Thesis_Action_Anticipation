@@ -1,5 +1,0 @@
-<launch>
-    <node name="arm_gripper_movement" pkg="pamaral_decision_making_block" type="arm_gripper_movement_quaternions.py" output="screen">
-        <param name="quaternion_poses" value="$(find pamaral_decision_making_block)/config/quaternion_poses/positions.json"/>
-    </node>
-</launch>

@@ -1,7 +1,7 @@
 <launch>
-    <node name="probabilities_controller" pkg="pamaral_decision_making_block" type="probabilities_controller.py" output="screen">
-        <param name="quaternion_poses" value="$(find pamaral_decision_making_block)/config/quaternion_poses/positions.json"/>
-        <param name="flags_path" value="$(find data)/flags/flags.yaml"/>
+    <node name="rule_based_controller" pkg="pamaral_decision_making" type="rule_based_controller2.py" output="screen">
+        <param name="quaternion_poses" value="$(find pamaral_decision_making)/config/quaternion_poses/positions.json"/>
+        <param name="rules_path" value="$(find pamaral_decision_making)/config/rules.json"/>
     </node>
 
     <include file="$(find pamaral_utils)/launch/video_bag_recorder.launch">
