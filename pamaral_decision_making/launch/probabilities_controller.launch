@@ -6,11 +6,11 @@
 
     <include file="$(find pamaral_utils)/launch/video_bag_recorder.launch">
         <arg name="input_topic" value="/top_camera/color/image_raw"/>
-        <arg name="output_path" value="$(find data)/bag_files/top_camera"/>
+        <arg name="output_folder" value="$(find data)/bag_files/top_camera"/>
     </include>
 
     <include file="$(find pamaral_utils)/launch/video_bag_recorder.launch">
         <arg name="input_topic" value="/front_camera/color/image_raw"/>
-        <arg name="output_path" value="$(find data)/bag_files/front_camera"/>
+        <arg name="output_folder" value="$(find data)/bag_files/front_camera"/>
     </include>
 </launch>

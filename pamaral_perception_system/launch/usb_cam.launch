@@ -2,7 +2,7 @@
     <arg name="camera_name" default="usb_cam"/>
     <arg name="create_suspended" default="false"/>
     <arg name="image_view" default="true"/>
-    <arg name="video_device" default="/dev/video0"/>
+    <arg name="video_device" default="/dev/video8"/>
 
     <node name="$(arg camera_name)" pkg="usb_cam" type="usb_cam_node" output="screen">
         <param name="create_suspended" value="$(arg create_suspended)"/>

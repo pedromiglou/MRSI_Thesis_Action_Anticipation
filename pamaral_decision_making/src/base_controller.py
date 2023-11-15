@@ -115,7 +115,7 @@ class BaseController:
         pass
 
     def picking_up_state(self):
-        block_name = self.current_block + "1" if self.current_block not in self.blocks else "2"
+        block_name = self.current_block + "1" if self.current_block not in self.blocks else self.current_block + "2"
 
         self.go_to(f'above_{block_name}')
         self.arm_gripper_comm.gripper_open_fast()

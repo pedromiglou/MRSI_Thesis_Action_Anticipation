@@ -22,7 +22,7 @@ class SimpleCropper:
             return
         
         # crop to ROI
-        img = img[34:449, 237:457]
+        img = img[17:174, 256:480]
 
         # publish cropped image
         self.publisher.publish(self.bridge.cv2_to_imgmsg(img, "bgr8"))

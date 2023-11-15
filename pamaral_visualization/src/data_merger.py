@@ -29,7 +29,7 @@ class DataMerger:
 
         self.bridge = CvBridge()
         self.cimage = None
-        self.cimage_subscriber = rospy.Subscriber("/camera/color/image_raw", Image, self.cimage_callback)
+        self.cimage_subscriber = rospy.Subscriber("/top_camera/color/image_raw", Image, self.cimage_callback)
 
     def centroids_callback(self, msg):
         self.centroids[msg.color] = msg.points
