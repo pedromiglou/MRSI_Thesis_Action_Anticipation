@@ -2,10 +2,10 @@ ros_robot_controller:
 	roslaunch larcc_launches script_control_ur10e.launch
 
 arm_movement:
-	roslaunch pamaral_decision_making_block arm_gripper_movement.launch
+	roslaunch pamaral_decision_making arm_gripper_movement.launch
 
 arm_movement_quaternions:
-	roslaunch pamaral_decision_making_block arm_gripper_movement_quaternions.launch
+	roslaunch pamaral_decision_making arm_gripper_movement_quaternions.launch
 
 echo_joints:
 	rostopic echo \joint_states

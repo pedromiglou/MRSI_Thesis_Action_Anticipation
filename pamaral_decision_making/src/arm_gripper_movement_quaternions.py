@@ -7,8 +7,11 @@ import time
 
 from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
 
+
+rospy.init_node("arm_gripper_movement", anonymous=True)
+
 try:
-    f = open(rospy.get_param(rospy.search_param('quaternion_poses')))
+    f = open(rospy.get_param(rospy.search_param('quaternion_poses')), "r")
     positions = json.load(f)
     positions = positions["positions"]
     positions = list(positions.items())
@@ -18,8 +21,6 @@ try:
 except:
     rospy.logerr("Invalid positions file! Closing...")
     sys.exit(0)
-
-rospy.init_node("arm_gripper_movement", anonymous=True)
 
 arm_gripper_comm = ArmGripperComm()
 
