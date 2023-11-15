@@ -2,7 +2,7 @@
     <arg name="input_topic" default="usb_cam/color/image_raw"/>
     <arg name="output_folder" default="$(find data)/bag_files"/>
 
-    <node name="video_bag_recorder" pkg="pamaral_utils" type="video_bag_recorder.py" output="screen">
+    <node name="video_bag_recorder_$(anon id)" pkg="pamaral_utils" type="video_bag_recorder.py" output="screen">
         <param name="input_topic" value="$(arg input_topic)"/>
         <param name="output_folder" value="$(arg output_folder)"/>
     </node>

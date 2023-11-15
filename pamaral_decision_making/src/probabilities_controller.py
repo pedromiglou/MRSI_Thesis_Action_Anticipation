@@ -143,8 +143,10 @@ class ProbabilitiesController(BaseController):
             self.possible_blocks = [p[0] for p in probs if p[1] > 0]
     
     def putting_down_state(self):
-        super().putting_down_state(self)
+        super().putting_down_state()
+        self.possible_blocks = []
         self.queried_database = False
+
 
 
 def main():

@@ -18,7 +18,7 @@
         <arg name="camera_name" value="top_camera"/>
         <arg name="create_suspended" value="$(arg top_camera_create_suspended)"/>
         <arg name="image_view" value="false"/>
-        <arg name="video_device" value="/dev/video2"/>
+        <arg name="video_device" value="/dev/video8"/>
     </include>
 
     <!-- top camera - depth -->

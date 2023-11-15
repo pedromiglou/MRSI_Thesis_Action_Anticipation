@@ -49,7 +49,7 @@ class ObjectColorSegmenter:
         for i in range(len(centroids)):
             area = stats[i, cv2.CC_STAT_AREA]
             (cX, cY) = centroids[i]
-            cX, cY = int(cX + 237), int(cY + 34)
+            cX, cY = int(cX + 256), int(cY + 17)
 
             if area > self.min_area:
                 pieces.append((cX, cY))
