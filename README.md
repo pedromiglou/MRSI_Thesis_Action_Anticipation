@@ -1,6 +1,4 @@
-# Recognition of Human Grasping Patterns for Intention Prediction in Collaborative Tasks
-
-MRSI Thesis Repository
+# [Recognition of Human Grasping Patterns for Intention Prediction in Collaborative Tasks](https://github.com/pedromiglou/MRSI_Thesis_Action_Anticipation)
 
 <!-- ## Repository Structure
 
@@ -14,9 +12,10 @@ MRSI Thesis Repository
 
 ## Important Links
 
-- [Dataset published on Kaggle](https://www.kaggle.com/datasets/pedromiglou/human-grasping-patterns-for-object-recognition)
+- [Sensors Article](https://www.mdpi.com/1424-8220/23/21/8989)
+- [Kaggle Dataset](https://www.kaggle.com/datasets/pedromiglou/human-grasping-patterns-for-object-recognition)
 
-## Installation Guide (In Progress)
+## Installation Guide
 
 The code in this repository was made to work with:
 - Ubuntu 20.04.3 LTS
@@ -64,6 +63,34 @@ The code in this repository was made to work with:
     pip install -r requirements.txt
     ```
 
-## Other thesis in action anticipation
+## Usage Guide
 
-- https://repository.kaust.edu.sa/handle/10754/673882
+1. Launch the system:
+
+    ```
+    roslaunch pamaral_bringup pamaral_bringup_all.launch
+    ```
+
+2. Launch one of the decision making node:
+
+    ```
+    roslaunch pamaral_decision_making_block base_controller.launch
+    ```
+    
+    or
+
+    ```
+    roslaunch pamaral_decision_making_block probabilities_controller.launch
+    ```
+
+    or
+
+    ```
+    roslaunch pamaral_decision_making_block rule_based_controller.launch
+    ```
+
+    or
+
+    ```
+    roslaunch pamaral_decision_making_block rule_based_controller+mediapipe.launch
+    ```

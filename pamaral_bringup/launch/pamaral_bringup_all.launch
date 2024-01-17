@@ -6,7 +6,7 @@
     <include file="$(find pamaral_perception_system)/launch/camera_setup.launch"/>
 
     <!--launch file to locate human using the depth images-->
-    <!-- <include file="$(find pamaral_perception_system)/launch/human_locator.launch"/> -->
+    <include file="$(find pamaral_perception_system)/launch/human_locator.launch"/>
 
     <!--launch files to locate objects in the table images-->
     <include file="$(find pamaral_perception_system)/launch/simple_cropper.launch">

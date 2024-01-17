@@ -1,9 +1,3 @@
 **/.vscode/
 **/__pycache__/
-data/bag_files
-data/points_after_update
-data/points_after_update_square
-data/hands_keypoints
-data/pose_keypoints
-model_training/**/*.csv
-model_training/models
+data/bag_files/
