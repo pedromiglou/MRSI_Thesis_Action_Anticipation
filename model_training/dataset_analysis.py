@@ -1,7 +1,7 @@
 import os
 
 # Specify the folder path you want to read files from
-folder_path = "./dataset2_4objects"
+folder_path = "./dataset_after_preprocessing"
 
 counts = dict()
 overall = 0

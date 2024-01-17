@@ -1,3 +1,0 @@
-Best Hyperparameters: (lr, dr, ks, ncv) -> (0.001, 0.5, 3, 2)
-Best Loss: 0.2095266580581665
-Best Accuracy: 0.9415170103311539

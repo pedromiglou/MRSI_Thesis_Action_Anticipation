@@ -13,7 +13,7 @@ plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.size'] = 15
 
 
-def read_dataset1(folder_path="./dataset1_3objects"):
+def read_dataset1(folder_path="./dataset_after_preprocessing"):
     x = []
     y = []
 
@@ -51,7 +51,7 @@ def read_dataset1(folder_path="./dataset1_3objects"):
     return x, y
 
 
-def read_dataset2(folder_path="./dataset2_4objects", objects=["bottle", "cube", "phone", "screwdriver"],
+def read_dataset2(folder_path="./dataset_after_preprocessing", objects=["bottle", "cube", "phone", "screwdriver"],
                   people=["joel", "manuel", "pedro"], sessions=["1", "2", "3", "4"], num_samples=None):
     x = []
     y = []
