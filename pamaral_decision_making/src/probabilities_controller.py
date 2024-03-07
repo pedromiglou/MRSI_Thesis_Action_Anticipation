@@ -165,8 +165,6 @@ def main():
 
     rospy.spin()
 
-    probabilities_controller.arm_gripper_comm.gripper_disconnect()
-
 
 if __name__ == "__main__":
     main()

@@ -217,9 +217,6 @@ class BaseController:
 
 
 def main():
-    # ---------------------------------------------------
-    # INITIALIZATION
-    # ---------------------------------------------------
     default_node_name = 'base_controller'
     rospy.init_node(default_node_name, anonymous=False)
 
@@ -230,8 +227,6 @@ def main():
     base_controller.loop()
 
     rospy.spin()
-
-    # base_controller.arm_gripper_comm.gripper_disconnect()
 
 
 if __name__ == '__main__':
