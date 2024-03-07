@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+import actionlib
 import json
 import rospy
 import sys
 
 from arm.srv import MoveArmToPoseGoal, MoveArmToPoseGoalRequest
+from gripper_action_server.msg import GripperControlAction, GripperControlGoal
 
 
 rospy.init_node("arm_gripper_movement", anonymous=True)
@@ -25,6 +27,10 @@ except:
 rospy.wait_for_service('move_arm_to_pose_goal')
 move_arm_to_pose_goal_proxy = rospy.ServiceProxy('move_arm_to_pose_goal', MoveArmToPoseGoal)
 
+# set up gripper action client
+gripper_control_client = actionlib.SimpleActionClient('/gripper_action_server', GripperControlAction)
+gripper_control_client.wait_for_server()
+
 while True:
     i = 0
 
@@ -35,12 +41,16 @@ while True:
     idx = int(input("Select idx: "))
 
     if idx == 0:
-        pass
-        #arm_gripper_comm.gripper_open_fast()
+        goal = GripperControlGoal(goal="open", speed=255)
+        gripper_control_client.send_goal(goal)
+        gripper_control_client.wait_for_result()
+        print(gripper_control_client.get_result())
 
     elif idx == 1:
-        pass
-        # arm_gripper_comm.gripper_close_fast()
+        goal = GripperControlGoal(goal="close", speed=255)
+        gripper_control_client.send_goal(goal)
+        gripper_control_client.wait_for_result()
+        print(gripper_control_client.get_result())
 
     else:
         pos = positions[idx][1]

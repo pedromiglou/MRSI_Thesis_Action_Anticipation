@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import actionlib
 import json
 import rospy
 import sys
@@ -7,6 +8,7 @@ import sys
 from geometry_msgs.msg import PointStamped
 
 from arm.srv import MoveArmToPoseGoal, MoveArmToPoseGoalRequest, StopArm
+from gripper_action_server.msg import GripperControlAction, GripperControlGoal
 from pamaral_perception_system.msg import CentroidList
 
 
@@ -45,6 +47,10 @@ class BaseController:
         rospy.wait_for_service('stop_arm')
         self.move_arm_to_pose_goal_proxy = rospy.ServiceProxy('move_arm_to_pose_goal', MoveArmToPoseGoal)
         self.stop_arm_proxy = rospy.ServiceProxy('stop_arm', StopArm)
+
+        # set up gripper action client
+        self.gripper_control_client = actionlib.SimpleActionClient('/gripper_action_server', GripperControlAction)
+        self.gripper_control_client.wait_for_server()
 
         # subscribe data derived from sensors
         self.centroids = {"red": None, "dark_blue": None, "light_blue": None, "green": None,
@@ -122,25 +128,25 @@ class BaseController:
     def picking_up_state(self):
         block_name = self.current_block + "1" if self.current_block not in self.blocks else self.current_block + "2"
 
-        self.go_to(f'above_{block_name}')
-        # self.arm_gripper_comm.gripper_open_fast()
-        self.go_to(f'{block_name}')
-        # self.arm_gripper_comm.gripper_close_fast()
+        self.move_arm_to(f'above_{block_name}')
+        self.control_gripper("open")
+        self.move_arm_to(f'{block_name}')
+        self.control_gripper("close")
 
         self.holding = self.current_block
 
-        self.go_to(f'above_{block_name}')
+        self.move_arm_to(f'above_{block_name}')
 
-        self.go_to('retreat')
+        self.move_arm_to('retreat')
 
         if self.state == "picking_up":
             self.state = "moving_closer"
     
     def moving_closer_state(self):
         if self.user_pose == "left":
-            self.go_to("above_table2")
+            self.move_arm_to("above_table2")
         elif self.user_pose == "right":
-            self.go_to("above_table1")
+            self.move_arm_to("above_table1")
         
         if self.state == "moving_closer":
             self.state = "putting_down"
@@ -156,15 +162,15 @@ class BaseController:
             self.blocks = []
 
         if self.user_pose == "left":
-            self.go_to("table2")
-            # self.arm_gripper_comm.gripper_open_fast()
-            self.go_to("above_table2")
+            self.move_arm_to("table2")
+            self.control_gripper("open")
+            self.move_arm_to("above_table2")
         else:# self.user_pose == "right":
-            self.go_to("table1")
-            # self.arm_gripper_comm.gripper_open_fast()
-            self.go_to("above_table1")
+            self.move_arm_to("table1")
+            self.control_gripper("open")
+            self.move_arm_to("above_table1")
         
-        self.go_to('retreat')
+        self.move_arm_to('retreat')
 
         if self.state == "putting_down":
             self.state = 'idle'
@@ -177,10 +183,10 @@ class BaseController:
         if self.holding is not None:
             block_name = self.holding + "1" if self.holding not in self.blocks else "2"
 
-            self.go_to(f"above_{block_name}")
-            self.go_to(f"{block_name}")
-            # self.arm_gripper_comm.gripper_open_fast()
-            self.go_to(f"above_{block_name}")
+            self.move_arm_to(f"above_{block_name}")
+            self.move_arm_to(f"{block_name}")
+            self.control_gripper("open")
+            self.move_arm_to(f"above_{block_name}")
 
             self.holding = None
 
@@ -189,7 +195,7 @@ class BaseController:
         if self.state == "stop_wrong_guess":
             self.state = "idle"
 
-    def go_to(self, pos):
+    def move_arm_to(self, pos):
         pos = self.positions[pos]
 
         req = MoveArmToPoseGoalRequest(translation=(pos[0], pos[1], pos[2]-0.26), quaternions=(pos[3], pos[4], pos[5], pos[6]),
@@ -202,6 +208,12 @@ class BaseController:
         except rospy.ServiceException as exc:
             print("Service did not process request: " + str(exc))
             sys.exit(0)
+    
+    def control_gripper(self, goal):
+        goal = GripperControlGoal(goal=goal, speed=255)
+        self.gripper_control_client.send_goal(goal)
+        self.gripper_control_client.wait_for_result()
+        print(self.gripper_control_client.get_result())
 
 
 def main():
