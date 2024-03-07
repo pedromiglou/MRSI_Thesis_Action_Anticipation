@@ -3,9 +3,8 @@
 import json
 import rospy
 import sys
-import time
 
-from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
+from arm.srv import MoveArmToPoseGoal, MoveArmToPoseGoalRequest
 
 
 rospy.init_node("arm_gripper_movement", anonymous=True)
@@ -22,16 +21,9 @@ except:
     rospy.logerr("Invalid positions file! Closing...")
     sys.exit(0)
 
-arm_gripper_comm = ArmGripperComm()
-
-time.sleep(0.2)
-
-arm_gripper_comm.gripper_connect()
-
-#arm_gripper_comm.gripper_status()
-
-if not arm_gripper_comm.state_dic["activation_completed"]: 
-    arm_gripper_comm.gripper_init()
+# set up arm controller service proxy
+rospy.wait_for_service('move_arm_to_pose_goal')
+move_arm_to_pose_goal_proxy = rospy.ServiceProxy('move_arm_to_pose_goal', MoveArmToPoseGoal)
 
 while True:
     i = 0
@@ -43,13 +35,23 @@ while True:
     idx = int(input("Select idx: "))
 
     if idx == 0:
-        arm_gripper_comm.gripper_open_fast()
+        pass
+        #arm_gripper_comm.gripper_open_fast()
 
     elif idx == 1:
-        arm_gripper_comm.gripper_close_fast()
+        pass
+        # arm_gripper_comm.gripper_close_fast()
 
     else:
         pos = positions[idx][1]
-        arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6])
 
-arm_gripper_comm.gripper_disconnect()
+        req = MoveArmToPoseGoalRequest(translation=(pos[0], pos[1], pos[2]-0.26), quaternions=(pos[3], pos[4], pos[5], pos[6]),
+                                       velocity=0.2, acceleration=0.2)
+
+        try:
+            resp = move_arm_to_pose_goal_proxy(req)
+            print(resp)
+
+        except rospy.ServiceException as exc:
+            print("Service did not process request: " + str(exc))
+            sys.exit(0)

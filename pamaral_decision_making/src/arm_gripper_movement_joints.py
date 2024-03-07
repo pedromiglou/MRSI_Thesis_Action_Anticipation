@@ -1,3 +1,7 @@
+"""
+THE METHODS IN THIS SCRIPT ARE OUTDATED AND NO LONGER WORK.
+"""
+
 #!/usr/bin/env python3
 
 import argparse

@@ -1,15 +1,5 @@
 # [Recognition of Human Grasping Patterns for Intention Prediction in Collaborative Tasks](https://github.com/pedromiglou/MRSI_Thesis_Action_Anticipation)
 
-<!-- ## Repository Structure
-
-- data: ROS package containing datasets and other data
-- dissertation_reports: pdf reports and latex files
-- model_training: model training scripts, Dockerfile and results
-- pamaral_bringup: system launch files
-- pamaral_decision_making_block: decision making nodes
-- pamaral_models: 
--->
-
 ## Important Links
 
 - [Sensors Article](https://www.mdpi.com/1424-8220/23/21/8989)
@@ -28,13 +18,8 @@ The code in this repository was made to work with:
 2. (Optional) Install [Docker](https://docs.docker.com/engine/install/ubuntu/) to train machine learning models inside a container or to run the probability-based decision making node.
 
 3. Follow the instructions in the following repositories to install them:
-    - [larcc_interface](https://github.com/afonsocastro/larcc_interface)
+    - [larcc_drivers](https://github.com/lardemua/larcc_drivers)
     - [ros_astra_camera package](https://github.com/orbbec/ros_astra_camera)
-    
-    Change the branch of larcc_interface to `stop-mid-movement`:
-    ```
-    cd ~/catkin_ws/src/larcc_interface && git checkout stop-mid-movement
-    ```
 
 4. Clone this repository and [usb_cam](https://github.com/ros-drivers/usb_cam) into your catkin workspace:
 

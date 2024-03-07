@@ -3,14 +3,4 @@
         <param name="quaternion_poses" value="$(find pamaral_decision_making)/config/quaternion_poses/positions.json"/>
         <param name="flags_path" value="$(find data)/flags/flags.yaml"/>
     </node>
-
-    <include file="$(find pamaral_utils)/launch/video_bag_recorder.launch">
-        <arg name="input_topic" value="/top_camera/color/image_raw"/>
-        <arg name="output_folder" value="$(find data)/bag_files/top_camera"/>
-    </include>
-
-    <include file="$(find pamaral_utils)/launch/video_bag_recorder.launch">
-        <arg name="input_topic" value="/front_camera/color/image_raw"/>
-        <arg name="output_folder" value="$(find data)/bag_files/front_camera"/>
-    </include>
 </launch>
