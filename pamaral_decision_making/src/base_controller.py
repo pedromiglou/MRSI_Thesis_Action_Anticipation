@@ -3,11 +3,10 @@
 import json
 import rospy
 import sys
-import time
 
 from geometry_msgs.msg import PointStamped
 
-from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
+from arm.srv import MoveArmToPoseGoal, MoveArmToPoseGoalRequest, StopArm
 from pamaral_perception_system.msg import CentroidList
 
 
@@ -41,15 +40,11 @@ class BaseController:
             rospy.logerr("Invalid positions file! Closing...")
             sys.exit(0)
 
-        # start the robot
-        self.arm_gripper_comm = ArmGripperComm()
-
-        time.sleep(0.2)
-
-        self.arm_gripper_comm.gripper_connect()
-
-        if not self.arm_gripper_comm.state_dic["activation_completed"]: 
-            self.arm_gripper_comm.gripper_init()
+        # set up arm controller service proxy
+        rospy.wait_for_service('move_arm_to_pose_goal')
+        rospy.wait_for_service('stop_arm')
+        self.move_arm_to_pose_goal_proxy = rospy.ServiceProxy('move_arm_to_pose_goal', MoveArmToPoseGoal)
+        self.stop_arm_proxy = rospy.ServiceProxy('stop_arm', StopArm)
 
         # subscribe data derived from sensors
         self.centroids = {"red": None, "dark_blue": None, "light_blue": None, "green": None,
@@ -73,7 +68,12 @@ class BaseController:
             
             if (self.state == "picking_up" or self.state == "moving_closer") and color == "violet":
                 self.state = "stop_wrong_guess"
-                self.arm_gripper_comm.stop_arm()
+
+                try:
+                    self.stop_arm_proxy()
+                except rospy.ServiceException as exc:
+                    print("Service did not process request: " + str(exc))
+                    return
 
         self.centroids[color] = centroids
 
@@ -89,7 +89,12 @@ class BaseController:
         
         if self.state == "moving_closer" and old_pose != self.user_pose:
             self.state = "stop_side_switch"
-            self.arm_gripper_comm.stop_arm()
+            
+            try:
+                self.stop_arm_proxy()
+            except rospy.ServiceException as exc:
+                print("Service did not process request: " + str(exc))
+                return
 
     def loop(self):
         while True:
@@ -118,9 +123,9 @@ class BaseController:
         block_name = self.current_block + "1" if self.current_block not in self.blocks else self.current_block + "2"
 
         self.go_to(f'above_{block_name}')
-        self.arm_gripper_comm.gripper_open_fast()
+        # self.arm_gripper_comm.gripper_open_fast()
         self.go_to(f'{block_name}')
-        self.arm_gripper_comm.gripper_close_fast()
+        # self.arm_gripper_comm.gripper_close_fast()
 
         self.holding = self.current_block
 
@@ -152,11 +157,11 @@ class BaseController:
 
         if self.user_pose == "left":
             self.go_to("table2")
-            self.arm_gripper_comm.gripper_open_fast()
+            # self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table2")
         else:# self.user_pose == "right":
             self.go_to("table1")
-            self.arm_gripper_comm.gripper_open_fast()
+            # self.arm_gripper_comm.gripper_open_fast()
             self.go_to("above_table1")
         
         self.go_to('retreat')
@@ -174,7 +179,7 @@ class BaseController:
 
             self.go_to(f"above_{block_name}")
             self.go_to(f"{block_name}")
-            self.arm_gripper_comm.gripper_open_fast()
+            # self.arm_gripper_comm.gripper_open_fast()
             self.go_to(f"above_{block_name}")
 
             self.holding = None
@@ -186,7 +191,17 @@ class BaseController:
 
     def go_to(self, pos):
         pos = self.positions[pos]
-        self.arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6], vel=0.3, a=0.3)
+
+        req = MoveArmToPoseGoalRequest(translation=(pos[0], pos[1], pos[2]-0.26), quaternions=(pos[3], pos[4], pos[5], pos[6]),
+                                       velocity=0.3, acceleration=0.3)
+
+        try:
+            resp = self.move_arm_to_pose_goal_proxy(req)
+            print(resp)
+
+        except rospy.ServiceException as exc:
+            print("Service did not process request: " + str(exc))
+            sys.exit(0)
 
 
 def main():
@@ -204,7 +219,7 @@ def main():
 
     rospy.spin()
 
-    base_controller.arm_gripper_comm.gripper_disconnect()
+    # base_controller.arm_gripper_comm.gripper_disconnect()
 
 
 if __name__ == '__main__':
