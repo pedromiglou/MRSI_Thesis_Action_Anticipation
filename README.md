@@ -19,6 +19,7 @@ The code in this repository was made to work with:
 
 3. Follow the instructions in the following repositories to install them:
     - [larcc_drivers](https://github.com/lardemua/larcc_drivers)
+    - [object_grasping_pattern_recognition](https://github.com/lardemua/object_grasping_pattern_recognition)
     - [ros_astra_camera package](https://github.com/orbbec/ros_astra_camera)
 
 4. Clone this repository and [usb_cam](https://github.com/ros-drivers/usb_cam) into your catkin workspace:
