@@ -1,3 +1,0 @@
-<launch>
-    <node name="points_preprocessing" pkg="pamaral_models" type="points_preprocessing.py" output="screen"/>
-</launch>
