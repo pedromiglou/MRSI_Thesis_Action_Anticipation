@@ -103,7 +103,9 @@ class BaseController:
                 return
 
     def loop(self):
-        while True:
+        rate = rospy.Rate(20)
+
+        while not rospy.is_shutdown():
             if self.state == "idle":
                 self.idle_state()
             
@@ -121,6 +123,8 @@ class BaseController:
             
             elif self.state == "stop_wrong_guess":
                 self.stop_wrong_guess_state()
+            
+            rate.sleep()
 
     def idle_state(self):
         pass

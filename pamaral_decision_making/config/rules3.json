@@ -1,0 +1,18 @@
+[
+	{
+		"grasping": "bottle",
+		"next_block": "light_blue"
+	},
+	{
+		"grasping": "cube",
+		"next_block": "white"
+	},
+	{
+		"grasping": "plier",
+		"next_block": "orange"
+	},
+	{
+		"grasping": "screwdriver",
+		"next_block": "red"
+	}
+]
