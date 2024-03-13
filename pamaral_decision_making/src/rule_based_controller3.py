@@ -3,86 +3,52 @@
 import json
 import rospy
 
-from experta import Fact, KnowledgeEngine, Rule
-
-
 from base_controller import BaseController
 from pamaral_object_grasping_pattern_recognition.msg import ObjectPrediction
 
 
-default_node_name = 'rule_based_controller'
-rospy.init_node(default_node_name, anonymous=False)
-rules_path = rospy.get_param(rospy.search_param('rules_path'))
-
-
-class Grasping(Fact):
-    """Info about the object being grasped."""
-    pass
-
-
-class RuleBasedController(KnowledgeEngine, BaseController):
-
-    f = open(rules_path, "r")
-    rules = json.load(f)
-    f.close()
-
-    for i, rule in enumerate(rules):
-        grasping = rule["grasping"]
-        next_block = rule["next_block"]
-        f_str = f"@Rule(Grasping(v='{grasping}'))\n"+f"def rule{i}(self):\n\t"+f"self.current_block='{next_block}'"
-        exec(f_str)
-    
+class RuleBasedController(BaseController):
     def __init__(self, position_list, rules_path):
-        KnowledgeEngine.__init__(self)
-        self.reset()
+        super().__init__(position_list)
 
-        BaseController.__init__(self,position_list)
+        f = open(rules_path, "r")
+        self.rules = [[{"grasping": rule["grasping"]}, rule["next_block"]] for rule in json.load(f)]
+        f.close()
+
+        self.state_dict["grasping"] = ""
 
         self.last_prediction = None
         self.object_class_sub = rospy.Subscriber("object_class", ObjectPrediction, self.object_class_callback)
-
-        # flag so that the controller does not keep making Experta run
-        self.engine_ran = False
+    
+    def check_rules(self):
+        for rule in self.rules:
+            if rule[0].items <= self.state_dict.items():
+                self.current_block = rule[1]
+                return
+        
+        self.current_block = None
     
     def object_class_callback(self, msg):
         if msg.object_class.data == self.last_prediction:
             print(msg.object_class.data)
-            self.declare(Grasping(v=self.last_prediction))
+            self.state_dict["grasping"] = self.last_prediction
         
         self.last_prediction = msg.object_class.data
     
     def idle_state(self):
-        self.run()
-        rospy.loginfo("Engine ran, current_block: "+str(self.current_block))
+        if self.current_block is None:
+            self.check_rules()
+            rospy.loginfo("Rules checked, current_block: "+str(self.current_block))
 
-        if self.state == "idle" and self.current_block is not None:
-            self.state = "picking_up"
-
-    # def idle_state(self):
-    #     if self.current_block is None and not self.engine_ran:
-    #         self.run()
-    #         self.engine_ran = True
-    #         rospy.loginfo("Engine ran, current_block: "+str(self.current_block))
-
-    #         if self.state == "idle" and self.current_block is not None:
-    #             self.state = "picking_up"
-    
-    def putting_down_state(self):
-        BaseController.putting_down_state(self)
-
-        self.reset()
-
-        self.engine_ran = False
-    
-    # def stop_wrong_guess_state(self):
-    #     self.engine_ran = False
-
-    #     rospy.loginfo("Refused "+self.current_block)
-
-    #     BaseController.stop_wrong_guess_state(self)
+            if self.state == "idle" and self.current_block is not None:
+                self.state = "picking_up"
 
 
 def main():
+    default_node_name = 'rule_based_controller'
+    rospy.init_node(default_node_name, anonymous=False)
+
+    rules_path = rospy.get_param(rospy.search_param('rules_path'))
     quaternion_poses = rospy.get_param(rospy.search_param('quaternion_poses'))
 
     rule_based_controller = RuleBasedController(position_list = quaternion_poses, rules_path=rules_path)
