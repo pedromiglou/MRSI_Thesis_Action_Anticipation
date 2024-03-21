@@ -20,20 +20,18 @@ The code in this repository was made to work with:
 3. Follow the instructions in the following repositories to install them:
     - [larcc_drivers](https://github.com/lardemua/larcc_drivers)
     - [object_grasping_pattern_recognition](https://github.com/lardemua/object_grasping_pattern_recognition)
-    - [ros_astra_camera package](https://github.com/orbbec/ros_astra_camera)
 
-4. Clone this repository and [usb_cam](https://github.com/ros-drivers/usb_cam) into your catkin workspace:
+4. Clone this repository into your catkin workspace:
 
     ```
     cd ~/catkin_ws/src
     git clone https://github.com/pedromiglou/MRSI_Thesis_Action_Anticipation.git
-    git clone https://github.com/ros-drivers/usb_cam.git
     ```
 
 5. Install additional system dependencies:
 
     ```
-    sudo apt install libpq-dev libv4l-dev python3-pip v4l-utils
+    sudo apt install libpq-dev python3-pip
     ```
 
 6. Compile the catkin workspace:

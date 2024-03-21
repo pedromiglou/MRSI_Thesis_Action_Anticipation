@@ -1,9 +1,9 @@
 <launch>
     <!--launch files for robot drivers, controllers and planner-->
-    <include file="$(find larcc_bringup)/launch/script_control_ur10e.launch"/>
+    <include file="$(find larcc_bringup)/launch/ur10e_bringup.launch"/>
 
     <!--launch file for communicating with the cameras-->
-    <include file="$(find pamaral_perception_system)/launch/camera_setup.launch"/>
+    <include file="$(find larcc_bringup)/launch/cameras.launch"/>
 
     <!--launch file to locate human using the depth images-->
     <include file="$(find pamaral_perception_system)/launch/human_locator.launch"/>
