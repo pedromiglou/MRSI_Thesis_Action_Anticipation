@@ -1,5 +1,5 @@
 <launch>
     <node name="arm_gripper_movement" pkg="pamaral_decision_making" type="arm_gripper_movement_joints.py" output="screen">
-        <param name="joints_poses" value="$(find pamaral_decision_making)/config/joints_poses/"/>
+        <param name="joints_poses" value="$(find pamaral_decision_making)/config/joints_poses/positions.json"/>
     </node>
 </launch>

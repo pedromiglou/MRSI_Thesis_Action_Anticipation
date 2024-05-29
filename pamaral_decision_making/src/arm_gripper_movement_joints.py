@@ -1,107 +1,69 @@
-"""
-THE METHODS IN THIS SCRIPT ARE OUTDATED AND NO LONGER WORK.
-"""
-
 #!/usr/bin/env python3
 
-import argparse
+import actionlib
 import json
-import os
 import rospy
 import sys
-import time
 
-#from config.definitions import ROOT_DIR
-from larcc_classes.ur10e_control.ArmGripperComm import ArmGripperComm
+from arm.srv import MoveArmToJointsState, MoveArmToJointsStateRequest
+from gripper_action_server.msg import GripperControlAction, GripperControlGoal
 
 
-parser = argparse.ArgumentParser(description="Arguments for trainning script")
-parser.add_argument("-m", "--movement", type=str, default="",
-                    help="It is the name of the movement configuration JSON in the config directory of this package")
-parser.add_argument("-pl", "--position_list", type=str, default="positions",
-                    help="It is the name of the configuration JSON containing the list of positions in the config directory of this package")
-
-args = vars(parser.parse_args())
-
-# path = ROOT_DIR + "/use_cases/config/"
-path = rospy.get_param(rospy.search_param('joints_poses'))
+rospy.init_node("arm_gripper_movement", anonymous=True)
 
 try:
-    f = open(path + args['position_list'] + ".json")
+    f = open(rospy.get_param(rospy.search_param('joints_poses')), "r")
     positions = json.load(f)
     positions = positions["positions"]
+    positions = list(positions.items())
+    positions = [["open"], ["close"]] + positions
     f.close()
 
 except:
     rospy.logerr("Invalid positions file! Closing...")
     sys.exit(0)
 
-rospy.init_node("arm_gripper_movement", anonymous=True)
+# set up arm controller service proxy
+rospy.wait_for_service('move_arm_to_joints_state')
+move_arm_to_joints_state_proxy = rospy.ServiceProxy('move_arm_to_joints_state', MoveArmToJointsState)
 
-arm_gripper_comm = ArmGripperComm()
-
-time.sleep(0.2)
-
-arm_gripper_comm.gripper_connect()
-
-#arm_gripper_comm.gripper_status()
-
-if not arm_gripper_comm.state_dic["activation_completed"]: 
-    arm_gripper_comm.gripper_init()
+# set up gripper action client
+gripper_control_client = actionlib.SimpleActionClient('/gripper_action_server', GripperControlAction)
+gripper_control_client.wait_for_server()
 
 #pos = [0.258, 0.111, 1.412, 0, 1, 0, 0]
 #arm_gripper_comm.move_arm_to_pose_goal(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6])
 
-if args['movement'] == "":
-    res = os.listdir(path)
-    res.remove(args['position_list'] + ".json")
+while True:
+    i = 0
 
-    while True:
-        i = 0
+    for pos in positions:
+        print(f'[{i}]:' + pos[0])
+        i += 1
 
-        for file in res:
-            print(f'[{i}]:' + file)
-            i += 1
+    idx = int(input("Select idx: "))
 
-        idx = input("Select idx from test json: ")
+    if idx == 0:
+        goal = GripperControlGoal(goal="open", speed=255)
+        gripper_control_client.send_goal(goal)
+        gripper_control_client.wait_for_result()
+        print(gripper_control_client.get_result())
+
+    elif idx == 1:
+        goal = GripperControlGoal(goal="close", speed=255)
+        gripper_control_client.send_goal(goal)
+        gripper_control_client.wait_for_result()
+        print(gripper_control_client.get_result())
+
+    else:
+        pos = positions[idx][1]
+
+        req = MoveArmToJointsStateRequest(goal=pos, velocity=0.2, acceleration=0.2)
 
         try:
-            f = open(path + res[int(idx)])
-            config = json.load(f)
-            f.close()
-        
-        except:
-            rospy.logerr("Invalid file! Closing...")
-            arm_gripper_comm.gripper_disconnect()
+            resp = move_arm_to_joints_state_proxy(req)
+            print(resp)
+
+        except rospy.ServiceException as exc:
+            print("Service did not process request: " + str(exc))
             sys.exit(0)
-
-        for pos, gripper in config["positions"]:
-            pos = positions[pos]
-            arm_gripper_comm.move_arm_to_joints_state(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
-
-            if gripper == 1:
-                arm_gripper_comm.gripper_open_fast()
-            if gripper == -1:
-                arm_gripper_comm.gripper_close_fast()
-
-else:
-    try:
-        f = open(path + args["movement"] + '.json')
-        config = json.load(f)
-        f.close()
-    
-    except:
-        rospy.logerr("Invalid file! Closing...")
-        arm_gripper_comm.gripper_disconnect()
-        sys.exit(0)
-
-    for pos, gripper in config["positions"]:
-        pos = positions[pos]
-        arm_gripper_comm.move_arm_to_joints_state(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
-
-        if gripper == 1:
-            arm_gripper_comm.gripper_open_fast()
-        if gripper == -1:
-            arm_gripper_comm.gripper_close_fast()
-
-arm_gripper_comm.gripper_disconnect()
