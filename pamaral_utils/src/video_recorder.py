@@ -16,6 +16,7 @@ class VideoRecorder:
         self.fps = fps
         self.video_writer = None
         self.is_recording = False
+        self.images = []
 
         # Define ROS service to start and stop recording
         self.start_recording_service = rospy.Service('start_recording', Empty, self.start_recording)
@@ -34,7 +35,10 @@ class VideoRecorder:
             if self.video_writer is None:
                 rospy.logwarn("Video writer object not initialized")
                 return
-            self.video_writer.write(cv_image)
+            
+            self.images.append(cv_image)
+            #self.video_writer.write(cv_image)
+            #print("written image")
 
     def start_recording(self, req):
         if not self.is_recording:
@@ -45,6 +49,8 @@ class VideoRecorder:
             # Set flag to start recording
             self.is_recording = True
 
+            print("Recording started.")
+
         return EmptyResponse()
 
     def stop_recording(self, req):
@@ -53,7 +59,11 @@ class VideoRecorder:
             if self.video_writer is None:
                 rospy.logwarn("Video writer object not initialized")
                 return
-            self.video_writer.release()
+            
+            for img in self.images:
+                self.video_writer.write(img)
+            
+            print(self.video_writer.release())
 
             # Set flag to stop recording
             self.is_recording = False
@@ -75,6 +85,7 @@ def main():
     # Create a new folder
     now = datetime.now()
     filename = output_folder + now.strftime("%d_%m_%Y_%H:%M:%S")+ ".mp4"
+    print(filename)
 
     VideoRecorder(input_topic=input_topic, filename=filename, fps=float(fps))
 
