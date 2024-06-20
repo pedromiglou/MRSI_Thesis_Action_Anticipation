@@ -23,10 +23,12 @@ except:
     rospy.logerr("Invalid positions file! Closing...")
     sys.exit(0)
 
+print("A")
 # set up arm controller service proxy
 rospy.wait_for_service('move_arm_to_joints_state')
 move_arm_to_joints_state_proxy = rospy.ServiceProxy('move_arm_to_joints_state', MoveArmToJointsState)
 
+print("B")
 # set up gripper action client
 gripper_control_client = actionlib.SimpleActionClient('/gripper_action_server', GripperControlAction)
 gripper_control_client.wait_for_server()
@@ -58,7 +60,7 @@ while True:
     else:
         pos = positions[idx][1]
 
-        req = MoveArmToJointsStateRequest(goal=pos, velocity=0.2, acceleration=0.2)
+        req = MoveArmToJointsStateRequest(goal=pos, velocity=0.2, acceleration=0.2, wait=False)
 
         try:
             resp = move_arm_to_joints_state_proxy(req)

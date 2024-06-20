@@ -5,7 +5,7 @@ import json
 import rospy
 import sys
 
-from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import PointStamped, Pose
 
 from arm.srv import MoveArmToPoseGoal, MoveArmToPoseGoalRequest, StopArm
 from gripper_action_server.msg import GripperControlAction, GripperControlGoal
@@ -202,8 +202,17 @@ class BaseController:
     def move_arm_to(self, pos):
         pos = self.positions[pos]
 
-        req = MoveArmToPoseGoalRequest(translation=(pos[0], pos[1], pos[2]-0.26), quaternions=(pos[3], pos[4], pos[5], pos[6]),
-                                       velocity=0.3, acceleration=0.3)
+        pose_goal = Pose()
+        pose_goal.position.x = pos[0]
+        pose_goal.position.y = pos[1]
+        pose_goal.position.z = pos[2] - 0.26
+
+        pose_goal.orientation.x = pos[3]
+        pose_goal.orientation.y = pos[4]
+        pose_goal.orientation.z = pos[5]
+        pose_goal.orientation.w = pos[6]
+
+        req = MoveArmToPoseGoalRequest(goal=pose_goal, velocity=0.3, acceleration=0.3, wait=True)
 
         try:
             resp = self.move_arm_to_pose_goal_proxy(req)
