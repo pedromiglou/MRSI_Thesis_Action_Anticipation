@@ -5,8 +5,9 @@ import json
 import rospy
 import sys
 
-from arm.srv import MoveArmToPoseGoal, MoveArmToPoseGoalRequest
 from geometry_msgs.msg import Pose
+
+from arm.srv import MoveArmToPoseGoal, MoveArmToPoseGoalRequest
 from gripper_action_server.msg import GripperControlAction, GripperControlGoal
 
 
